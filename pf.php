@@ -3,7 +3,7 @@
    Plugin Name: PrintFriendly
    Plugin URI: http://www.printfriendly.com/button
    Description: Creates PrintFriendly.com button for easy printing. [<a href="options-general.php?page=printfriendly/pf.php">Settings</a>].
-   Version: 0.0.1
+   Version: 0.2
    Author: Vamsee Kanakala
    Author URI: http://kanakala.net
   */
