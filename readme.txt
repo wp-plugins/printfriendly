@@ -2,8 +2,8 @@
 Contributors: vamsee, printfriendly
 Tags: print, save, paper, ink
 Requires at least: 1.5
-Tested up to: 2.7
-Stable tag: 0.2
+Tested up to: 2.7.1
+Stable tag: 0.4
 
 Adds the PrintFriendly button to your posts and pages. Calls the widget at PrintFriendly.com to help you save ink and paper.
 

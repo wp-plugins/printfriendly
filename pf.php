@@ -3,7 +3,7 @@
    Plugin Name: PrintFriendly
    Plugin URI: http://www.printfriendly.com/button
    Description: Creates PrintFriendly.com button for easy printing. [<a href="options-general.php?page=printfriendly/pf.php">Settings</a>].
-   Version: 0.2
+   Version: 0.4
    Author: Vamsee Kanakala
    Author URI: http://kanakala.net
   */
@@ -14,9 +14,9 @@ function pf_show_link($content)
     $button_type = get_option('pf_button_type');
 
     if ($button_type != 'text-only')
-      return $content.'<div><script src="http://www.printfriendly.com/javascripts/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" onclick="window.print(); return false;" title="Print an optimized version of this web page"><img id="printfriendly" style="border:none;" src="http://www.printfriendly.com/images/'.$button_type.'" alt="Print"/></a></div>';
+      return $content.'<div><script src="http://www.printfriendly.com/javascripts/printfriendly.js" type="text/javascript"></script><a id="pfLink" href="http://www.printfriendly.com" onclick="window.print(); return false;" title="Print an optimized version of this web page"><img id="printfriendly" style="border:none;" src="http://www.printfriendly.com/images/'.$button_type.'" alt="Print" /></a></div>';
     else
-      return $content.'<script src="http://www.printfriendly.com/javascripts/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="printfriendly" onclick="window.print(); return false;" title="Print an optimized version of this web page">Print</a>';
+      return $content.'<script src="http://www.printfriendly.com/javascripts/printfriendly.js" type="text/javascript"></script><a id="pfLink" href="http://www.printfriendly.com" onclick="window.print(); return false;" title="Print an optimized version of this web page">Print</a>';
   } else {
     return $content;
   }
