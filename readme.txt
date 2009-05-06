@@ -1,6 +1,6 @@
 === PrintFriendly ===
 Contributors: vamsee, printfriendly
-Tags: print, save, paper, ink
+Tags: print, friendly, save, paper, ink
 Requires at least: 1.5
 Tested up to: 2.7.1
 Stable tag: 0.4
