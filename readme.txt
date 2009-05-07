@@ -1,5 +1,5 @@
 === PrintFriendly ===
-Contributors: vamsee, printfriendly
+Contributors: printfriendly, vamsee
 Tags: print, friendly, save, paper, ink
 Requires at least: 1.5
 Tested up to: 2.7.1
@@ -18,6 +18,7 @@ user can also genrate a PDF if he likes to save the content.
 1. Download the printfriendly.zip file and unzip it.
 2. Move the resulting folder into wp-content/plugins folder your wordpress install
 3. Activate the plugin in your Wordpress Admin area.
+4. Choose your button style in the plugin settings area.
 
 == Support ==
 

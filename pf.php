@@ -14,7 +14,7 @@ function pf_show_link($content)
     $button_type = get_option('pf_button_type');
 
     if ($button_type != 'text-only')
-      return $content.'<div><script src="http://www.printfriendly.com/javascripts/printfriendly.js" type="text/javascript"></script><a id="pfLink" href="http://www.printfriendly.com" onclick="window.print(); return false;" title="Print an optimized version of this web page"><img id="printfriendly" style="border:none;" src="http://www.printfriendly.com/images/'.$button_type.'" alt="Print" /></a></div>';
+      return $content.'<div id="pfButton"><script src="http://www.printfriendly.com/javascripts/printfriendly.js" type="text/javascript"></script><a id="pfLink" href="http://www.printfriendly.com" onclick="window.print(); return false;" title="Print an optimized version of this web page"><img id="printfriendly" style="border:none; padding:0;" src="http://www.printfriendly.com/images/'.$button_type.'" alt="Print" /></a></div>';
     else
       return $content.'<script src="http://www.printfriendly.com/javascripts/printfriendly.js" type="text/javascript"></script><a id="pfLink" href="http://www.printfriendly.com" onclick="window.print(); return false;" title="Print an optimized version of this web page">Print</a>';
   } else {
