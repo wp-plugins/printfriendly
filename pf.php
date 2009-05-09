@@ -3,7 +3,7 @@
    Plugin Name: PrintFriendly
    Plugin URI: http://www.printfriendly.com/button
    Description: Creates PrintFriendly.com button for easy printing. [<a href="options-general.php?page=printfriendly/pf.php">Settings</a>].
-   Version: 0.5
+   Version: 0.6
    Author: Vamsee Kanakala
    Author URI: http://kanakala.net
   */
@@ -14,9 +14,9 @@ function pf_show_link($content)
     $button_type = get_option('pf_button_type');
 
     if ($button_type != 'text-only')
-      return $content.'<div id="pfButton"><script src="http://www.printfriendly.com/javascripts/printfriendly.js" type="text/javascript"></script><a id="pfLink" href="http://www.printfriendly.com" onclick="window.print(); return false;" title="Print an optimized version of this web page"><img id="printfriendly" style="border:none; padding:0;" src="http://www.printfriendly.com/images/'.$button_type.'" alt="Print" /></a></div>';
+      return $content.'<div id="pfButton"><script src="http://cdn.printnicer.com/printfriendly.js" type="text/javascript"></script><a id="pfLink" href="http://www.printfriendly.com" onclick="window.print(); return false;" title="Print an optimized version of this web page"><img id="printfriendly" style="border:none; padding:0;" src="http://www.printfriendly.com/images/'.$button_type.'" alt="Print" /></a></div>';
     else
-      return $content.'<script src="http://www.printfriendly.com/javascripts/printfriendly.js" type="text/javascript"></script><a id="pfLink" href="http://www.printfriendly.com" onclick="window.print(); return false;" title="Print an optimized version of this web page">Print</a>';
+      return $content.'<script src="http://cdn.printnicer.com/printfriendly.js" type="text/javascript"></script><a id="pfLink" href="http://www.printfriendly.com" onclick="window.print(); return false;" title="Print an optimized version of this web page">Print</a>';
   } else {
     return $content;
   }
@@ -26,6 +26,14 @@ remove_action('the_content', 'pf_show_link');
 add_action('the_content', 'pf_show_link', 98);
 
 add_action('admin_menu', 'pf_menu');
+
+function pf_head() {
+  ?>
+  <link rel="stylesheet" href="http://cdn.printnicer.com/printfriendly.css" type="text/css" />
+    <?php
+}
+
+add_action('wp_head', 'pf_head');
 
 function pf_menu() {
   add_options_page('PrintFriendly Options', 'PrintFriendly', 8, __FILE__, 'pf_options');
