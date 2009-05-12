@@ -3,7 +3,7 @@ Contributors: printfriendly, vamsee
 Tags: print, friendly, save, paper, ink
 Requires at least: 1.5
 Tested up to: 2.7.1
-Stable tag: 0.6
+Stable tag: 0.7
 
 Adds the PrintFriendly button to your posts and pages. On clicking, it opens a lightbox-like modal window with cleaned up, print friendly content of your blog post or page. It will help your readers save ink, paper and thereby helps the environment too!
 
