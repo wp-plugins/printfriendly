@@ -3,7 +3,7 @@
    Plugin Name: PrintFriendly
    Plugin URI: http://www.printfriendly.com/button
    Description: Creates PrintFriendly.com button for easy printing. [<a href="options-general.php?page=printfriendly/pf.php">Settings</a>].
-   Version: 0.7
+   Version: 0.8
    Author: Vamsee Kanakala
    Author URI: http://kanakala.net
   */
@@ -15,19 +15,19 @@ function pf_show_link($content)
 
     switch ($button_type) {
     case "text-only":
-      return $content.'<script src="http://cdn.printnicer.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="printfriendly" onclick="window.print(); return false;" title="Print an optimized version of this web page" style="text-decoration: none;"><span style="color: rgb(85, 117, 12);">Print Friendly</span></a>';
+      return $content.'<div id="pfButton"><script src="http://cdn.printnicer.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="pfLink" onclick="window.print(); return false;" title="Print an optimized version of this web page" style="text-decoration: none;"><span style="color: rgb(85, 117, 12);">Print Friendly</span></a></div>';
       break;
     case "pf-button-big.gif":
-      return $content.'<script src="http://cdn.printnicer.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="printfriendly" onclick="window.print(); return false;" title="Print an optimized version of this web page"><img  style="border:none;" src="http://www.printfriendly.com/images/pf-button-big.gif" alt="Print"/></a>';
+      return $content.'<div id="pfButton"><script src="http://cdn.printnicer.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="pfLink" onclick="window.print(); return false;" title="Print an optimized version of this web page"><img id="printfriendly" style="border:none;" src="http://www.printfriendly.com/images/pf-button-big.gif" alt="Print"/></a></div>';
       break;
     case "pf-icon-small.gif":
-      return $content.'<script src="http://cdn.printnicer.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="printfriendly" onclick="window.print(); return false;" title="Print an optimized version of this web page" style="text-decoration: none;"><img  style="border:none;" src="http://www.printfriendly.com/images/pf-icon-small.gif" alt="Print"/><span style="font-size: 12px; color: rgb(85, 117, 12);">Print Friendly</span></a>';
+      return $content.'<div id="pfButton"><script src="http://cdn.printnicer.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="pfLink" onclick="window.print(); return false;" title="Print an optimized version of this web page" style="text-decoration: none;"><img id="printfriendly" style="border:none;" src="http://www.printfriendly.com/images/pf-icon-small.gif" alt="Print"/><span style="font-size: 12px; color: rgb(85, 117, 12);">Print Friendly</span></a></div>';
       break;
     case "pf-icon.gif":
-      return $content.'<script src="http://cdn.printnicer.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="printfriendly" onclick="window.print(); return false;" title="Print an optimized version of this web page" style="text-decoration: none;"><img  style="border:none;" src="http://www.printfriendly.com/images/pf-icon.gif" alt="Print"/><span style="font-size: 15px; color: rgb(85, 117, 12);">Print Friendly</span></a>';
+      return $content.'<div id="pfButton"><script src="http://cdn.printnicer.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="pfLink" onclick="window.print(); return false;" title="Print an optimized version of this web page" style="text-decoration: none;"><img id="printfriendly" style="border:none;" src="http://www.printfriendly.com/images/pf-icon.gif" alt="Print"/><span style="font-size: 15px; color: rgb(85, 117, 12);">Print Friendly</span></a></div>';
       break;
     default:
-      return $content.'<script src="http://cdn.printnicer.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="printfriendly" onclick="window.print(); return false;" title="Print an optimized version of this web page"><img  style="border:none;" src="http://www.printfriendly.com/images/pf-button.gif" alt="Print"/></a>';      
+      return $content.'<div id="pfButton"><script src="http://cdn.printnicer.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="pfLink" onclick="window.print(); return false;" title="Print an optimized version of this web page"><img id="printfriendly" style="border:none;" src="http://www.printfriendly.com/images/pf-button.gif" alt="Print"/></a></div>';
     }
   } else {
     return $content;
