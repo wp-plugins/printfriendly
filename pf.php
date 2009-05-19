@@ -3,7 +3,7 @@
    Plugin Name: PrintFriendly
    Plugin URI: http://www.printfriendly.com/button
    Description: Creates PrintFriendly.com button for easy printing. [<a href="options-general.php?page=printfriendly/pf.php">Settings</a>].
-   Version: 1.0
+   Version: 1.1
    Author: Vamsee Kanakala
    Author URI: http://kanakala.net
   */
@@ -11,42 +11,47 @@
 function pf_show_link($content)
 {
   $button_type = get_option('pf_button_type');
-    switch ($button_type) {
-    case "text-only":
-      if (is_single() || is_page()) {
-	return $content.'<div id="pfButton"><script src="http://cdn.printfriendly.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="pfLink" onclick="window.print(); return false;" title="Print an optimized version of this web page" style="text-decoration: none;"><span style="color: rgb(85, 117, 12);">Print Friendly</span></a></div>';
-      } else {
-	return $content.'<div id="pfButton"><a href="'.get_permalink().'&pfstyle=wp" title="Print an optimized version of this web page" style="text-decoration: none;"><span style="color: rgb(85, 117, 12);">Print Friendly</span></a></div>';
-      }
-      break;
-    case "pf-button-big.gif":
-      if (is_single() || is_page()) {
-	return $content.'<div id="pfButton"><script src="http://cdn.printfriendly.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="pfLink" onclick="window.print(); return false;" title="Print an optimized version of this web page"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-button-big.gif" alt="Print"/></a></div>';
-      } else {
-	return $content.'<div id="pfButton"><a href="'.get_permalink().'&pfstyle=wp" title="Print an optimized version of this web page"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-button-big.gif" alt="Print"/></a></div>';
-      }
-      break;
-    case "pf-icon-small.gif":
-      if (is_single() || is_page()) {
-	return $content.'<div id="pfButton"><script src="http://cdn.printfriendly.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="pfLink" onclick="window.print(); return false;" title="Print an optimized version of this web page" style="text-decoration: none;"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-icon-small.gif" alt="Print"/><span style="font-size: 12px; color: rgb(85, 117, 12);">Print Friendly</span></a></div>';
-      } else {
-	return $content.'<div id="pfButton"><a href="'.get_permalink().'&pfstyle=wp" title="Print an optimized version of this web page" style="text-decoration: none;"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-icon-small.gif" alt="Print"/><span style="font-size: 12px; color: rgb(85, 117, 12);">Print Friendly</span></a></div>';
-      }
-      break;
-    case "pf-icon.gif":
-      if (is_single() || is_page()) {
-	return $content.'<div id="pfButton"><script src="http://cdn.printfriendly.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="pfLink" onclick="window.print(); return false;" title="Print an optimized version of this web page" style="text-decoration: none;"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-icon.gif" alt="Print"/><span style="font-size: 15px; color: rgb(85, 117, 12);">Print Friendly</span></a></div>';
-      } else {
-	return $content.'<div id="pfButton"><a href="'.get_permalink().'&pfstyle=wp" title="Print an optimized version of this web page" style="text-decoration: none;"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-icon.gif" alt="Print"/><span style="font-size: 15px; color: rgb(85, 117, 12);">Print Friendly</span></a></div>';
-      }
-      break;
-    default:
-      if (is_single() || is_page()) {
-	return $content.'<div id="pfButton"><script src="http://cdn.printfriendly.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="pfLink" onclick="window.print(); return false;" title="Print an optimized version of this web page"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-button.gif" alt="Print"/></a></div>';
-      } else {
-	return $content.'<div id="pfButton"><a href="'.get_permalink().'&pfstyle=wp" title="Print an optimized version of this web page"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-button.gif" alt="Print"/></a></div>';
-      }
-    }  
+  $plink_url = get_permalink();
+  $separator = "?pfstyle=wp";
+  if (strpos($plink_url,"?")!=false)
+    $separator = "&pfstyle=wp";
+
+  switch ($button_type) {
+  case "text-only":
+    if (is_single() || is_page()) {
+      return $content.'<div id="pfButton"><script src="http://cdn.printfriendly.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="pfLink" onclick="window.print(); return false;" title="Print an optimized version of this web page" style="text-decoration: none;"><span style="color: rgb(85, 117, 12);">Print Friendly</span></a></div>';
+    } else {
+      return $content.'<div id="pfButton"><a href="'.$plink_url.$separator.'" title="Print an optimized version of this web page" style="text-decoration: none;"><span style="color: rgb(85, 117, 12);">Print Friendly</span></a></div>';
+    }
+    break;
+  case "pf-button-big.gif":
+    if (is_single() || is_page()) {
+      return $content.'<div id="pfButton"><script src="http://cdn.printfriendly.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="pfLink" onclick="window.print(); return false;" title="Print an optimized version of this web page"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-button-big.gif" alt="Print"/></a></div>';
+    } else {
+      return $content.'<div id="pfButton"><a href="'.$plink_url.$separator.'" title="Print an optimized version of this web page"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-button-big.gif" alt="Print"/></a></div>';
+    }
+    break;
+  case "pf-icon-small.gif":
+    if (is_single() || is_page()) {
+      return $content.'<div id="pfButton"><script src="http://cdn.printfriendly.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="pfLink" onclick="window.print(); return false;" title="Print an optimized version of this web page" style="text-decoration: none;"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-icon-small.gif" alt="Print"/><span style="font-size: 12px; color: rgb(85, 117, 12);">Print Friendly</span></a></div>';
+    } else {
+      return $content.'<div id="pfButton"><a href="'.$plink_url.$separator.'" title="Print an optimized version of this web page" style="text-decoration: none;"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-icon-small.gif" alt="Print"/><span style="font-size: 12px; color: rgb(85, 117, 12);">Print Friendly</span></a></div>';
+    }
+    break;
+  case "pf-icon.gif":
+    if (is_single() || is_page()) {
+      return $content.'<div id="pfButton"><script src="http://cdn.printfriendly.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="pfLink" onclick="window.print(); return false;" title="Print an optimized version of this web page" style="text-decoration: none;"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-icon.gif" alt="Print"/><span style="font-size: 15px; color: rgb(85, 117, 12);">Print Friendly</span></a></div>';
+    } else {
+      return $content.'<div id="pfButton"><a href="'.$plink_url.$separator.'" title="Print an optimized version of this web page" style="text-decoration: none;"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-icon.gif" alt="Print"/><span style="font-size: 15px; color: rgb(85, 117, 12);">Print Friendly</span></a></div>';
+    }
+    break;
+  default:
+    if (is_single() || is_page()) {
+      return $content.'<div id="pfButton"><script src="http://cdn.printfriendly.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="pfLink" onclick="window.print(); return false;" title="Print an optimized version of this web page"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-button.gif" alt="Print"/></a></div>';
+    } else {
+      return $content.'<div id="pfButton"><a href="'.$plink_url.$separator.'" title="Print an optimized version of this web page"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-button.gif" alt="Print"/></a></div>';
+    }
+  }  
 }
 
 remove_action('the_content', 'pf_show_link');
