@@ -1,17 +1,16 @@
 === PrintFriendly ===
 Contributors: printfriendly, vamsee
-Tags: print, friendly, save, paper, ink
+Tags: print button, print version, pdf button, pdf version, eco printing, print friendly, green printing
 Requires at least: 1.5
-Tested up to: 2.7.1
-Stable tag: 1.2
+Stable tag: 1.3
 
-Adds the PrintFriendly button to your posts and pages. On clicking, it opens a lightbox-like modal window with cleaned up, print friendly content of your blog post or page. It will help your readers save ink, paper and thereby helps the environment too!
+Add the Print Friendly button to your WordPress blog and help your readers save paper and ink when they print. Print Friendly cleans and optimizes your pages and lets readers get PDF versions too.
 
 == Description ==
 
-This plugin contains a simple button with embedded javascript link to start the PrintFriendly widget, which lets a user print 
-only the post or page without other clutter from the page. It also lets the user choose the content he wants to print and the 
-user can also genrate a PDF if he likes to save the content.
+Add the Print Friendly button to your WordPress blog and help people save paper and ink when they print. Print friendly cleans and optimizes your pages. Cool features include get PDF, and the ability to remove images before printing. 
+
+Learn more, and take PrintFriendly for a test drive. Check out <a href"http://www.PrintFriendly.com" title="Print Friendly button widget" target="_new">PrintFriendly.com</a>
 
 == Installation ==
 
@@ -23,3 +22,8 @@ user can also genrate a PDF if he likes to save the content.
 == Support ==
 
 If you have any issues with the plugin or the PrintFriendly widget, please write to support@printfriendly.com
+
+== Screenshots ==
+
+1. The PrintFriendly widget optimizes and formats your pages for print. Users can remove images and get a PDF
+2. Choose your button, text link, or use your own text or graphic.
