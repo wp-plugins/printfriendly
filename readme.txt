@@ -1,6 +1,6 @@
 === PrintFriendly ===
 Contributors: printfriendly, vamsee
-Tags: print button, print version, pdf button, pdf version, eco printing, print friendly, green printing
+Tags: print, printer, pdf, version, button
 Requires at least: 1.5
 Stable tag: 1.3
 
