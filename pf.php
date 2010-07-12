@@ -1,13 +1,14 @@
 <?php
   /*
-   Plugin Name: PrintFriendly
+   Plugin Name: Print Friendly &amp; PDF
    Plugin URI: http://www.printfriendly.com/button
-   Description: Creates PrintFriendly.com button for easy printing. [<a href="options-general.php?page=printfriendly/pf.php">Settings</a>].
-   Version: 1.3
-   Author: Vamsee Kanakala
-   Author URI: http://kanakala.net
+   Description: Adds a Print Friendly &amp; PDF button for your pages.  Help your users save paper and ink, and engage with your content. [<a href="options-general.php?page=printfriendly/pf.php">Settings</a>].
+   Version: 1.4
+   Author: PrintFriendly
+   Author URI: http://www.PrintFriendly.com
 
    Recent changes:
+   1.4 - Changed Name
    1.3 - Added new buttons, removed redundant code.
    1.2 - User can choose to show or not show buttons on the listing page.
 

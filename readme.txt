@@ -1,8 +1,8 @@
-=== PrintFriendly ===
-Contributors: printfriendly, vamsee
+=== Print Friendly &amp; PDF Button===
+Contributors: printfriendly
 Tags: print, printer, pdf, version, button
 Requires at least: 1.5
-Stable tag: 1.3
+Stable tag: 1.3.1
 
 Add the Print Friendly button to your WordPress blog and help your readers save paper and ink when they print. Print Friendly cleans and optimizes your pages and lets readers get PDF versions too.
 
