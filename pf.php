@@ -2,208 +2,228 @@
   /*
    Plugin Name: Print Friendly &amp; PDF
    Plugin URI: http://www.printfriendly.com/button
-   Description: Adds a Print Friendly &amp; PDF button for your pages.  Help your users save paper and ink, and engage with your content. [<a href="options-general.php?page=printfriendly/pf.php">Settings</a>].
-   Version: 1.4
+   Description: Adds a Print Friendly &amp; PDF button for your pages.  Help your users save paper and ink, and engage with your content. Developed by <a href="http://wordpresswrench.com?ref=printfriendly" target="_blank">WordPress Wrench</a>
+   Version: 2.0
    Author: PrintFriendly
    Author URI: http://www.PrintFriendly.com
 
-   Recent changes:
+   Changelog :
+   2.0 - New Revision by WordPressWrench.com with a plethora of changes. You may now style your print button much easier.
+   1.5 - Added developer ability to disable hook and use the pf_show_link() function to better be used in a custom theme & Uninstall cleanup - by WordpressWrench.com
    1.4 - Changed Name
    1.3 - Added new buttons, removed redundant code.
    1.2 - User can choose to show or not show buttons on the listing page.
 
   */
+  
 
-function pf_show_link($content)
-{
-  $button_type = get_option('pf_button_type');
-  $show_list = get_option('pf_show_list');
+  
+////////////////////////////// Wordpress hooks
 
-  $plink_url = get_permalink();
-  $separator = "?pfstyle=wp";
-  if (strpos($plink_url,"?")!=false)
-    $separator = "&pfstyle=wp";
-
-  switch ($button_type) {
-  case "text-only":
-    if (is_single() || is_page()) {
-      return $content.'<div id="pfButton"><script src="http://cdn.printfriendly.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="pfLink" onclick="window.print(); return false;" title="Print an optimized version of this web page" style="text-decoration: none;"><span style="color: rgb(85, 117, 12);">Print Friendly</span></a></div>';
-    } else {
-      if ($show_list != 0)
-	return $content;
-      else
-	return $content.'<div id="pfButton"><a href="'.$plink_url.$separator.'" title="Print an optimized version of this web page" style="text-decoration: none;"><span style="color: rgb(85, 117, 12);">Print Friendly</span></a></div>';
-    }
-    break;
-  case "pf-button-big.gif":
-    if (is_single() || is_page()) {
-      return $content.'<div id="pfButton"><script src="http://cdn.printfriendly.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="pfLink" onclick="window.print(); return false;" title="Print an optimized version of this web page"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-button-big.gif" alt="Print"/></a></div>';
-    } else {
-      if ($show_list != 0)
-	return $content;
-      else
-	return $content.'<div id="pfButton"><a href="'.$plink_url.$separator.'" title="Print an optimized version of this web page"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-button-big.gif" alt="Print"/></a></div>';
-    }
-    break;
-  case "pf-button-both.gif":
-    if (is_single() || is_page()) {
-      return $content.'<div id="pfButton"><script src="http://cdn.printfriendly.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="pfLink" onclick="window.print(); return false;" title="Print an optimized version of this web page"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-button-both.gif" alt="Print"/></a></div>';
-    } else {
-      if ($show_list != 0)
-	return $content;
-      else
-	return $content.'<div id="pfButton"><a href="'.$plink_url.$separator.'" title="Print an optimized version of this web page"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-button-both.gif" alt="Print"/></a></div>';
-    }
-    break;
-  case "pf-icon-small.gif":
-    if (is_single() || is_page()) {
-      return $content.'<div id="pfButton"><script src="http://cdn.printfriendly.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="pfLink" onclick="window.print(); return false;" title="Print an optimized version of this web page" style="text-decoration: none;"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-icon-small.gif" alt="Print"/><span style="font-size: 12px; color: rgb(85, 117, 12);">Print Friendly</span></a></div>';
-    } else {
-      if ($show_list != 0)
-	return $content;
-      else
-	return $content.'<div id="pfButton"><a href="'.$plink_url.$separator.'" title="Print an optimized version of this web page" style="text-decoration: none;"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-icon-small.gif" alt="Print"/><span style="font-size: 12px; color: rgb(85, 117, 12);">Print Friendly</span></a></div>';
-    }
-    break;
-  case "pf-icon.gif":
-    if (is_single() || is_page()) {
-      return $content.'<div id="pfButton"><script src="http://cdn.printfriendly.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="pfLink" onclick="window.print(); return false;" title="Print an optimized version of this web page" style="text-decoration: none;"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-icon.gif" alt="Print"/><span style="font-size: 15px; color: rgb(85, 117, 12);">Print Friendly</span></a></div>';
-    } else {
-      if ($show_list != 0)
-	return $content;
-      else
-	return $content.'<div id="pfButton"><a href="'.$plink_url.$separator.'" title="Print an optimized version of this web page" style="text-decoration: none;"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-icon.gif" alt="Print"/><span style="font-size: 15px; color: rgb(85, 117, 12);">Print Friendly</span></a></div>';
-    }
-    break;
-  case "pf-icon-both.gif":
-    if (is_single() || is_page()) {
-      return $content.'<div id="pfButton"><script src="http://cdn.printfriendly.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="pfLink" onclick="window.print(); return false;" title="Print an optimized version of this web page" style="text-decoration: none;"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-print-icon.gif" alt="Print"/><span style="font-size: 12px; color: #55750c;"> Print <img src="http://cdn.printfriendly.com/pf-pdf-icon.gif" alt="Get a PDF version of this webpage" /> PDF </span></a></div>';
-    } else {
-      if ($show_list != 0)
-	return $content;
-      else
-	return $content.'<div id="pfButton"><a href="'.$plink_url.$separator.'" title="Print an optimized version of this web page" style="text-decoration: none;"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-print-icon.gif" alt="Print"/><span style="font-size: 12px; color: #55750c;"> Print <img src="http://cdn.printfriendly.com/pf-pdf-icon.gif" alt="Get a PDF version of this webpage" /> PDF </span></a></div>';
-    }
-    break;
-  default:
-    if (is_single() || is_page()) {
-      return $content.'<div id="pfButton"><script src="http://cdn.printfriendly.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" id="pfLink" onclick="window.print(); return false;" title="Print an optimized version of this web page"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-button.gif" alt="Print"/></a></div>';
-    } else {
-      if ($show_list != 0)
-	return $content;
-      else
-	return $content.'<div id="pfButton"><a href="'.$plink_url.$separator.'" title="Print an optimized version of this web page"><img id="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-button.gif" alt="Print"/></a></div>';
-    }
-  }  
-}
-
-remove_action('the_content', 'pf_show_link');
-add_action('the_content', 'pf_show_link', 98);
-
+// add the settings page
 add_action('admin_menu', 'pf_menu');
-
-function pf_head() {
-  if (is_single() || is_page()) {
-  ?>
-     <link rel="stylesheet" href="http://cdn.printfriendly.com/printfriendly.css" type="text/css" />
-  <?php
-  }
-}
-
-add_action('wp_head', 'pf_head');
-
 function pf_menu() {
-  add_options_page('PrintFriendly Options', 'PrintFriendly', 8, __FILE__, 'pf_options');
+  add_options_page('PrintFriendly Options', 'PrintFriendly', 'publish_posts', 'printfriendly', 'pf_options');
 }
 
-function pf_options() {
-  $option_name = 'pf_button_type';
-  $option2_name = 'pf_show_list';
+// add the settings link to the plugin page
 
-  if (get_option($option_name)) {
-    if (isset($_POST[$option_name])) {
-      update_option($option_name, $_POST[$option_name]);
-      if (isset($_POST[$option2_name]))
-	update_option($option2_name, 1);
-      else
-	update_option($option2_name, 0);
-    ?>
-      <div class="updated"><p><strong><?php _e('Option saved.'); ?></strong></p></div>
-    <?php
-    }
-  } else {
-    add_option($option_name, 'pf-button.gif');
-    add_option($option2_name, 0);
-  }
-  $option_value = get_option($option_name);
-  $option2_value = get_option($option2_name);
-?>
-<div class="wrap">
-   <h2>PrintFriendly Options</h2>
-   <h3>Choose your button</h3>
-   <form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
-    <?php wp_nonce_field('update-options'); ?>
-    <table cellspacing="20" cellpadding="20">
-       <tr valign="top">
-       <td><input name="pf_button_type" type="radio" value="pf-button.gif"
-                                                     <?php if ($option_value == 'pf-button.gif') _e('checked="checked"') ?>/></td>
-       <td><img src="http://cdn.printfriendly.com/pf-button.gif" alt="Select This Button Style" /></td>
-       </tr>
-       <tr valign="top">
-       <td><input name="pf_button_type" type="radio" value="pf-button-big.gif" 
-						 <?php if ($option_value == 'pf-button-big.gif') _e('checked="checked"') ?>/></td>
-       <td><img src="http://cdn.printfriendly.com/pf-button-big.gif" alt="Select this button style" /></td>
-       </tr>
-       <tr valign="top">
-       <td><input name="pf_button_type" type="radio" value="pf-icon-small.gif" 
-						   <?php if ($option_value == 'pf-icon-small.gif') _e('checked="checked"') ?>/></td>
-       <td>
-          <img src="http://cdn.printfriendly.com/pf-icon-small.gif" alt="Select this button style" />
-          <span style="font-size: 12px; color: rgb(85, 117, 12);">Print Friendly</span>
-       </td>
-       </tr>
-       <tr>
-       <td><input name="pf_button_type" type="radio" value="pf-icon.gif" 
-						   <?php if ($option_value == 'pf-icon.gif') _e('checked="checked"') ?>/></td>
-       <td>
-          <img src="http://cdn.printfriendly.com/pf-icon.gif" alt="Select this button style" />
-          <span style="font-size: 15px; color: rgb(85, 117, 12);">Print Friendly</span>          
-       </td>
-       </tr>
-       <tr valign="top">
-       <td><input name="pf_button_type" type="radio" value="pf-button-both.gif"
-                                                     <?php if ($option_value == 'pf-button-both.gif') _e('checked="checked"') ?>/></td>
-       <td><img src="http://cdn.printfriendly.com/pf-button-both.gif" alt="Select This Button Style" /></td>
-       </tr>
-       <tr>
-       <td><input name="pf_button_type" type="radio" value="pf-icon-both.gif" 
-						   <?php if ($option_value == 'pf-icon-both.gif') _e('checked="checked"') ?>/></td>
-       <td>
-          <img src="http://cdn.printfriendly.com/pf-print-icon.gif" alt="Print Friendly Version of this page" />
-	    <span style="font-size: 12px; color: #55750c;"> 
-	      Print <img src="http://cdn.printfriendly.com/pf-pdf-icon.gif" alt="Get a PDF version of this webpage" /> PDF
-	    </span>												    
-       </td>
-       </tr>
-       <tr>
-       <td><input name="pf_button_type" type="radio" value="text-only" <?php if ($option_value == 'text-only') _e('checked="checked"') ?>/></td>
-       <td>
-           <a href="#" onclick="return false;" style="text-decoration: none;">
-           <span style="color: rgb(85, 117, 12);">Print Friendly</span></a> (text-only)
-       </td>
-       </tr>
-    </table>
-    <h3>Display Choices</h3>
-    <table cellspacing="20" cellpadding="20">
-       <tr valign="top">
-       <td>Show buttons only on individual posts and pages (not on frontpage/listings)</td>
-       <td><input name="pf_show_list" type="checkbox" value=<?php echo $option2_value ?>
-								 <?php if ($option2_value == 1) _e('checked="checked"') ?>/></td>
-       </tr>
-    </table>																 
-    <input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
-   </form>
-</div>
-<?php
+function pf_settings_link($links) { 
+  $settings_link = '<a href="options-general.php?page=printfriendly">Settings</a>'; 
+  array_unshift($links, $settings_link); 
+  return $links; 
 }
-?>
+
+// add css, js, and check for updates
+if (isset($_GET['page']) && $_GET['page'] == 'printfriendly') {
+	add_action('admin_print_scripts', 'pf_admin_scripts');
+	add_action('admin_print_styles', 'pf_admin_styles');
+	add_action('admin_head', 'pf_css_in_admin_head');
+	if(get_option('pf_text_color')==null){
+		//old install or something is fishy! lets run the install!
+		printfriendly_activation_handler();
+	}
+}
+
+$pf_pluginbase = plugin_basename(__FILE__); 
+add_filter('plugin_action_links_'.$pf_pluginbase, 'pf_settings_link');
+
+// automaticaly add the link
+add_action('the_content', 'pf_show_link');
+
+// lets start our mess!
+function printfriendly_activation_handler(){
+	update_option('pf_margin_top',0);
+	update_option('pf_margin_right',0);
+	update_option('pf_margin_bottom',0);
+	update_option('pf_margin_left',0);
+	
+	
+	update_option('pf_text_color','#55750C');
+	update_option('pf_text_size','12');
+	if(get_option('pf_show_list')==0){
+		update_option('pf_show_list','all');
+	}elseif(get_option('pf_show_list')==1){
+		update_option('pf_show_list','single');
+	}
+	if(get_option('pf_disable_prepend')==1){
+		update_option('pf_show_list','manual');
+	}
+	delete_option('pf_disable_prepend');
+}
+
+// lets clean our mess when we are done and properly 
+function printfriendly_deactivation_handler(){
+	delete_option('pf_button_type');	
+	delete_option('pf_custom_text');
+	
+	delete_option('pf_custom_image');
+	
+	delete_option('pf_show_list');
+	delete_option('pf_content_placement');
+	delete_option('pf_content_position');
+	
+	delete_option('pf_margin_top');
+	delete_option('pf_margin_right');
+	delete_option('pf_margin_bottom');
+	delete_option('pf_margin_left');
+}
+register_activation_hook(__FILE__, 'printfriendly_activation_handler');
+register_uninstall_hook(__FILE__, 'printfriendly_deactivation_handler');
+
+// add CSS into admin panel
+function pf_css_in_admin_head() {
+	$url = plugins_url().'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__)).'/admin.css';
+	echo "<link rel='stylesheet' type='text/css' href='$url' />\n";
+}
+
+////////////////////////////// Admin Settings
+
+function pf_options(){	
+	include_once('pf_admin.php');
+}
+
+// setup for uploads
+function pf_admin_scripts() {
+	wp_enqueue_script('media-upload');
+	wp_enqueue_script('thickbox');
+	wp_register_script('pf-color-picker', plugins_url().'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__)).'/colorpicker.js', array('jquery','media-upload','thickbox'));
+	wp_register_script('pf-admin-js', plugins_url().'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__)).'/admin.js', array('jquery','media-upload','thickbox'));
+	wp_enqueue_script('pf-color-picker');
+	wp_enqueue_script('pf-admin-js');
+}
+function pf_admin_styles() {
+	wp_enqueue_style('thickbox');
+}
+
+////////////////////////////// Where all the magic happens
+
+// add js into the head
+function pf_js(){ 
+	return '<script src="http://cdn.printfriendly.com/printfriendly.js" type="text/javascript"></script>';	
+}
+
+function pf_radio($name){
+	$var = '<input name="pf_button_type" type="radio" value="'.$name.'"'; if($name=="pf-button-big.gif"){$var .= ' class="bigger"';} if( get_option('pf_button_type') == $name || ($name=="pf-button.gif" && get_option('pf_button_type')==null) ){$var .= ' checked="checked"'; } $var .= '/>';
+	return $var.pf_button($name);
+}
+
+function pf_button($name=false){
+	if($name==false){
+		$name = get_option('pf_button_type');
+		//null
+		if($name==null){
+			$name='pf-button.gif';
+		}
+	}
+	$text = get_option('pf_custom_text');
+	if( $text == null){
+		$text = 'Print Friendly';
+	}
+	switch($name){		
+		case "custom-image":
+			$custom_image = get_option('pf_custom_image');
+			if($custom_image==null){
+				return '';
+			}
+			$return = '<img class="printfriendly" src="'.$custom_image.'" />';
+			if( get_option('pf_custom_text') != null){
+				$return .='<span class="printfriendly" style="font-size:'.get_option('pf_text_size').'px; margin-left:3px;  color: '.get_option('pf_text_color').';">'.$text.'</span>';
+			}
+			return $return;
+		break;
+		
+		case "text-only":
+			return '<span class="printfriendly" style="font-size: '.get_option('pf_text_size').'px; margin-left:3px; color: '.get_option('pf_text_color').';">'.$text.'</span>';
+		break;
+		
+		case "pf-icon-both.gif":
+			return '<img class="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-print-icon.gif" alt="Print Friendly"/><span class="printandpdf" style="font-size:'.get_option('pf_text_size').'; margin-left:3px; color:'.get_option('pf_text_color').';"> Print <img src="http://cdn.printfriendly.com/pf-pdf-icon.gif" alt="Get a PDF version of this webpage" /> PDF </span>';
+		break;
+		
+		case "pf-icon-small.gif":
+		case "pf-icon.gif":
+			$size = get_option('pf_text_size');
+			if($name=="pf-icon.gif" && $size==12){
+				$size= 'font-size:'.($size+3).'px; ';
+			}else{
+				$size ='font-size:'.$size.'px; ';
+			}
+			return '<img class="printfriendly" src="http://cdn.printfriendly.com/'.$name.'" alt="Print Friendly"/><span style="'.$size.'margin-left:3px; color: '.get_option('pf_text_color').';">'.$text.'</span>';
+		break;
+		
+		case "pf-button.gif":
+		case "pf-button-big.gif":
+		case "pf-button-both.gif":
+			return '<img class="printfriendly" src="http://cdn.printfriendly.com/'.$name.'" alt="PrintFriendly" />';
+		break;
+	}
+}
+
+function pf_margin_down($dir){
+	$margin = get_option('pf_margin_'.$dir);
+	if($margin == null){
+		return '0';
+	}else{
+		return $margin;
+	}
+}
+
+// add button
+function pf_show_link($content=false){
+	$pf_display = get_option('pf_show_list');
+	if( ($pf_display=='all' || $pf_display == null) || ($pf_display=='single' && (is_single() || is_page()) ) || ($pf_display=='manual' && $content==false) ){
+		if($content==false){$content = '';}
+		// now lets get options setup before we start ouputting data
+		$style=' style="text-align:';
+		// position
+		$pos = get_option('pf_content_position');
+		if($pos==null){$pos='left';}
+		$style.=$pos.';';
+		
+		//margin
+		$style.=' margin: '.pf_margin_down('top').'px '.pf_margin_down('right').'px '.pf_margin_down('bottom').'px '.pf_margin_down('left').'px;';
+		
+		$style.='" ';
+		
+		if(is_single() || is_page()){
+			$add = pf_js();
+		}else{
+			$add = '';
+		}
+		$post_url = get_permalink();
+		$separator = "?pfstyle=wp";
+		if (strpos($post_url,"?")!=false){ 
+			$separator = "&pfstyle=wp";
+		}
+		$plink_url =  $post_url . $separator;
+		$button = '<div'.$style.'class="pfButton">'.$add.'<a href="'.$plink_url.'">'.pf_button().'</a></div>';
+		if(get_option('pf_content_placement')==null){
+			return $content.$button;
+		}else{
+			return $button.$content;
+		}
+	}else{
+		return $content;
+	}
+}

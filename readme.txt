@@ -2,15 +2,21 @@
 Contributors: printfriendly
 Tags: print, printer, pdf, version, button
 Requires at least: 1.5
-Stable tag: 1.3.1
+Stable tag: 2.0
 
-Add the Print Friendly button to your WordPress blog and help your readers save paper and ink when they print. Print Friendly cleans and optimizes your pages and lets readers get PDF versions too.
+Add the Print Friendly button to your WordPress site. Get beautiful print versions of your site, and help readers save paper and ink. 
+
+Print Friendly cleans and optimizes your pages and lets readers get PDF versions too.
 
 == Description ==
 
-Add the Print Friendly button to your WordPress blog and help people save paper and ink when they print. Print friendly cleans and optimizes your pages. Cool features include get PDF, and the ability to remove images before printing. 
+Add the Print Friendly button to your WordPress site. Get beautiful print versions of your site, and help readers save paper and ink. 
 
-Learn more, and take PrintFriendly for a test drive. Check out <a href"http://www.PrintFriendly.com" title="Print Friendly button widget" target="_new">PrintFriendly.com</a>
+Features:
+- Automatically creates a print.css for your site
+- Customize the button
+- Users can remove images, content, and save as PDF.
+
 
 == Installation ==
 
