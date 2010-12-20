@@ -2,14 +2,15 @@
   /*
    Plugin Name: Print Friendly &amp; PDF
    Plugin URI: http://www.printfriendly.com/button
-   Description: Adds a Print Friendly &amp; PDF button for your pages.  Help your users save paper and ink, and engage with your content. Developed by <a href="http://wordpresswrench.com?ref=printfriendly" target="_blank">WordPress Wrench</a>
-   Version: 2.0
+   Description: Adds a Print Friendly &amp; PDF button for your pages.  Help your users save paper and ink, and engage with your content. Developed by <a href="http://printfriendly.com" target="_blank">PrintFriendly</a>
+   Version: 2.1
    Author: PrintFriendly
    Author URI: http://www.PrintFriendly.com
 
    Changelog :
-   2.0 - New Revision by WordPressWrench.com with a plethora of changes. You may now style your print button much easier.
-   1.5 - Added developer ability to disable hook and use the pf_show_link() function to better be used in a custom theme & Uninstall cleanup - by WordpressWrench.com
+   2.1 - Update for mult-author websites. Improvements to Settings page.
+   2.0 - Customize the style, placement, and pages your printfriendly button appears.
+   1.5 - Added developer ability to disable hook and use the pf_show_link() function to better be used in a custom theme & Uninstall cleanup.
    1.4 - Changed Name
    1.3 - Added new buttons, removed redundant code.
    1.2 - User can choose to show or not show buttons on the listing page.
@@ -19,9 +20,26 @@
 
   
 ////////////////////////////// Wordpress hooks
+add_action('plugins_loaded','init_pf');
 
-// add the settings page
-add_action('admin_menu', 'pf_menu');
+function init_pf() {
+	if ( current_user_can('edit_plugins') ) {
+		// add the settings page
+		add_action('admin_menu', 'pf_menu');
+
+		// add css, js, and check for updates
+		if (isset($_GET['page']) && $_GET['page'] == 'printfriendly') {
+			add_action('admin_print_scripts', 'pf_admin_scripts');
+			add_action('admin_print_styles', 'pf_admin_styles');
+			add_action('admin_head', 'pf_css_in_admin_head');
+			if(get_option('pf_text_color')==null){
+				//old install or something is fishy! lets run the install!
+				printfriendly_activation_handler();
+			}
+		}
+	}
+}
+
 function pf_menu() {
   add_options_page('PrintFriendly Options', 'PrintFriendly', 'publish_posts', 'printfriendly', 'pf_options');
 }
@@ -34,16 +52,7 @@ function pf_settings_link($links) {
   return $links; 
 }
 
-// add css, js, and check for updates
-if (isset($_GET['page']) && $_GET['page'] == 'printfriendly') {
-	add_action('admin_print_scripts', 'pf_admin_scripts');
-	add_action('admin_print_styles', 'pf_admin_styles');
-	add_action('admin_head', 'pf_css_in_admin_head');
-	if(get_option('pf_text_color')==null){
-		//old install or something is fishy! lets run the install!
-		printfriendly_activation_handler();
-	}
-}
+
 
 $pf_pluginbase = plugin_basename(__FILE__); 
 add_filter('plugin_action_links_'.$pf_pluginbase, 'pf_settings_link');
@@ -60,7 +69,7 @@ function printfriendly_activation_handler(){
 	
 	
 	update_option('pf_text_color','#55750C');
-	update_option('pf_text_size','12');
+	update_option('pf_text_size','14');
 	if(get_option('pf_show_list')==0){
 		update_option('pf_show_list','all');
 	}elseif(get_option('pf_show_list')==1){
@@ -124,7 +133,7 @@ function pf_js(){
 }
 
 function pf_radio($name){
-	$var = '<input name="pf_button_type" type="radio" value="'.$name.'"'; if($name=="pf-button-big.gif"){$var .= ' class="bigger"';} if( get_option('pf_button_type') == $name || ($name=="pf-button.gif" && get_option('pf_button_type')==null) ){$var .= ' checked="checked"'; } $var .= '/>';
+	$var = '<input name="pf_button_type" type="radio" value="'.$name.'"'; if($name=="custom-image"){$var .= ' onclick="Toggle(\'imgurl\');" ';} else{$var .= ' onclick="Toggle(\'hide\');" ';} if($name=="pf-button-big.gif"){$var .= ' class="bigger"';} if( get_option('pf_button_type') == $name || ($name=="pf-button.gif" && get_option('pf_button_type')==null) ){$var .= ' checked="checked"'; } $var .= '/>';
 	return $var.pf_button($name);
 }
 
@@ -217,7 +226,7 @@ function pf_show_link($content=false){
 			$separator = "&pfstyle=wp";
 		}
 		$plink_url =  $post_url . $separator;
-		$button = '<div'.$style.'class="pfButton">'.$add.'<a href="'.$plink_url.'">'.pf_button().'</a></div>';
+		$button = '<div'.$style.'class="pfButton">'.$add.'<a href="'.$plink_url.'" style="color: '.get_option('pf_text_color').';">'.pf_button().'</a></div>';
 		if(get_option('pf_content_placement')==null){
 			return $content.$button;
 		}else{
