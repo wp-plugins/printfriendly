@@ -1,3 +1,11 @@
+<script type="text/javascript"> 
+function Toggle(hide) { 
+document.getElementById("manual").style.display = "none"; 
+document.getElementById("imgurl").style.display = "none"; 
+document.getElementById(hide).style.display = "block"; 
+
+} 
+</script> 
 <?php
 if(isset($_POST['pf_save'])){
 	$error = false;
@@ -176,12 +184,11 @@ if(isset($_POST['pf_save'])){
 						<p><label class="preview_button">
 							<?php echo pf_radio('text-only'); ?> <span class="pf_tip">(text only)</span>
 						</label></p>
-						<p><label class="preview_button" id="pf_custom_image_label">
-							<?php echo pf_radio('custom-image'); ?>	
-							<?php if(get_option('pf_custom_image') == false){
-								echo '<img src="'.plugins_url().'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__)).'/images/noimage.png" alt="No Image"/>';
-							} ?> <span class="pf_tip">(Custom Image)</span>
-						</label></p>				
+						<p>
+                        	<?php echo pf_radio('custom-image'); ?> <label class="preview_button" id="pf_custom_image_label">Custom Image</label>	
+                        	<div id="imgurl">Enter image URL
+                            <input id="upload_image" type="text" size="50" name="upload_image" value="<?php echo get_option('pf_custom_image'); ?>" /></div>
+                        </p>	
 					</div>
 				</div>
 				<div id="pf_button_options">					
@@ -201,14 +208,14 @@ if(isset($_POST['pf_save'])){
 						<label class="pf_label">Custom Text</label>
 						<input type="text" name="custom_text" id="pf_custom_text" value="<?php echo get_option('pf_custom_text'); ?>"> <span class="pf_tip"> (optional, leave blank for default text)</span>
 					</p>
-					<p>
+	<!--				<p>
 						<div id="pf_uploader">
 							<label for="upload_image" class="pf_label">Custom Image URL: </label>
-							<input id="upload_image" type="text" size="36" name="upload_image" value="<?php echo get_option('pf_custom_image'); ?>" />
+							
 							<input id="upload_image_button" type="button" value="Upload Image" class="button-primary"/>
 							<p>Enter an URL or click "Upload Image" to Upload an Image.</p>
 						</div>
-					</p>
+					</p>-->
 				</div>
 				
 			</div> <!-- end box c -->
@@ -218,22 +225,19 @@ if(isset($_POST['pf_save'])){
 			<h3>Button Position</h3>
 			<div class="pf_c">
 				<p class="pf_float">
-					<label class="pf_label">Vertical Position</label>
-					<label class="pf_check"><input type="radio" class="pf_content_placement" name="pf_content_placement" value="after"<?php if(get_option('pf_content_placement')==null){echo ' checked="checked"';} if(get_option('pf_show_list')=='manual'){echo ' disabled="disabled"';} ?>/><span>After Post/Page Content</span></label>
-					<label class="pf_check"><input type="radio" class="pf_content_placement" name="pf_content_placement" value="before"<?php if(get_option('pf_content_placement')=='before'){echo ' checked="checked"';} if(get_option('pf_show_list')=='manual'){echo ' disabled="disabled"';} ?>/><span>Before Post/Page Content</span></label>
+					<label class="pf_check"><input type="radio" class="pf_content_placement" name="pf_content_placement" value="after"<?php if(get_option('pf_content_placement')==null){echo ' checked="checked"';} if(get_option('pf_show_list')=='manual'){echo ' disabled="disabled"';} ?>/><span>Bottom of Page</span></label>
+					<label class="pf_check"><input type="radio" class="pf_content_placement" name="pf_content_placement" value="before"<?php if(get_option('pf_content_placement')=='before'){echo ' checked="checked"';} if(get_option('pf_show_list')=='manual'){echo ' disabled="disabled"';} ?>/><span>Top of Page</span></label>
 				</p>
 				<p class="pf_float">
-					<label class="pf_label">Horizontal Position</label>
-					<label class="pf_check"><input type="radio" name="pf_content_position" value="left"<?php if(get_option('pf_content_position')==null){echo ' checked="checked"';} ?>/><span>Left</span></label>
-					<label class="pf_check"><input type="radio" name="pf_content_position" value="center"<?php if(get_option('pf_content_position')=='center'){echo ' checked="checked"';} ?>/><span>Center</span></label>
-					<label class="pf_check"><input type="radio" name="pf_content_position" value="right"<?php if(get_option('pf_content_position')=='right'){echo ' checked="checked"';} ?>/><span>Right</span></label>
+					<label class="pf_check"><input type="radio" name="pf_content_position" value="left"<?php if(get_option('pf_content_position')==null){echo ' checked="checked"';} ?>/>Left</label>
+					<label class="pf_check"><input type="radio" name="pf_content_position" value="center"<?php if(get_option('pf_content_position')=='center'){echo ' checked="checked"';} ?>/>Center</label>
+					<label class="pf_check"><input type="radio" name="pf_content_position" value="right"<?php if(get_option('pf_content_position')=='right'){echo ' checked="checked"';} ?>/>Right</label>
 				</p>
 				<p class="pf_float">
-					<label class="pf_label">Margin</label>
-					<label class="pf_check"><input type="text" class="pf_px" name="pf_margin_top" value="<?php echo pf_margin_down('top'); ?>"/><span>px Top</span></label>
-					<label class="pf_check"><input type="text" class="pf_px" name="pf_margin_right" value="<?php echo pf_margin_down('right'); ?>"/><span>px Right</span></label>
-					<label class="pf_check"><input type="text" class="pf_px" name="pf_margin_bottom" value="<?php echo pf_margin_down('bottom'); ?>"/><span>px Bottom</span></label>
-					<label class="pf_check"><input type="text" class="pf_px" name="pf_margin_left" value="<?php echo pf_margin_down('left'); ?>"/><span>px Left</span></label>
+					<label class="pf_check"><input type="text" class="pf_px" name="pf_margin_top" value="<?php echo pf_margin_down('top'); ?>"/>px Top Margin</label>
+					<label class="pf_check"><input type="text" class="pf_px" name="pf_margin_right" value="<?php echo pf_margin_down('right'); ?>"/>px Right Margin</label>
+					<label class="pf_check"><input type="text" class="pf_px" name="pf_margin_bottom" value="<?php echo pf_margin_down('bottom'); ?>"/>px Bottom Margin</label>
+					<label class="pf_check"><input type="text" class="pf_px" name="pf_margin_left" value="<?php echo pf_margin_down('left'); ?>"/>px Left Margin</label>
 				</p>		
 			</div> <!-- end box c -->
 		</div> <!-- end box -->
@@ -242,16 +246,21 @@ if(isset($_POST['pf_save'])){
 			<h3>Pages</h3>
 			<div class="pf_c">
 				<p>
-					<label class="pf_label">Display Button:</label>
-					<label class="pf_check"><input type="radio" class="pf_show_list" name="pf_show_list" value="all"<?php if(get_option('pf_show_list')=='all' || get_option('pf_show_list')==null ){echo ' checked="checked"';} ?>/> <span>All Posts and Pages</span></label>
-					<label class="pf_check"><input type="radio" class="pf_show_list" name="pf_show_list" value="single"<?php if(get_option('pf_show_list')=='single' || get_option('pf_show_list')==1){echo ' checked="checked"';} ?>/> <span>Individual Posts and Pages <span class="pf_tip">(Not on frontpage / latest posts) </span></span></label>
-					<label class="pf_check"><input type="radio" class="pf_show_list" name="pf_show_list" value="manual"<?php if(get_option('pf_show_list')=='manual'){echo ' checked="checked"';} ?>/> <span>Manual <span class="pf_tip">(see explaination below) </span></span></label>
+					<label class="pf_label">Select the pages you would like to add PrintFriendly button.</label>
+					<label class="pf_check">
+                    	<input type="radio" class="pf_show_list" name="pf_show_list" value="all" onclick="Toggle('hide');"<?php if(get_option('pf_show_list')=='all' || get_option('pf_show_list')==null ){echo ' checked="checked"';} ?>/> <span>All Posts and Pages</span></label>
+					<label class="pf_check">
+                    <input type="radio" class="pf_show_list" name="pf_show_list" value="single" onclick="Toggle('hide');"<?php if(get_option('pf_show_list')=='single' || get_option('pf_show_list')==1){echo ' checked="checked"';} ?>/> <span>Individual Posts and Pages <span class="pf_tip">(Not on frontpage / latest posts) </span></span></label>
+					<label class="pf_check"><input type="radio" class="pf_show_list" name="pf_show_list" value="manual" onclick="Toggle('manual');"<?php if(get_option('pf_show_list')=='manual'){echo ' checked="checked"';} ?>/> <span>Manual <span class="pf_tip">(for WordPress Pros) </span></span></label>
 				</p>
-				<p>
-					PrintFriendly, by default, automatically inserts itself into your blog/site. When Manual mode is enabled this allows you to add the button wherever you like. Simply paste the following code into your template file. <br/><span class="pf_tip">WARNING: You need to know how to edit your Theme files or you might cause errors on your page.</span>
+                
+
+                
+                <div id="manual">
+					<p>PrintFriendly, by default, automatically inserts itself into your blog/site. When Manual mode is enabled this allows you to add the button wherever you like. Simply paste the following code into your template file. You need to know how to edit your Theme files or you might cause errors on your page.
 					<h4>Code</h4>
 						<code style="display:block;">&lt;?php if(function_exists('pf_show_link')){echo pf_show_link();} ?&gt;</code>			
-				</p>
+				</div>
 			</div> <!-- end box c -->
 		</div> <!-- end Box -->
 	<div style="clear:both;">
