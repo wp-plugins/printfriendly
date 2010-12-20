@@ -8,6 +8,7 @@
    Author URI: http://www.PrintFriendly.com
 
    Changelog :
+   2.1.1 - Fixed admin settings bug.
    2.1 - Update for mult-author websites. Improvements to Settings page.
    2.0 - Customize the style, placement, and pages your printfriendly button appears.
    1.5 - Added developer ability to disable hook and use the pf_show_link() function to better be used in a custom theme & Uninstall cleanup.
@@ -17,29 +18,10 @@
 
   */
   
-
-  
 ////////////////////////////// Wordpress hooks
-add_action('plugins_loaded','init_pf');
 
-function init_pf() {
-	if ( current_user_can('edit_plugins') ) {
-		// add the settings page
-		add_action('admin_menu', 'pf_menu');
-
-		// add css, js, and check for updates
-		if (isset($_GET['page']) && $_GET['page'] == 'printfriendly') {
-			add_action('admin_print_scripts', 'pf_admin_scripts');
-			add_action('admin_print_styles', 'pf_admin_styles');
-			add_action('admin_head', 'pf_css_in_admin_head');
-			if(get_option('pf_text_color')==null){
-				//old install or something is fishy! lets run the install!
-				printfriendly_activation_handler();
-			}
-		}
-	}
-}
-
+// add the settings page
+add_action('admin_menu', 'pf_menu');
 function pf_menu() {
   add_options_page('PrintFriendly Options', 'PrintFriendly', 'publish_posts', 'printfriendly', 'pf_options');
 }
@@ -52,7 +34,16 @@ function pf_settings_link($links) {
   return $links; 
 }
 
-
+// add css, js, and check for updates
+if (isset($_GET['page']) && $_GET['page'] == 'printfriendly') {
+	add_action('admin_print_scripts', 'pf_admin_scripts');
+	add_action('admin_print_styles', 'pf_admin_styles');
+	add_action('admin_head', 'pf_css_in_admin_head');
+	if(get_option('pf_text_color')==null){
+		//old install or something is fishy! lets run the install!
+		printfriendly_activation_handler();
+	}
+}
 
 $pf_pluginbase = plugin_basename(__FILE__); 
 add_filter('plugin_action_links_'.$pf_pluginbase, 'pf_settings_link');
