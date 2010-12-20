@@ -217,7 +217,7 @@ function pf_show_link($content=false){
 			$separator = "&pfstyle=wp";
 		}
 		$plink_url =  $post_url . $separator;
-		$button = '<div'.$style.'class="pfButton">'.$add.'<a href="'.$plink_url.'" style="color: '.get_option('pf_text_color').';">'.pf_button().'</a></div>';
+		$button = '<div'.$style.'class="pfButton">'.$add.'<a href="'.$plink_url.'" style="text-decoration: none; color: '.get_option('pf_text_color').';">'.pf_button().'</a></div>';
 		if(get_option('pf_content_placement')==null){
 			return $content.$button;
 		}else{
