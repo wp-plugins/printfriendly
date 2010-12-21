@@ -8,7 +8,7 @@
    Author URI: http://www.PrintFriendly.com
 
    Changelog :
-   2.1.1 - Fixed admin settings bug.
+   2.1.1 - Fixed bug affecting wordpress 3.0.3
    2.1 - Update for mult-author websites. Improvements to Settings page.
    2.0 - Customize the style, placement, and pages your printfriendly button appears.
    1.5 - Added developer ability to disable hook and use the pf_show_link() function to better be used in a custom theme & Uninstall cleanup.
@@ -217,7 +217,7 @@ function pf_show_link($content=false){
 			$separator = "&pfstyle=wp";
 		}
 		$plink_url =  $post_url . $separator;
-		$button = '<div'.$style.'class="pfButton">'.$add.'<a href="'.$plink_url.'" style="text-decoration: none; color: '.get_option('pf_text_color').';">'.pf_button().'</a></div>';
+		$button = '<div'.$style.'class="pfButton">'.$add.'<a href="'.$plink_url.'" onclick="window.print(); return false;" style="text-decoration: none; color: '.get_option('pf_text_color').';">'.pf_button().'</a></div>';
 		if(get_option('pf_content_placement')==null){
 			return $content.$button;
 		}else{
