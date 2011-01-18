@@ -14,7 +14,7 @@
    2.1 - Update for mult-author websites. Improvements to Settings page.
    2.0 - Customize the style, placement, and pages your printfriendly button appears.
    1.5 - Added developer ability to disable hook and use the pf_show_link() function to better be used in a custom theme & Uninstall cleanup.
-   1.4 - Changed Name
+   1.4 - Changed Name.
    1.3 - Added new buttons, removed redundant code.
    1.2 - User can choose to show or not show buttons on the listing page.
 
