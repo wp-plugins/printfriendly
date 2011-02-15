@@ -1,6 +1,9 @@
 #pf_settings ul {
 	float:left;
-	margin:1em;
+	margin:1em ;
+}
+#pf_position ul {
+	margin-right:3em;
 }
 #pf_settings li{
 	margin:1em 0;
@@ -228,4 +231,7 @@ ul#pftxtbuttons{
 }
 .colorpicker_slider {
 	background-position: bottom;
+}
+.clear{
+	clear:both;
 }
