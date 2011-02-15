@@ -2,14 +2,15 @@
   /*
    Plugin Name: Print Friendly and PDF
    Plugin URI: http://www.printfriendly.com
-   Description: Print Friendly &amp; PDF button. Saves paper and ink when you print. [<a href="options-general.php?page=printfriendly/pf.php">Settings</a>]  
+   Description: PrintFriendly & PDF optimizes your pages for print. Help your readers save paper and ink, plus enjoy your content in printed form. Website Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared. [<a href="options-general.php?page=printfriendly/pf.php">Settings</a>]  
    Developed by <a href="http://printfriendly.com" target="_blank">PrintFriendly</a>
-   Version: 2.1.2
+   Version: 2.1.3
    Author: Print Friendly
    Author URI: http://www.PrintFriendly.com
 
    Changelog :
-   2.1.2 - Improvements to Setting page layout and PrintFriendly button launching from post pages.
+   2.1.3 - Manual option for button placement. Security updates for multi-author sites.
+	 2.1.2 - Improvements to Setting page layout and PrintFriendly button launching from post pages.
    2.1.1 - Fixed admin settings bug.
    2.1 - Update for mult-author websites. Improvements to Settings page.
    2.0 - Customize the style, placement, and pages your printfriendly button appears.
@@ -25,7 +26,8 @@
 // add the settings page
 add_action('admin_menu', 'pf_menu');
 function pf_menu() {
-  add_options_page('PrintFriendly Options', 'PrintFriendly', 'publish_posts', 'printfriendly', 'pf_options');
+if(current_user_can('manage_options'))
+	add_options_page('PrintFriendly Options', 'PrintFriendly', 'publish_posts', 'printfriendly', 'pf_options');
 }
 
 // add the settings link to the plugin page
@@ -53,7 +55,8 @@ $pf_pluginbase = plugin_basename(__FILE__);
 add_filter('plugin_action_links_'.$pf_pluginbase, 'pf_settings_link');
 
 // automaticaly add the link
-add_action('the_content', 'pf_show_link');
+if(get_option('pf_show_list')!= 'manual')
+	add_action('the_content', 'pf_show_link');
 
 // lets start our mess!
 function printfriendly_activation_handler(){
@@ -127,8 +130,6 @@ function pf_admin_styles() {
 
 ////////////////////////////// Where all the magic happens
 
-
-
 function pf_radio($name){
 	$var = '<input name="pf_button_type" type="radio" value="'.$name.'"'; if( get_option('pf_button_type') == $name || ($name=="pf-button.gif" && get_option('pf_button_type')==null) ){$var .= ' checked="checked"'; } $var .= '/>';
 	return $var.pf_button($name);
@@ -194,21 +195,15 @@ function pf_margin_down($dir){
 		return $margin;
 	}
 }
-// add css to the head
-function pf_head() {
-  if (is_single() || is_page() || is_front_page() ) {
-  ?>
-     <link rel="stylesheet" href="http://cdn.printfriendly.com/printfriendly.css" type="text/css" />
-  <?php
-  }
-}
 
 add_action('wp_head', 'pf_head');
 
-// add button Taylor Version
-function pf_show_link($content)
+// add button 
+function pf_show_link($content=false)
 {
 	$pf_display = get_option('pf_show_list');
+	if(!$content && $pf_display!= 'manual')
+		return "";
 	$plink_url = get_permalink();
 	
 	$separator = "?pfstyle=wp";
@@ -226,20 +221,37 @@ function pf_show_link($content)
 	
 	$button_link = '<div'.$style.'><a href="'.$plink_url.$separator.'" style="text-decoration: none; outline: none; color: '.get_option('pf_text_color').';">'.pf_button().'</a></div>';
 	
-	 //This goes on article pages
-	if (is_single() || is_page())
-		{
+	//This goes on article pages
+	if((is_single() || is_page()) && $pf_display=='single' || (is_single() && $pf_display=='posts')) 
+	{
 			if (get_option('pf_content_placement')==null)
 				return $content.$button;	
+			
 			else 
 				return $button.$content; 
+	}
+	else if((is_single() || is_page()) && $pf_display=='manual') 		
+		{
+				return  $button; 
+		}
+		
+	else if((is_single() || is_page()) && $pf_display=='all')
+		{
+			if (get_option('pf_content_placement')==null)
+				return $content.$button;
+			
+			else
+				return $button.$content;
 		}
 	
+	//This goes on homepage
 	else 	
 		{
-			if ($pf_display == 'single')
+			if($pf_display == 'manual')
+				return $button_link;
+			else if ($pf_display == 'single' || $pf_display == 'posts')
 				return $content;				
-			elseif (get_option('pf_content_placement')==null)
+			else if (get_option('pf_content_placement')==null)
 				return $content.$button_link;
 			
 			else
@@ -247,71 +259,3 @@ function pf_show_link($content)
 		}
 
 }
-
-
-/*function pf_js(){ 
-	return '<script src="http://cdn.printfriendly.com/printfriendly.js" type="text/javascript"></script>';	
-}*/
-
-/*
-// add button Jonathan
-function pf_show_link($content=false)
-{
-	$pf_display = get_option('pf_show_list');
-		
-		if
-			(
-				($pf_display=='all' || $pf_display == null)
-				|| ($pf_display=='single' && (is_single() || is_page()) )
-				|| ($pf_display=='manual' && $content==false) )
-		{
-			if($content==false)
-			{
-				$content = '';
-			}
-			
-			// now lets get options setup before we start ouputting data
-			$style=' style="text-align:';
-			// position
-			$pos = get_option('pf_content_position');
-			if($pos==null){$pos='left';}
-			$style.=$pos.';';	
-			//margin
-			$style.=' margin: '.pf_margin_down('top').'px '.pf_margin_down('right').'px '.pf_margin_down('bottom').'px '.pf_margin_down('left').'px;';
-			$style.='" ';
-			
-			if(is_single() || is_page())
-			{
-				$add = pf_js();
-			}
-			
-			else{
-				$add = '';
-			}
-			
-			$post_url = get_permalink();
-			$separator = "?pfstyle=wp";
-			
-			if (strpos($post_url,"?")!=false)
-			{ 
-				$separator = "&pfstyle=wp";
-			}
-			$plink_url =  $post_url . $separator;
-			$button = '<div'.$style.'class="pfButton">'.$add.'<a href="'.$plink_url.'" style="text-decoration: none; color: '.get_option('pf_text_color').';">'.pf_button().'</a></div>';
-			
-			if(get_option('pf_content_placement')==null)
-			{
-				return $content.$button;
-			}
-			else
-			{
-				return $button.$content;
-			}
-		}
-	
-		else
-		{
-			return $content;
-		}
-}
-*/

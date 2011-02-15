@@ -1,10 +1,15 @@
 <script type="text/javascript"> 
 function Toggle(hide) { 
-document.getElementById("manual").style.display = "none"; 
 document.getElementById("imgurl").style.display = "none"; 
 document.getElementById(hide).style.display = "block"; 
 
 } 
+function hideit(){
+document.getElementById("manual").style.display = "none"; 
+}
+function showit(){
+document.getElementById("manual").style.display = ""; 
+}
 </script> 
 <?php
 if(isset($_POST['pf_save'])){
@@ -46,7 +51,7 @@ if(isset($_POST['pf_save'])){
 	
 	// display button
 	if(isset($_POST['pf_show_list'])){
-		if($_POST['pf_show_list']=="all" || $_POST['pf_show_list']=="single" || $_POST['pf_show_list']=="manual"){
+		if($_POST['pf_show_list']=="all" || $_POST['pf_show_list']=="single" || $_POST['pf_show_list']=="posts" || $_POST['pf_show_list']=="manual"){
 			update_option('pf_show_list',$_POST['pf_show_list']);
 		}else{
 			// something isn't right
@@ -136,7 +141,7 @@ if(isset($_POST['pf_save'])){
 		}
 	}
 }
-
+if( current_user_can('manage_options') ) {
 ?>
 <div id="pf_settings" class="wrap">
 	<div class="icon32" id="icon-options-general"></div>
@@ -190,9 +195,9 @@ if(isset($_POST['pf_save'])){
 							<p>Enter an URL or click "Upload Image" to Upload an Image.</p>
 						</div>
 					</p>-->
-                    <br style="clear:both;" />	
+                    <br class='clear' />	
                  </div>   
-                    		<br style="clear:both;" />	
+                    		<br class='clear' />	
 		</div>
 				
 		
@@ -218,18 +223,27 @@ if(isset($_POST['pf_save'])){
                 <li><label><input type="text" name="pf_margin_bottom" value="<?php echo pf_margin_down('bottom'); ?>" maxlength="3"/>Bottom</label></li>
             </ul>
             
-			
-			<ul>
-	            <strong>Add PrintFriendly to These Pages</strong>
-            	<li><label><input type="radio" class="pf_show_list" name="pf_show_list" value="all" onclick="Toggle('hide');"<?php if(get_option('pf_show_list')=='all' || get_option('pf_show_list')==null ){echo ' checked="checked"';} ?>/>Homepage, Posts, and Pages</label></li>               <li><label><input type="radio" class="pf_show_list" name="pf_show_list" value="single"<?php if(get_option('pf_show_list')=='single' || get_option('pf_show_list')==1){echo ' checked="checked"';} ?>/>Posts and Pages</label></li>
-                <li><!--			<label><input type="radio" class="pf_show_list" name="pf_show_list" value="manual" onclick="Toggle('manual');"<?php if(get_option('pf_show_list')=='manual'){echo ' checked="checked"';} ?>/>Manual</label>
-                <div id="manual">
-					<p>PrintFriendly, by default, automatically inserts itself into your blog/site. When Manual mode is enabled this allows you to add the button wherever you like. Simply paste the following code into your template file. You need to know how to edit your Theme files or you might cause errors on your page.
-					<h4>Code</h4>
-						<code style="display:block;">&lt;?php if(function_exists('pf_show_link')){echo pf_show_link();} ?&gt;</code>			
-				</div>--></li>
-            </ul>
-            		<br style="clear:both;" />	
+		
+	<ul>
+		<strong>Add PrintFriendly to These Pages</strong>
+		<li><label><input type="radio" class="pf_show_list" name="pf_show_list" value="all" onclick="hideit();"<?php if(get_option('pf_show_list')=='all' || get_option('pf_show_list')==null ){echo ' checked="checked"';} ?>/>Homepage, Posts, and Pages</label></li>
+    <li><label><input type="radio" class="pf_show_list" name="pf_show_list" value="single" onclick="hideit();"<?php if(get_option('pf_show_list')=='single' || get_option('pf_show_list')==1){echo ' checked="checked"';} ?>/>Posts and Pages</label></li>
+    <li>
+    	<label>
+    		<input type="radio" class="pf_show_list" name="pf_show_list" value="posts" onclick="hideit();"<?php if(get_option('pf_show_list')=='posts' || get_option('pf_show_list')==2){echo ' checked="checked"';} ?>/>Posts</label></li>
+    
+		<li>
+    	<label>
+      	<input type="radio" class="pf_show_list" name="pf_show_list" value="manual" onclick="showit();"<?php if(get_option('pf_show_list')=='manual' || get_option('pf_show_list')==3){echo ' checked="checked"';} ?>/>Manual
+        </label>
+     			
+      <div id="manual" <?php if(get_option('pf_show_list') != 'manual') echo 'style="display:none"'?>>
+      	<p>Copy and paste the code below anywhere in your template pages.</p>
+				<code style="display:block;">&lt;?php if(function_exists('pf_show_link')){echo pf_show_link();} ?&gt;</code>			
+	  </div>
+		</li>
+	</ul>
+	<br class='clear'/>
 		</div> 
 	<div id="pf_save">
 		<input type="submit" class="button-primary" value="Save Options" name="pf_save"/>
@@ -238,3 +252,4 @@ if(isset($_POST['pf_save'])){
 	</div>
 </form>
 </div>
+<?php }?>
