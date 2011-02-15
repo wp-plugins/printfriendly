@@ -4,12 +4,13 @@
    Plugin URI: http://www.printfriendly.com
    Description: PrintFriendly & PDF optimizes your pages for print. Help your readers save paper and ink, plus enjoy your content in printed form. Website Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared. [<a href="options-general.php?page=printfriendly/pf.php">Settings</a>]  
    Developed by <a href="http://printfriendly.com" target="_blank">PrintFriendly</a>
-   Version: 2.1.3
+   Version: 2.1.4
    Author: Print Friendly
    Author URI: http://www.PrintFriendly.com
 
    Changelog :
-   2.1.3 - Manual option for button placement. Security updates for multi-author sites.
+	 2.1.4 - wp head fix.
+	 2.1.3 - Manual option for button placement. Security updates for multi-author sites.
 	 2.1.2 - Improvements to Setting page layout and PrintFriendly button launching from post pages.
    2.1.1 - Fixed admin settings bug.
    2.1 - Update for mult-author websites. Improvements to Settings page.
@@ -195,8 +196,6 @@ function pf_margin_down($dir){
 		return $margin;
 	}
 }
-
-add_action('wp_head', 'pf_head');
 
 // add button 
 function pf_show_link($content=false)
