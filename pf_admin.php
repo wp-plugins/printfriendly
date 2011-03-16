@@ -21,7 +21,13 @@ if(isset($_POST['pf_save'])){
 		$error[] = 'Invalid entry for the "Pick Your Button" field. That isn\'t an option to select from! Quit messing with the DOM.';
 	}
 	
-	// custom image
+	// Custom Image
+	if(isset($_POST['upload_image'])){
+		update_option('pf_custom_image',$_POST['upload_image']);
+		
+	}
+	
+	/*// custom image
 	if(isset($_POST['upload_image'])){
 		if(trim($_POST['upload_image']) == ''){
 			update_option('pf_custom_image',null);
@@ -35,7 +41,7 @@ if(isset($_POST['pf_save'])){
 				$error[] = 'Please provide a valid image link for the "Custom Image URL" field.';
 			}
 		}
-	}
+	}*/
 	
 	// Custom Text
 	if(isset($_POST['custom_text'])){
@@ -174,27 +180,21 @@ if( current_user_can('manage_options') ) {
                     <li class="preview_button"><?php echo pf_radio('pf-icon-both.gif'); ?></li>
                     <li class="preview_button"><?php echo pf_radio('pf-icon.gif'); ?></li>
                     <li class="preview_button"><?php echo pf_radio('text-only'); ?></li>
-                   	<li class="preview_button"><?php echo pf_radio('custom-image'); ?> <label id="custom_url">Custom Image URL</label><input id="upload_image" type="text" size="40" name="upload_image" value="<?php echo get_option('pf_custom_image'); ?>" /></li>
+                   	<li class="preview_button"><?php echo pf_radio('custom-image'); ?> 
+                    	<label id="custom_url">Custom Image URL
+                    	<input id="upload_image" type="text" size="40" name="upload_image" value="<?php echo get_option('pf_custom_image'); ?>" />
+                      <div class="help">.JPG .GIF or .PNG Absolute (http://www.example.com/...), or Relative (/wp/wp-content/uploads/example.png)</div></label></li>
                 </ul>
 					
-				<ul id="custom_options">
-                <li><label>Button Reads<input type="text" name="custom_text" id="pf_custom_text" value="<?php echo get_option('pf_custom_text'); ?>"></label></li>
-					<li>
-                       	<div id="colorSelector"><div style="background-color: <?php echo get_option('pf_text_color'); ?>;"></div></div>
-                            <label>Text Color </label><input type="hidden" name="pf_text_color" id="pf_text_color" value="<?php echo get_option('pf_text_color'); ?>"/>
-                    </li>
-						
-					<li><label>Button Text Size<input type="text" id="pf_text_size" name="pf_text_size" value="<?php echo get_option('pf_text_size'); ?>"/></label></li>
+								<ul id="custom_options">
+                	<li><label>Button Says <input type="text" name="custom_text" id="pf_custom_text" value="<?php echo get_option('pf_custom_text'); ?>"></label></li>
+                  <li>
+                  	<label>Text Color <div id="colorSelector"><div style="background-color: <?php echo get_option('pf_text_color'); ?>;"></div></div>
+                     </label><input type="hidden" name="pf_text_color" id="pf_text_color" value="<?php echo get_option('pf_text_color'); ?>"/></li>
+                  <li><label>Text Size<input type="text" id="pf_text_size" name="pf_text_size" value="<?php echo get_option('pf_text_size'); ?>"/></label></li>
 				</ul>
          
-	<!--				<p>
-						<div id="pf_uploader">
-							<label for="upload_image" class="pf_label">Custom Image URL: </label>
-							
-							<input id="upload_image_button" type="button" value="Upload Image" class="button-primary"/>
-							<p>Enter an URL or click "Upload Image" to Upload an Image.</p>
-						</div>
-					</p>-->
+	
                     <br class='clear' />	
                  </div>   
                     		<br class='clear' />	

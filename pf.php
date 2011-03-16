@@ -4,11 +4,12 @@
    Plugin URI: http://www.printfriendly.com
    Description: PrintFriendly & PDF optimizes your pages for print. Help your readers save paper and ink, plus enjoy your content in printed form. Website Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared. [<a href="options-general.php?page=printfriendly/pf.php">Settings</a>]  
    Developed by <a href="http://printfriendly.com" target="_blank">PrintFriendly</a>
-   Version: 2.1.4
+   Version: 2.1.5
    Author: Print Friendly
    Author URI: http://www.PrintFriendly.com
 
    Changelog :
+	 2.1.5 - Fix conflict with link tracking plugins. Custom image support for hosted wordpress sites.
 	 2.1.4 - wp head fix.
 	 2.1.3 - Manual option for button placement. Security updates for multi-author sites.
 	 2.1.2 - Improvements to Setting page layout and PrintFriendly button launching from post pages.
@@ -65,8 +66,6 @@ function printfriendly_activation_handler(){
 	update_option('pf_margin_right',0);
 	update_option('pf_margin_bottom',0);
 	update_option('pf_margin_left',0);
-	
-	
 	update_option('pf_text_color','#55750C');
 	update_option('pf_text_size','14');
 
@@ -166,7 +165,7 @@ function pf_button($name=false){
 		break;
 		
 		case "pf-icon-both.gif":
-			return '<img class="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-print-icon.gif" alt="Print Friendly"/><span class="printandpdf" style="font-size:'.get_option('pf_text_size').'; margin-left:3px; color:'.get_option('pf_text_color').';"> Print <img src="http://cdn.printfriendly.com/pf-pdf-icon.gif" alt="Get a PDF version of this webpage" /> PDF </span>';
+			return '<img class="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-print-icon.gif" alt="Print Friendly"/><span class="printandpdf" style="font-size:'.get_option('pf_text_size').'; margin-left:3px; color:'.get_option('pf_text_color').';"> Print <img style="border:none;"  src="http://cdn.printfriendly.com/pf-pdf-icon.gif" alt="Get a PDF version of this webpage" /> PDF </span>';
 		break;
 		
 		case "pf-icon-small.gif":
@@ -216,7 +215,7 @@ function pf_show_link($content=false)
 	$style.=' margin: '.pf_margin_down('top').'px '.pf_margin_down('right').'px '.pf_margin_down('bottom').'px '.pf_margin_down('left').'px;';
 	$style.='" ';
 	
-	$button = '<div'.$style.'><script src="http://cdn.printfriendly.com/printfriendly.js" type="text/javascript"></script><a href="http://www.printfriendly.com" onclick="window.print(); return false;" style="text-decoration: none; outline: none; color: '.get_option('pf_text_color').';">'.pf_button().'</a></div>';
+	$button = '<div'.$style.'><script src="http://cdn.printfriendly.com/printfriendly.js" type="text/javascript"></script><a href="javascript:window.print()" style="text-decoration: none; outline: none; color: '.get_option('pf_text_color').';">'.pf_button().'</a></div>';
 	
 	$button_link = '<div'.$style.'><a href="'.$plink_url.$separator.'" style="text-decoration: none; outline: none; color: '.get_option('pf_text_color').';">'.pf_button().'</a></div>';
 	

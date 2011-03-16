@@ -6,7 +6,7 @@
 	margin-right:3em;
 }
 #pf_settings li{
-	margin:1em 0;
+	margin:1.25em 0;
 }
 #pf_settings input {
 	margin:0 .5em;
@@ -14,17 +14,19 @@
 #custom_buttons {
 	border:2px dashed #E8F7C7;
 	float:left;
-	position:relative;
 	margin:1em;
+	position:relative;
 }
-ul#pftxtbuttons{
+ul#pftxtbuttons, ul#custom_options{
 	margin-top:0;
 }
 #custom_options{
 	position:absolute;
-	left:200px;
+	right:0px;
 }
-
+#custom_url {
+	display:inline-block;
+}
 #pf_margin input, input#pf_text_size {
 	width:2em;
 }
@@ -51,7 +53,10 @@ ul#pftxtbuttons{
      filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#ededed', EndColorStr='#e1e1e1');
      -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#ededed', EndColorStr='#e1e1e1')";
 }
-
+.help {
+	font-size:11px;
+	color:#bbb;
+}
 
 #contact_pf{
 	float:right;
@@ -62,6 +67,7 @@ ul#pftxtbuttons{
      width: 30px;
      height: 30px;
      background: url(../images/select.png);
+		 display:inline-block;
 }
 #colorSelector div {
      width: 30px;
