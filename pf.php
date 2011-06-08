@@ -5,11 +5,12 @@
    Description: PrintFriendly & PDF optimizes your pages for print. Help your readers save paper and ink, plus enjoy your content in printed form. Website
    Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared. [<a href="options-general.php?page=printfriendly/pf.php">Settings</a>]  
    Developed by <a href="http://printfriendly.com" target="_blank">PrintFriendly</a>
-   Version: 2.1.6
+   Version: 2.1.7
    Author: Print Friendly
    Author URI: http://www.PrintFriendly.com
 
    Changelog :
+	2.1.7 - Changed button from span to div to support floating.
 	2.1.6 - Added rel="nofollow" to links. Changed button from <a> to <span> to fix target_new or target_blank issues.
 	2.1.5 - Fix conflict with link tracking plugins. Custom image support for hosted wordpress sites.
 	2.1.4 - wp head fix.
@@ -157,7 +158,7 @@ function pf_button($name=false){
 			}
 			$return = '<img class="printfriendly" src="'.$custom_image.'" />';
 			if( get_option('pf_custom_text') != null){
-				$return .='<span class="printfriendly" style="font-size:'.get_option('pf_text_size').'px; margin-left:3px;  color: '.get_option('pf_text_color').';">'.$text.'</span>';
+				$return .='<div class="printfriendly" style="font-size:'.get_option('pf_text_size').'px; margin-left:3px;  color: '.get_option('pf_text_color').';">'.$text.'</div>';
 			}
 			return $return;
 		break;
@@ -217,9 +218,9 @@ function pf_show_link($content=false)
 	$style.=' margin: '.pf_margin_down('top').'px '.pf_margin_down('right').'px '.pf_margin_down('bottom').'px '.pf_margin_down('left').'px;';
 	
 	
-	$button = '<script src="http://cdn.printfriendly.com/printfriendly.js" type="text/javascript"></script><span onclick="window.print(); return false;" style="'.$style.' text-decoration: none; outline: none; color: '.get_option('pf_text_color').'; cursor:pointer;">'.pf_button().'</span>';
+	$button = '<script src="http://cdn.printfriendly.com/printfriendly.js" type="text/javascript"></script><div onclick="window.print(); return false;" style="'.$style.' text-decoration: none; outline: none; color: '.get_option('pf_text_color').'; cursor:pointer;">'.pf_button().'</div>';
 	
-	$button_link = '<span style="'.$style.'"><a href="'.$plink_url.$separator.'" rel="nofollow" style="text-decoration: none; outline: none; color: '.get_option('pf_text_color').';">'.pf_button().'</a></span>';
+	$button_link = '<div style="'.$style.'"><a href="'.$plink_url.$separator.'" rel="nofollow" style="text-decoration: none; outline: none; color: '.get_option('pf_text_color').';">'.pf_button().'</a></div>';
 	
 	//This goes on article pages
 	if((is_single() || is_page()) && $pf_display=='single' || (is_single() && $pf_display=='posts')) 
