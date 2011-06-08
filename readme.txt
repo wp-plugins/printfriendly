@@ -2,8 +2,8 @@
 Contributors: Print Friendly
 Tags: print, pdf, printer, printing, printable, widget, plugin
 Requires at least: 1.5
-Tested up to: 3.1
-Stable tag: 2.1.5
+Tested up to: 3.1.3
+Stable tag: 2.1.6
 
 #1 Print and PDF button for your wp site. Printer Friendly pages without coding, css, or print.css. Fast, easy, and professional.
 
@@ -49,11 +49,16 @@ If you have any issues with the plugin or the PrintFriendly widget, please write
 
 == Screenshots ==
 
-1. The PrintFriendly widget optimizes and formats your pages for print. Users can remove images and get a PDF
-2. Choose your button, text link, or use your own text or graphic.
+1. The Print Friendly widget optimizes and formats your pages for print. Users can remove images and text before printing plus get a PDF
+2. Choose your print button, text link, or use your own text or graphic.
 
 
 == Changelog ==
+
+= 2.1.6 =
+* Added rel="no follow" to the print links to avoid search engines indexing the print pages.
+* Changed print button from link <a> to <span>. Some tracking plugins added target_new/blank to link, therefore breaking print friendly.
+
 
 = 2.1.5 =
 * To avoid conflicts with Google Analytic widgets, changed link structure. No longer uses onclick to call PrintFriendly Javascript. Now the javascript is called in the href.

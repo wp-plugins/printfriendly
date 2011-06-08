@@ -2,24 +2,26 @@
   /*
    Plugin Name: Print Friendly and PDF
    Plugin URI: http://www.printfriendly.com
-   Description: PrintFriendly & PDF optimizes your pages for print. Help your readers save paper and ink, plus enjoy your content in printed form. Website Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared. [<a href="options-general.php?page=printfriendly/pf.php">Settings</a>]  
+   Description: PrintFriendly & PDF optimizes your pages for print. Help your readers save paper and ink, plus enjoy your content in printed form. Website
+   Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared. [<a href="options-general.php?page=printfriendly/pf.php">Settings</a>]  
    Developed by <a href="http://printfriendly.com" target="_blank">PrintFriendly</a>
-   Version: 2.1.5
+   Version: 2.1.6
    Author: Print Friendly
    Author URI: http://www.PrintFriendly.com
 
    Changelog :
-	 2.1.5 - Fix conflict with link tracking plugins. Custom image support for hosted wordpress sites.
-	 2.1.4 - wp head fix.
-	 2.1.3 - Manual option for button placement. Security updates for multi-author sites.
-	 2.1.2 - Improvements to Setting page layout and PrintFriendly button launching from post pages.
-   2.1.1 - Fixed admin settings bug.
-   2.1 - Update for mult-author websites. Improvements to Settings page.
-   2.0 - Customize the style, placement, and pages your printfriendly button appears.
-   1.5 - Added developer ability to disable hook and use the pf_show_link() function to better be used in a custom theme & Uninstall cleanup.
-   1.4 - Changed Name.
-   1.3 - Added new buttons, removed redundant code.
-   1.2 - User can choose to show or not show buttons on the listing page.
+	2.1.6 - Added rel="nofollow" to links. Changed button from <a> to <span> to fix target_new or target_blank issues.
+	2.1.5 - Fix conflict with link tracking plugins. Custom image support for hosted wordpress sites.
+	2.1.4 - wp head fix.
+	2.1.3 - Manual option for button placement. Security updates for multi-author sites.
+	2.1.2 - Improvements to Setting page layout and PrintFriendly button launching from post pages.
+	2.1.1 - Fixed admin settings bug.
+    2.1 - Update for mult-author websites. Improvements to Settings page.
+    2.0 - Customize the style, placement, and pages your printfriendly button appears.
+    1.5 - Added developer ability to disable hook and use the pf_show_link() function to better be used in a custom theme & Uninstall cleanup.
+    1.4 - Changed Name.
+    1.3 - Added new buttons, removed redundant code.
+    1.2 - User can choose to show or not show buttons on the listing page.
 
   */
   
@@ -165,7 +167,7 @@ function pf_button($name=false){
 		break;
 		
 		case "pf-icon-both.gif":
-			return '<img class="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-print-icon.gif" alt="Print Friendly"/><span class="printandpdf" style="font-size:'.get_option('pf_text_size').'; margin-left:3px; color:'.get_option('pf_text_color').';"> Print <img style="border:none;"  src="http://cdn.printfriendly.com/pf-pdf-icon.gif" alt="Get a PDF version of this webpage" /> PDF </span>';
+			return '<img class="printfriendly" style="border:none; padding:0;" src="http://cdn.printfriendly.com/pf-print-icon.gif" alt="Print Friendly"/><span class="printandpdf" style="font-size:'.get_option('pf_text_size').'px; margin-left:3px; color:'.get_option('pf_text_color').';"> Print <img style="border:none;"  src="http://cdn.printfriendly.com/pf-pdf-icon.gif" alt="Get a PDF version of this webpage" /> PDF </span>';
 		break;
 		
 		case "pf-icon-small.gif":
@@ -208,16 +210,16 @@ function pf_show_link($content=false)
 		if (strpos($plink_url,"?")!=false)
 		$separator = "&pfstyle=wp";
 
-	$style=' style="text-align:';
+	$style=' text-align:';
 	$pos = get_option('pf_content_position');
 		if($pos==null){$pos='left';}
 	$style.=$pos.';';	
 	$style.=' margin: '.pf_margin_down('top').'px '.pf_margin_down('right').'px '.pf_margin_down('bottom').'px '.pf_margin_down('left').'px;';
-	$style.='" ';
 	
-	$button = '<div'.$style.'><script src="http://cdn.printfriendly.com/printfriendly.js" type="text/javascript"></script><a href="javascript:window.print()" style="text-decoration: none; outline: none; color: '.get_option('pf_text_color').';">'.pf_button().'</a></div>';
 	
-	$button_link = '<div'.$style.'><a href="'.$plink_url.$separator.'" style="text-decoration: none; outline: none; color: '.get_option('pf_text_color').';">'.pf_button().'</a></div>';
+	$button = '<script src="http://cdn.printfriendly.com/printfriendly.js" type="text/javascript"></script><span onclick="window.print(); return false;" style="'.$style.' text-decoration: none; outline: none; color: '.get_option('pf_text_color').'; cursor:pointer;">'.pf_button().'</span>';
+	
+	$button_link = '<span style="'.$style.'"><a href="'.$plink_url.$separator.'" rel="nofollow" style="text-decoration: none; outline: none; color: '.get_option('pf_text_color').';">'.pf_button().'</a></span>';
 	
 	//This goes on article pages
 	if((is_single() || is_page()) && $pf_display=='single' || (is_single() && $pf_display=='posts')) 
