@@ -3,7 +3,7 @@ Contributors: Print Friendly
 Tags: print, pdf, printer, printing, printable, widget, plugin
 Requires at least: 1.5
 Tested up to: 3.1.3
-Stable tag: 2.1.7
+Stable tag: 2.1.8
 
 #1 Print and PDF button for your wp site. Printer Friendly pages without coding, css, or print.css. Fast, easy, and professional.
 
@@ -54,6 +54,10 @@ If you have any issues with the plugin or the PrintFriendly widget, please write
 
 
 == Changelog ==
+
+= 2.1.8 =
+* The Print Button was showing up on printed, or PDF, pages. Junk! Print or PDF button no longer displayed on printed out page or PDF.
+
 
 = 2.1.7 =
 * Changed print button from <span> to <div> to support floating the print and PDF button to right.
