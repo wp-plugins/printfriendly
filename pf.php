@@ -374,7 +374,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 					'content_placement'		=> 'after',
 					'custom_image'			=> '',
 					'custom_text'			=> 'Print Friendly',
-					'disable_css'			=> false,
+					'disable_css'			=> true,
 					'javascript_include'	=> 'on',
 					'javascript_fallback'	=> 'on',
 					'margin_top' 			=> 0,
