@@ -1,5 +1,5 @@
 === Print Friendly and PDF Button===
-Contributors: Print Friendly
+Contributors: joostdevalk,Print Friendly
 Tags: print, pdf, printer, printing, printable, widget, plugin
 Requires at least: 2.8
 Tested up to: 3.2.1
@@ -11,7 +11,7 @@ The #1 Print and PDF button for your WordPress site. Printer Friendly pages with
 
 The Print Friendly & PDF button saves paper and ink when printing or creating a PDF. It's fast, easy, and looks great when printed. Add the button now, and your users will see the difference.
 
-**How Pint Friendly & PDF Works**
+**How Print Friendly & PDF Works**
 
 The Print Friendly & PDF button automatically creates printer friendly and PDF versions of your pages without the hassle of having to create a print CSS file. No coding, hacking or programming required. Simply install the Print Friendly & PDF plugin, activate, and choose settings for full customization. It also gives your user the ability to remove images and paragraphs of text, so they really only have to print exactly what they want.
 
