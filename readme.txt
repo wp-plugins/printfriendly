@@ -1,5 +1,5 @@
 === Print Friendly and PDF Button===
-Contributors: joostdevalk,Print Friendly
+Contributors: printfriendly,joostdevalk
 Tags: print, pdf, printer, printing, printable, widget, plugin
 Requires at least: 2.8
 Tested up to: 3.2.1
