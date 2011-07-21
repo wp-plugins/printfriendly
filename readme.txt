@@ -67,6 +67,16 @@ If you have any other issues with the plugin or the PrintFriendly widget, please
 = 3.0 =
 
 * A complete overhaul of the plugin by renowned WordPress plugin developer <a href="http://yoast.com/">Joost de Valk</a>.
+* Code Changes:
+	* Redone the admin page.
+	* Plugin is now fully i18n ready.
+	* Plugin now uses the settings API.
+	* CSS loading is now optional.
+	* JavaScript loading is now optional.
+	* Plugin now uses WordPress default align classes for outlining.
+* Documentation changes:
+	* Added an FAQ.
+	* Added Screenshots.
 
 = 2.1.8 =
 
