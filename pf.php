@@ -4,7 +4,7 @@ Plugin Name: Print Friendly and PDF
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF optimizes your pages for print. Help your readers save paper and ink, plus enjoy your content in printed form. Website
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.  
-Version: 3.0
+Version: 3.0.2
 Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
@@ -211,7 +211,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 				}
 			
 				$align = '';
-				if ( 'none' !=  $this->options['content_position'] )
+				if ( 'none' != $this->options['content_position'] )
 					$align = ' align'.$this->options['content_position'];
 				
 				$button = apply_filters( 'printfriendly_button', '<div class="printfriendly'.$align.'"><a href="'.$href.'" rel="nofollow" '.$onclick.'>'.$this->button().'</a></div>' );
@@ -285,12 +285,16 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 				
 				$valid_input['text_size'] = (int) $input['text_size'];
 				
-				if ( 25 < $valid_input['text_size'] ) {
+				if ( !isset($valid_input['text_size']) || 0 == $valid_input['text_size'] ) {
+					$valid_input['text_size'] = 14;
+				} else if ( 25 < $valid_input['text_size'] || 9 > $valid_input['text_size'] ) {
 					$valid_input['text_size'] = 14;
 					add_settings_error( $this->option_name, 'invalid_color', __( 'The text size you entered is too high, please stay below 25px.', $this->hook ) );
 				}
 				
-				if ( ! preg_match('/^#[a-f0-9]{3,6}$/i', $input['text_color'] ) ) {
+				if ( !isset( $input['text_color'] )) {
+					$valid_input['text_color'] = $this->options['text_color'];
+				} else if ( ! preg_match('/^#[a-f0-9]{3,6}$/i', $input['text_color'] ) ) {
 					// Revert to previous setting and throw error.
 					$valid_input['text_color'] = $this->options['text_color'];
 					add_settings_error( $this->option_name, 'invalid_color', __( 'The color you entered is not valid, it must be a valid hexadecimal RGB font color.', $this->hook ) );
@@ -374,7 +378,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 					'content_placement'		=> 'after',
 					'custom_image'			=> '',
 					'custom_text'			=> 'Print Friendly',
-					'disable_css'			=> true,
+					'disable_css'			=> false,
 					'javascript_include'	=> 'on',
 					'javascript_fallback'	=> 'on',
 					'margin_top' 			=> 0,
