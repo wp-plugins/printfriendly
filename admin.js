@@ -1,26 +1,21 @@
+// Throughout the admin I chose to use slow animations to make it clear that stuff is being hidden or shown depending on settings.
 jQuery(document).ready(function() {
-	jQuery('#upload_image_button').click(function() {
-	 formfield = jQuery('#upload_image').attr('name');
-	 tb_show('', 'media-upload.php?type=image&amp;TB_iframe=true');
-	 return false;
-	});
-
-	window.send_to_editor = function(html) {
-	 imgurl = jQuery('img',html).attr('src');
-	 jQuery('#upload_image').val(imgurl);
-	 tb_remove();
-	}
-	
-	jQuery('.pf_show_list').change(function(){
-		if(jQuery(this).val()=='manual'){
-			jQuery('.pf_content_placement').attr('disabled','disabled');
-		}else{
-			jQuery('.pf_content_placement').removeAttr('disabled');
+	jQuery('.show_list').change(function() {
+		if (jQuery('.show_list:checked').val()=='manual') {
+			jQuery('#addmanual-help').show('slow');
+			jQuery('.content_placement').hide('slow');
+		} else {
+			jQuery('#addmanual-help').hide('slow');
+			jQuery('.content_placement').show('slow');
 		}
 	});
+	if (jQuery('.show_list:checked').val()=='manual') {
+		jQuery('#addmanual-help').show('slow');
+		jQuery('.content_placement').hide();
+	}
 	
 	jQuery('#colorSelector').ColorPicker({
-		color: jQuery('#pf_text_color').val(),
+		color: jQuery('#text_color').val(),
 		onShow: function (colpkr) {
 			jQuery(colpkr).fadeIn(500);
 			return false;
@@ -31,42 +26,38 @@ jQuery(document).ready(function() {
 		},
 		onChange: function (hsb, hex, rgb) {
 			jQuery('#colorSelector div').css('backgroundColor', '#' + hex);
-			jQuery('#pf_text_color').val('#' + hex);
-			jQuery('.preview_button span:not(.pf_tip)').css('color','#' + hex)
+			jQuery('#text_color').val('#' + hex);
+			jQuery('.printfriendly-text').css('color','#' + hex)
 		}
 	});
-	jQuery('#pf_text_size').change(function(){
-		pf_size_preview();
-	});
 	
-	jQuery('#pf_text_size').keyup(function(){
-		pf_size_preview();
+	jQuery('#disable_css').change(function(){
+		if ( jQuery('#disable_css').is(':checked') ) {
+			jQuery('.css').show('slow');
+		} else {
+			jQuery('.css').hide('slow');
+		}
 	});
-	
-	function pf_size_preview(){
-		size = jQuery('#pf_text_size').val();
-		jQuery('.preview_button span:not(.pf_tip)').css('font-size',parseInt(size));
+	if ( jQuery('#disable_css').not(':checked') ) {
+		jQuery('.css').hide();
 	}
 	
-	jQuery('#pf_custom_text').change(function(){
-		pf_custom_text_change();
-	});
+	jQuery('#text_size').change(function(){
+		size = jQuery('#text_size').val();
+		jQuery('.printfriendly-text').css('font-size',parseInt(size));
+	}).change();
 	
-	jQuery('#pf_custom_text').keyup(function(){
+	jQuery('#custom_text').change(function(){
+		pf_custom_text_change();
+	}).change();
+	
+	jQuery('#custom_text').keyup(function(){
 		pf_custom_text_change();
 	});
 	
 	function pf_custom_text_change(){
-		if(text==''){
-			text ='Print Friendly';
-		}else{
-			if(jQuery('#pf_custom_image_label').find('span:not(.pf_tip)').length == 0){
-				color = jQuery('#pf_text_color').val();
-				size = jQuery('#pf_text_size').val();
-				jQuery('#pf_custom_image_label').find('img').after('<span style="marigin-left:3px; color: '+color+'; font-size:'+size+';"></span>');	
-			}
-		}
-		text = jQuery('#pf_custom_text').val();
-		jQuery('.preview_button span:not(.pf_tip):not(.printandpdf)').text(text);
+		jQuery('.button_preview span:not(.printandpdf)').text( jQuery('#custom_text').val() );
 	}
+	
+	jQuery('.printfriendly-text').css('color', jQuery('#text_color').val() );
 });
