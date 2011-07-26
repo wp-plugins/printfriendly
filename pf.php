@@ -4,11 +4,15 @@ Plugin Name: Print Friendly and PDF
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF optimizes your pages for print. Help your readers save paper and ink, plus enjoy your content in printed form. Website
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.  
-Version: 3.0.2
+Version: 3.0.4
 Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.0.4 - Align-right and align-center support for themes that remove WordPress core css.
+3.0.3 - Support for bad themes that alter template tags and prevent JavaScript from loading in footer.
+3.0.2 - Fixed JS bug with Google Chrome not submitting and fixed input validation issues.
+3.0.1 - Fixed minor JS bug.
 3.0 - Complete overhaul of the plugin by Joost de Valk.
 2.1.8 - The Print Button was showing up on printed, or PDF, pages. Junk! Print or PDF button no longer displayed on printed out page or PDF. 
 2.1.7 - Changed button from span to div to support floating.
@@ -30,7 +34,7 @@ Changelog :
  * PrintFriendly WordPress plugin. Allows easy embedding of printfriendly.com buttons.
  * @package PrintFriendly_WordPress
  * @author Joost de Valk <joost@yoast.com>
- * @copyright Copyright (C) 2011, Joost de Valk
+ * @copyright Copyright (C) 2011, PrintFriendly
  */
 if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 
@@ -152,6 +156,18 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 						border:none; 
 						padding:0;
 					}
+					.alignleft {
+					    float:left;
+					    margin: 5px 20px 20px 0;
+					}
+					.alignright {
+					    float:right;
+					    margin: 5px 0 20px 20px;
+					}
+					.aligncenter {
+						text-align: center;
+						margin: 5px auto 5px auto;
+					}
 				</style>
 				<style type="text/css" media="print">
 					.printfriendly {
@@ -170,10 +186,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 				if ( !isset( $this->options['javascript_include'] ) || $this->options['javascript_include'] != 'on' )
 					return;
 					
-				if ( 'manual' == $this->options['show_list'] || 'all' == $this->options['show_list'] ||
-					( 'single' == $this->options['show_list'] && is_singular() ) ||
-					( 'posts' == $this->options['show_list'] && is_single() )
-				) {
+				else
 				?>
 	<script type="text/javascript">
 		// PrintFriendly
@@ -182,7 +195,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 		document.getElementsByTagName('head')[0].appendChild(e);
 	</script>
 				<?php 
-				}
+				
 			}
 			
 			/**
@@ -216,27 +229,35 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 				
 				$button = apply_filters( 'printfriendly_button', '<div class="printfriendly'.$align.'"><a href="'.$href.'" rel="nofollow" '.$onclick.'>'.$this->button().'</a></div>' );
 				
-				if ( 'manual' == $this->options['show_list'] ) {
+				if (is_singular())
+				{
 					// Hook the script call now, so it only get's loaded when needed, and need is determined by the user calling pf_button
 					add_action( 'wp_footer', 	array( &$this, 'print_script_footer' ) );
+				}
+				
+				if ( 'manual' == $this->options['show_list'] )
+				{
 					return $button;
-				} else {
-					if ( 
-						is_single() ||
-						( is_page() && 'posts' != $this->options['show_list'] ) ||
-						( is_home() && 'all' == $this->options['show_list'] )
-					) {
-						// Hook the script call now, so it only get's loaded when needed
-						add_action( 'wp_footer', 	array( &$this, 'print_script_footer' ) );
-
+				}				
+				
+				else 
+				{
+					if (is_single() || ( is_page() && 'posts' != $this->options['show_list'] ) || ( is_home() && 'all' == $this->options['show_list'] ))
+					{
+					
 						if ( $this->options['content_placement'] == 'before' )
-							return $button.$content; 
+							return $button.$content;
 						else 
 							return $content.$button;
-					} else {
+					}
+				
+					else 
+					{
 						return $content;
 					}
+					
 				}
+				
 			}
 			
 			/**
