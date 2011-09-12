@@ -4,11 +4,12 @@ Plugin Name: Print Friendly and PDF
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF optimizes your pages for print. Help your readers save paper and ink, plus enjoy your content in printed form. Website
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.  
-Version: 3.0.4
+Version: 3.0.5
 Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.0.5 - Include button on category pages if user has selected "All pages".
 3.0.4 - Align-right and align-center support for themes that remove WordPress core css.
 3.0.3 - Support for bad themes that alter template tags and prevent JavaScript from loading in footer.
 3.0.2 - Fixed JS bug with Google Chrome not submitting and fixed input validation issues.
@@ -242,7 +243,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 				
 				else 
 				{
-					if (is_single() || ( is_page() && 'posts' != $this->options['show_list'] ) || ( is_home() && 'all' == $this->options['show_list'] ))
+					if (is_single() || ( is_page() && 'posts' != $this->options['show_list'] ) || ( is_home() || is_category()  && 'all' == $this->options['show_list'] ))
 					{
 					
 						if ( $this->options['content_placement'] == 'before' )
@@ -332,7 +333,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 			 * @since 3.0
 			 */
 			function add_config_page() {
-				$this->settings_page = add_options_page( __( 'PrintFriendly Options', $this->hook ), __( 'PrintFriendly', $this->hook ), 'manage_options', $this->hook, array( &$this, 'config_page' ) );
+				$this->settings_page = add_options_page( __( 'PrintFriendly Options', $this->hook ), __( 'Print Friendly & PDF', $this->hook ), 'manage_options', $this->hook, array( &$this, 'config_page' ) );
 			}
 			
 			/**
@@ -551,7 +552,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 			?>
 				<div id="pf_settings" class="wrap">
 					<div class="icon32" id="printfriendly"></div>
-				    <h2><?php _e( 'PrintFriendly Settings', $this->hook ); ?></h2>
+				    <h2><?php _e( 'Print Friendly & PDF Settings', $this->hook ); ?></h2>
 
 					<form action="options.php" method="post">
 						<?php settings_fields( $this->option_name ); ?>
