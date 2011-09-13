@@ -4,11 +4,12 @@ Plugin Name: Print Friendly and PDF
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF optimizes your pages for print. Help your readers save paper and ink, plus enjoy your content in printed form. Website
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.  
-Version: 3.0.5
+Version: 3.0.6
 Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.0.6 - Fix bug that would display button on category pages when not wanted.
 3.0.5 - Include button on category pages if user has selected "All pages".
 3.0.4 - Align-right and align-center support for themes that remove WordPress core css.
 3.0.3 - Support for bad themes that alter template tags and prevent JavaScript from loading in footer.
@@ -243,7 +244,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 				
 				else 
 				{
-					if (is_single() || ( is_page() && 'posts' != $this->options['show_list'] ) || ( is_home() || is_category()  && 'all' == $this->options['show_list'] ))
+					if (is_single() || ( is_page() && 'posts' != $this->options['show_list'] ) || ((is_home() || is_category())  && 'all' == $this->options['show_list'] ))
 					{
 					
 						if ( $this->options['content_placement'] == 'before' )
