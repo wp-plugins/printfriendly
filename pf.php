@@ -288,7 +288,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 				// echo '<pre>'.print_r($input,1).'</pre>';
 				// die;
 				
-				if ( !in_array( $input['button_type'], array( 'pf-button.gif', 'pf-button-big.gif', 'pf-icon-small.gif', 'pf-icon.gif', 'pf-button-both.gif', 'pf-icon-both.gif', 'text-only', 'custom-image') ) )
+				if ( !in_array( $input['button_type'], array( 'pf-button.gif', 'button-print-grnw20.png',  'button-print-blu20.png',  'button-print-gry20.png',  'button-print-whgn20.png',  'pf_button_sq_qry_m.png',  'pf_button_sq_qry_l.png',  'pf_button_sq_grn_m.png',  'pf_button_sq_grn_l.png', 'pf-button-big.gif', 'pf-icon-small.gif', 'pf-icon.gif', 'pf-button-both.gif', 'pf-icon-both.gif', 'text-only', 'custom-image') ) )
 					$valid_input['button_type'] = 'pf-button.gif';
 
 				if ( !isset( $input['custom_image'] ) )
@@ -569,6 +569,14 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 							<td class="defaultavatarpicker">
 								<fieldset>
 					            	<?php $this->radio('pf-button.gif'); ?>
+					            	<?php $this->radio('button-print-grnw20.png'); ?>
+					            	<?php $this->radio('button-print-blu20.png'); ?>
+					            	<?php $this->radio('button-print-gry20.png'); ?>
+					            	<?php $this->radio('button-print-whgn20.png'); ?>
+					            	<?php $this->radio('pf_button_sq_gry_m.png'); ?>
+					            	<?php $this->radio('pf_button_sq_gry_l.png'); ?>
+					            	<?php $this->radio('pf_button_sq_grn_m.png'); ?>
+					            	<?php $this->radio('pf_button_sq_grn_l.png'); ?>
 					                <?php $this->radio('pf-button-both.gif'); ?>
 					                <?php $this->radio('pf-button-big.gif'); ?>
 									<span class="button_preview">
