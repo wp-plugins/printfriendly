@@ -43,7 +43,7 @@ jQuery(document).ready(function() {
 			jQuery('.css input').attr('disabled','disabled');
 		}
 	});
-	if ( jQuery('#disable_css').not(':checked') ) {
+	if ( !jQuery('#disable_css').is(':checked') ) {
 		jQuery('.css').hide();
 		jQuery('.css input').attr('disabled','disabled');
 	}
