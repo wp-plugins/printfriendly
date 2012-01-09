@@ -116,12 +116,12 @@ If you have any other issues with the plugin or the PrintFriendly widget, please
 
 = 2.1.7 =
 
-* Changed print button from span to div to support floating the print and PDF button to right.
+* Changed print button from `<span>` to `<div>` to support floating the print and PDF button to right.
 
 = 2.1.6 =
 
 * Added rel="nofollow" to the print links to avoid search engines indexing the print pages.
-* Changed print button from link a to span tag. Some tracking plugins added target_new/blank to link, therefore breaking print friendly.
+* Changed print button from link `<a>` to `<span>`. Some tracking plugins added target_new/blank to link, therefore breaking print friendly.
 
 = 2.1.5 =
 
