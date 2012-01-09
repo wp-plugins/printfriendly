@@ -4,11 +4,12 @@ Plugin Name: Print Friendly and PDF
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF optimizes your pages for print. Help your readers save paper and ink, plus enjoy your content in printed form. Website
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.  
-Version: 3.0.7
+Version: 3.0.8
 Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.0.8 - Reordered PrintFriendly & PDF buttons. CSS stylesheet option is now checked by default.
 3.0.7 - Added additional images for print button.
 3.0.6 - Fix bug that would display button on category pages when not wanted.
 3.0.5 - Include button on category pages if user has selected "All pages".
@@ -402,7 +403,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 					'content_placement'		=> 'after',
 					'custom_image'			=> '',
 					'custom_text'			=> 'Print Friendly',
-					'disable_css'			=> false,
+					'disable_css'			=> 'on',
 					'javascript_include'	=> 'on',
 					'javascript_fallback'	=> 'on',
 					'margin_top' 			=> 0,
@@ -570,7 +571,9 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 							<td class="defaultavatarpicker">
 								<fieldset>
 					            	<?php $this->radio('pf-button.gif'); ?>
-					            	<?php $this->radio('button-print-grnw20.png'); ?>
+                                    <?php $this->radio('pf-button-both.gif'); ?>
+					                <?php $this->radio('pf-button-big.gif'); ?>
+                                    <?php $this->radio('button-print-grnw20.png'); ?>
 					            	<?php $this->radio('button-print-blu20.png'); ?>
 					            	<?php $this->radio('button-print-gry20.png'); ?>
 					            	<?php $this->radio('button-print-whgn20.png'); ?>
@@ -578,8 +581,6 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 					            	<?php $this->radio('pf_button_sq_gry_l.png'); ?>
 					            	<?php $this->radio('pf_button_sq_grn_m.png'); ?>
 					            	<?php $this->radio('pf_button_sq_grn_l.png'); ?>
-					                <?php $this->radio('pf-button-both.gif'); ?>
-					                <?php $this->radio('pf-button-big.gif'); ?>
 									<span class="button_preview">
 										<?php $this->radio('pf-icon-small.gif'); ?>
 										<?php $this->radio('pf-icon-both.gif'); ?>
