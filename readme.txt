@@ -3,7 +3,7 @@ Contributors: printfriendly,joostdevalk
 Tags: print, pdf, printer, printing, printable, widget, plugin
 Requires at least: 2.8
 Tested up to: 3.2.1
-Stable tag: 3.0.8
+Stable tag: 3.0.9
 
 The #1 Print and PDF button for your WordPress site. Printer Friendly pages without coding, css, or print.css. Fast, easy, and professional.
 
@@ -63,6 +63,10 @@ If you have any other issues with the plugin or the PrintFriendly widget, please
 2. The Settings Page: choose your print button, text link, or use your own text or graphic.
 
 == Changelog ==
+
+= 3.0.9 =
+
+* New features: Custom header, disable click-to-delete, https support (beta), PrintFriendly Pro (ad-free).
 
 = 3.0.8 =
 
