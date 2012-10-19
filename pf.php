@@ -9,6 +9,7 @@ Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.1.0 - Fixed admin css caching.
 3.0.9 - New features: Custom header, disable click-to-delete, https support (beta), PrintFriendly Pro (ad-free).
 3.0.8 - Reordered PrintFriendly & PDF buttons. CSS stylesheet option is now checked by default.
 3.0.7 - Added additional images for print button.
@@ -387,7 +388,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         wp_enqueue_script( 'pf-color-picker' );
         wp_enqueue_script( 'pf-admin-js' );
 
-        wp_enqueue_style( 'printfriendly-admin-css', plugins_url( 'admin.css', __FILE__ ) );
+        wp_enqueue_style( 'printfriendly-admin-css', plugins_url( 'admin.css', __FILE__ ), array(), '3.1.0' );
       }
     }
 

@@ -64,6 +64,10 @@ If you have any other issues with the plugin or the PrintFriendly widget, please
 
 == Changelog ==
 
+= 3.1.0 =
+
+* Fixed admin css caching.
+
 = 3.0.9 =
 
 * New features: Custom header, disable click-to-delete, https support (beta), PrintFriendly Pro (ad-free).
