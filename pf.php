@@ -4,11 +4,12 @@ Plugin Name: Print Friendly and PDF
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF button for your website. Optimizes your pages and brand for print, pdf, and email.
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.
-Version: 3.1.0
+Version: 3.1.1
 Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.1.1 - Fixed admin js caching.
 3.1.0 - Fixed admin css caching.
 3.0.9 - New features: Custom header, disable click-to-delete, https support (beta), PrintFriendly Pro (ad-free).
 3.0.8 - Reordered PrintFriendly & PDF buttons. CSS stylesheet option is now checked by default.
@@ -382,13 +383,14 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
      */
     function admin_enqueue_scripts( $screen_id ) {
       if ( $this->settings_page == $screen_id ) {
-        wp_register_script( 'pf-color-picker', plugins_url( 'colorpicker.js', __FILE__ ), array( 'jquery', 'media-upload' ) );
-        wp_register_script( 'pf-admin-js', plugins_url( 'admin.js', __FILE__ ), array( 'jquery', 'media-upload' ) );
+        $ver = '3.1.1';
+        wp_register_script( 'pf-color-picker', plugins_url( 'colorpicker.js', __FILE__ ), array( 'jquery', 'media-upload' ), $ver );
+        wp_register_script( 'pf-admin-js', plugins_url( 'admin.js', __FILE__ ), array( 'jquery', 'media-upload' ), $ver );
 
         wp_enqueue_script( 'pf-color-picker' );
         wp_enqueue_script( 'pf-admin-js' );
 
-        wp_enqueue_style( 'printfriendly-admin-css', plugins_url( 'admin.css', __FILE__ ), array(), '3.1.0' );
+        wp_enqueue_style( 'printfriendly-admin-css', plugins_url( 'admin.css', __FILE__ ), array(), $ver);
       }
     }
 
