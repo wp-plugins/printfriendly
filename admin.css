@@ -2,6 +2,7 @@ label{
   display: block;
   margin: 1.5em 0;
 }
+
 h3{
   margin: 3em 0 2em;
   border-bottom: 1px solid #ccc;
@@ -28,11 +29,12 @@ h3{
 #custom, #placement-adv-options{
   float: left;
 }
+
 #custom-txt, #custom-img {
   margin: 2em 0 2em 2em;
   clear: both;
-  
 }
+
 .description{
   color: #cacaca;
 }
@@ -73,6 +75,14 @@ input[type="number"] {
 	box-sizing: border-box;
 	width: 36px;
 	margin-right: .5em;
+}
+#css{
+  font-size: 11px;
+  color:#bbb;
+}
+#css input{
+  margin: 0 6px 0 12px;
+  vertical-align: baseline;
 }
 #pf-shortcode{
  

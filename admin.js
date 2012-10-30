@@ -39,6 +39,18 @@ jQuery(document).ready(function() {
     jQuery('.printfriendly-text2').css('font-size',parseInt(size));
   }).change();
 
+  jQuery('#css input').change(function() {
+    if(jQuery(this).attr('checked')) {
+      jQuery(this).val('off');
+      jQuery('#margin, #custom-txt').hide('slow');
+      pf_reset_style();
+    } else {
+      jQuery(this).val('on');
+      jQuery('#margin, #custom-txt').show('slow');
+      pf_apply_style();
+    }
+  }).change();
+
   jQuery('#custom_text').change(function(){
     pf_custom_text_change();
   }).change();
@@ -51,8 +63,6 @@ jQuery(document).ready(function() {
     jQuery('#buttongroup3 span:not(.printandpdf)').text( jQuery('#custom_text').val() );
     jQuery('#custom span.printfriendly-text2').text( jQuery('#custom_text').val() );
   }
-
-  jQuery('.printfriendly-text2').css('color', jQuery('#text_color').val() );
 
   function pf_initialize_preview(urlInputSelector, previewSelector) {
     var el = jQuery(urlInputSelector);
@@ -134,6 +144,18 @@ jQuery(document).ready(function() {
     jQuery('.javascript').hide();
     jQuery('.no-javascript').show();
     jQuery('#print-options').hide('slow');
+  }
+
+  function pf_reset_style() {
+    console.log('reseting styles');
+    jQuery('.printfriendly-text2').css('font-size',14);
+    jQuery('.printfriendly-text2').css('color','#000000');
+  }
+
+  function pf_apply_style() {
+    jQuery('.printfriendly-text2').css('color', jQuery('#text_color').val() );
+    size = jQuery('#text_size').val();
+    jQuery('.printfriendly-text2').css('font-size',parseInt(size));
   }
 
 });

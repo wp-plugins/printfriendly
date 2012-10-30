@@ -4,11 +4,12 @@ Plugin Name: Print Friendly and PDF
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF button for your website. Optimizes your pages and brand for print, pdf, and email.
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.
-Version: 3.1.1
+Version: 3.1.2
 Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.1.2 - Added disable css option to admin settings.
 3.1.1 - Fixed admin js caching.
 3.1.0 - Fixed admin css caching.
 3.0.9 - New features: Custom header, disable click-to-delete, https support (beta), PrintFriendly Pro (ad-free).
@@ -383,7 +384,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
      */
     function admin_enqueue_scripts( $screen_id ) {
       if ( $this->settings_page == $screen_id ) {
-        $ver = '3.1.1';
+        $ver = '3.1.2';
         wp_register_script( 'pf-color-picker', plugins_url( 'colorpicker.js', __FILE__ ), array( 'jquery', 'media-upload' ), $ver );
         wp_register_script( 'pf-admin-js', plugins_url( 'admin.js', __FILE__ ), array( 'jquery', 'media-upload' ), $ver );
 
@@ -722,8 +723,9 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
     
     <!--Section 2 Button Placement-->
           <div id="button-placement">
-            <h3><?php _e( "Button Placement", $this->hook ); ?></h3>
-            <input type="hidden" name="<?php echo $this->option_name; ?>[enable_css]" value="<?php $this->val('enable_css');?>"/>
+            <h3><?php _e( "Button Placement", $this->hook ); ?>
+      <span id="css"><input type="checkbox" name="<?php echo $this->option_name; ?>[enable_css]" value="<?php $this->val('enable_css');?>" <?php $this->checked('enable_css', 'off'); ?> />Do not use CSS for button styles</span>
+            </h3>
             <div id="button-placement-options">
               <div id="alignment">
                 <label>
