@@ -4,11 +4,12 @@ Plugin Name: Print Friendly and PDF
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF button for your website. Optimizes your pages and brand for print, pdf, and email.
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.
-Version: 3.1.2
+Version: 3.1.3
 Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.1.3 - Fixed bug with disable css option
 3.1.2 - Added disable css option to admin settings.
 3.1.1 - Fixed admin js caching.
 3.1.0 - Fixed admin css caching.
@@ -142,7 +143,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
      */
     function front_head() {
 
-      if ( !isset( $this->options['enable_css'] ) || $this->options['enable_css'] != 'on' )
+      if ( isset( $this->options['enable_css'] ) && $this->options['enable_css'] != 'on' )
         return;
 
 ?>
@@ -384,7 +385,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
      */
     function admin_enqueue_scripts( $screen_id ) {
       if ( $this->settings_page == $screen_id ) {
-        $ver = '3.1.2';
+        $ver = '3.1.3';
         wp_register_script( 'pf-color-picker', plugins_url( 'colorpicker.js', __FILE__ ), array( 'jquery', 'media-upload' ), $ver );
         wp_register_script( 'pf-admin-js', plugins_url( 'admin.js', __FILE__ ), array( 'jquery', 'media-upload' ), $ver );
 
