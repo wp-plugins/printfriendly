@@ -21,12 +21,13 @@ The Print Friendly & PDF button automatically creates printer friendly and PDF v
 * Fully Customizable! Choose your favorite print and PDF button, use a text link, or use your own graphic. 
 * Get precision placement with easy to change margins, alignment, and pages for your Print and PDF button.
 * On-Page-Lightbox. Have you noticed that other printer friendly buttons open new windows, or tabs? Not with Print Friendly & PDF button. It opens in a Lightbox so you your users stay on the page, and your wp website.
-* Professional looking print and PDF buttons and user experience.
+* Professional looking print and PDFs with branded headers.
 * More repeats and new users. Your brand/URL are printed on the page or saved in the PDF so users remember your site and new users can find you.
 
 **Cool Print Features for Users:**
+
 * Optimizes pages for printing and PDF so you save money and the environment.
-* You can Print or get a PDF. 
+* You can Print or get a PDF.
 * Edit the page before printing or getting a PDF: remove the images and paragraphs you don't need to save ink!
 
 PrintFriendly and PDF is the #1 print optimization technology, **as featured in [Lifehacker](http://lifehacker.com/5272212/print-friendly-optimizes-web-pages-for-printing "PrintFriendly & PDF in Lifehacker"), [Mashable](http://mashable.com/2009/05/18/print-friendly/ "PrintFriendly & PDF in Mashable") & [makeuseof](http://www.makeuseof.com/dir/printfriendly-save-on-paper-and-ink/#comment-95052)**.
