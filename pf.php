@@ -4,11 +4,12 @@ Plugin Name: Print Friendly and PDF
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF button for your website. Optimizes your pages and brand for print, pdf, and email.
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.
-Version: 3.1.3
+Version: 3.1.4
 Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.1.4 - Changed https url. Don't hide text change box when disabling css.
 3.1.3 - Fixed bug with disable css option
 3.1.2 - Added disable css option to admin settings.
 3.1.1 - Fixed admin js caching.
@@ -385,7 +386,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
      */
     function admin_enqueue_scripts( $screen_id ) {
       if ( $this->settings_page == $screen_id ) {
-        $ver = '3.1.3';
+        $ver = '3.1.4';
         wp_register_script( 'pf-color-picker', plugins_url( 'colorpicker.js', __FILE__ ), array( 'jquery', 'media-upload' ), $ver );
         wp_register_script( 'pf-admin-js', plugins_url( 'admin.js', __FILE__ ), array( 'jquery', 'media-upload' ), $ver );
 
@@ -545,6 +546,9 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         $name = $this->options['button_type'];
 
       $text = $this->options['custom_text'];
+      $img_path = 'http://cdn.printfriendly.com/';
+      if($this->options['website_protocol'] == 'https')
+        $img_path = 'https://pf-cdn.printfriendly.com/images/';
 
       switch($name){
       case "custom-image":
@@ -562,18 +566,18 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         break;
 
       case "pf-icon-both.gif":
-        return '<span class="printfriendly-text2 printandpdf"><img style="border:none;margin-right:6px;" src="http://cdn.printfriendly.com/pf-print-icon.gif" width="16" height="15" alt="Print Friendly Version of this page" />Print <img style="border:none;margin:0 6px" src="http://cdn.printfriendly.com/pf-pdf-icon.gif" width="12" height="12" alt="Get a PDF version of this webpage" />PDF</span>';
+        return '<span class="printfriendly-text2 printandpdf"><img style="border:none;margin-right:6px;" src="'.$img_path.'pf-print-icon.gif" width="16" height="15" alt="Print Friendly Version of this page" />Print <img style="border:none;margin:0 6px" src="'.$img_path.'pf-pdf-icon.gif" width="12" height="12" alt="Get a PDF version of this webpage" />PDF</span>';
         break;
 
       case "pf-icon-small.gif":
-        return '<img style="border:none;margin-right:4px;" src="http://cdn.printfriendly.com/pf-icon-small.gif" alt="PrintFriendly and PDF" width="18" height="18"><span class="printfriendly-text2">'.$text.'</span>';
+        return '<img style="border:none;margin-right:4px;" src="'.$img_path.'pf-icon-small.gif" alt="PrintFriendly and PDF" width="18" height="18"><span class="printfriendly-text2">'.$text.'</span>';
         break;
       case "pf-icon.gif":
-        return '<img style="border:none;margin-right:6px;" src="http://cdn.printfriendly.com/pf-icon.gif" width="23" height="25" alt="PrintFriendly and PDF"><span class="printfriendly-text2">'.$text.'</span>';
+        return '<img style="border:none;margin-right:6px;" src="'.$img_path.'pf-icon.gif" width="23" height="25" alt="PrintFriendly and PDF"><span class="printfriendly-text2">'.$text.'</span>';
         break;
 
       default:
-        return '<img src="//cdn.printfriendly.com/'.$name.'" alt="Print Friendly" />';
+        return '<img src="'.$img_path.$name.'" alt="Print Friendly" />';
         break;
       }
     }

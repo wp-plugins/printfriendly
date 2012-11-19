@@ -42,11 +42,11 @@ jQuery(document).ready(function() {
   jQuery('#css input').change(function() {
     if(jQuery(this).attr('checked')) {
       jQuery(this).val('off');
-      jQuery('#margin, #custom-txt').hide('slow');
+      jQuery('#margin, #txt-color, #txt-size').hide('slow');
       pf_reset_style();
     } else {
       jQuery(this).val('on');
-      jQuery('#margin, #custom-txt').show('slow');
+      jQuery('#margin, #txt-color, #txt-size').show('slow');
       pf_apply_style();
     }
   }).change();
