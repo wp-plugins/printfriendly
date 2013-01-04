@@ -51,9 +51,8 @@ select#javascript, select#website_protocol{
   display: inline-block;
   margin-bottom: 0;
 }
-input[type="radio"] {
-	cursor: pointer;
-	
+input[type="radio"], input[type="checkbox"] {
+  cursor: pointer;
   margin-right: 10px;
   vertical-align: middle;
 }

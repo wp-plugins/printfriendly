@@ -1,21 +1,14 @@
 // Throughout the admin I chose to use slow animations to make it clear that stuff is being hidden or shown depending on settings.
 jQuery(document).ready(function() {
   jQuery('.show_list').change(function() {
-    if (jQuery('.show_list:checked').val()=='manual') {
-      jQuery('#addmanual-help').show('slow');
+    if (jQuery('.show_list:checked').length == 0) {
       jQuery('.content_placement').hide('slow');
       jQuery('.content_placement input').attr('disabled','disabled');
     } else {
-      jQuery('#addmanual-help').hide('slow');
       jQuery('.content_placement').show('slow');
       jQuery('.content_placement input').removeAttr('disabled');
     }
-  });
-  if (jQuery('.show_list:checked').val()=='manual') {
-    jQuery('#addmanual-help').show('slow');
-    jQuery('.content_placement').hide();
-    jQuery('.content_placement input').attr('disabled','disabled');
-  }
+  }).change();
 
   jQuery('#colorSelector').ColorPicker({
     color: jQuery('#text_color').val(),

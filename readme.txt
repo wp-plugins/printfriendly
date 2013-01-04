@@ -2,8 +2,8 @@
 Contributors: printfriendly,joostdevalk
 Tags: print, pdf, printer, printing, printable, widget, plugin
 Requires at least: 2.8
-Tested up to: 3.4.2
-Stable tag: 3.1.4
+Tested up to: 3.5
+Stable tag: 3.1.5
 
 The #1 Print and PDF button for your WordPress site. Printer Friendly pages without coding, css, or print.css. Fast, easy, and professional.
 
@@ -29,6 +29,40 @@ The Print Friendly & PDF button automatically creates printer friendly and PDF v
 * Optimizes pages for printing and PDF so you save money and the environment.
 * You can Print or get a PDF.
 * Edit the page before printing or getting a PDF: remove the images and paragraphs you don't need to save ink!
+
+**Localized for 25 Languages**
+
+PrintFriendly & PDF automatically changes language to match your visitor's language settings. For example, if your browser is set to Spanish, then PrintFriendly will use Spanish.
+
+![](http://4.bp.blogspot.com/--bMs1CrQvqs/UGHggy0lStI/AAAAAAAAACQ/rxlxK4f1XeE/s400/printfriendlyspanish.png)
+
+Supported languages:
+
+* Danish
+* German
+* English
+* Spanish
+* Estonian
+* French
+* Hebrew
+* Croatian
+* Hungarian
+* Italian
+* Korean
+* Lithuanian
+* Dutch/Netherlands
+* Polish
+* Portuguese
+* Slovak
+* Slovenian
+* Serbian
+* Swedish
+* Thailand
+* Turkish
+* Chinese Simplified
+* Chinese Traditional
+
+Learn more (blog.printfriendly.com/2012/06/print-friendly-speaks-your-language.html)
 
 PrintFriendly and PDF is the #1 print optimization technology, **as featured in [Lifehacker](http://lifehacker.com/5272212/print-friendly-optimizes-web-pages-for-printing "PrintFriendly & PDF in Lifehacker"), [Mashable](http://mashable.com/2009/05/18/print-friendly/ "PrintFriendly & PDF in Mashable") & [makeuseof](http://www.makeuseof.com/dir/printfriendly-save-on-paper-and-ink/#comment-95052)**.
 
@@ -64,6 +98,10 @@ If you have any other issues with the plugin or the PrintFriendly widget, please
 2. The Settings Page: choose your print button, text link, or use your own text or graphic.
 
 == Changelog ==
+
+= 3.1.5 =
+
+* Set button appearance in more flexible way. Remove styles that interfered with wordpress themes. Add shortcode for printfriendly button. Fix redirect to printfriendly.com link. Added custom css feature.
 
 = 3.1.4 =
 

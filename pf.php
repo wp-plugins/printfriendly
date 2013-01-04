@@ -4,11 +4,12 @@ Plugin Name: Print Friendly and PDF
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF button for your website. Optimizes your pages and brand for print, pdf, and email.
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.
-Version: 3.1.4
+Version: 3.1.5
 Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.1.5 - Set button appearance in more flexible way. Remove styles that interfered with wordpress themes. Add shortcode for printfriendly button. Fix redirect to printfriendly.com link. Added custom css feature.
 3.1.4 - Changed https url. Don't hide text change box when disabling css.
 3.1.3 - Fixed bug with disable css option
 3.1.2 - Added disable css option to admin settings.
@@ -75,7 +76,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
      * Database version, used to allow for easy upgrades to / additions in plugin options between plugin versions.
      * @var int
      */
-    var $db_version = 2;
+    var $db_version = 3;
 
     /**
      * Settings page, used within the plugin to reliably load the plugins admin JS and CSS files only on the admin page.
@@ -104,7 +105,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 
       add_action( 'wp_head', array( &$this, 'front_head' ) );
       // automaticaly add the link
-      if( 'manual' != $this->options['show_list'] ) {
+      if( !$this->is_manual() ) {
         add_filter( 'the_content', array( &$this, 'show_link' ) );
         add_filter( 'the_excerpt', array( &$this, 'show_link' ) );
       }
@@ -126,6 +127,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 
       // Register a link to the settings page on the plugins overview page
       add_filter( 'plugin_action_links', array( &$this, 'filter_plugin_actions' ), 10, 2 );
+
     }
 
     /**
@@ -167,22 +169,13 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
             border: none;
             padding:0;
             margin-right: 6px;
-          } 
+            box-shadow: none;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+          }
           .printfriendly a span{
             vertical-align: bottom;
           }        
-          .alignleft {
-              float:left;
-              margin: 5px 20px 20px 0;
-          }
-          .alignright {
-              float:right;
-              margin: 5px 0 20px 20px;
-          }
-          .aligncenter {
-            text-align: center;
-            margin: 5px auto 5px auto;
-          }
         </style>
         <style type="text/css" media="print">
           .printfriendly {
@@ -220,6 +213,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
           var pfHeaderImgUrl = "<?php echo $image_url ?>";
           var pfHeaderTagline = "<?php echo $tagline ?>";
           var pfdisableClickToDel = "<?php echo $this->options['click_to_delete'] ?>";
+          var pfCustomCSS = "<?php echo $this->options['custom_css_url'] ?>";
 
           // PrintFriendly
           var e = document.createElement('script'); e.type="text/javascript";
@@ -239,11 +233,12 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
      * @return string $button or $content with the button added to the content when appropriate, just the content when button shouldn't be added or just button when called manually.
      */
     function show_link( $content = false ) {
-      if( !$content && 'manual' != $this->options['show_list'] )
+      $is_manual = $this->is_manual();
+      if( !$content && !$is_manual )
         return "";
 
       $onclick = 'onclick="window.print(); return false;"';
-      $href = 'http://www.printfriendly.com/print/v2?url='.get_permalink();
+      $href = 'http://www.printfriendly.com/print?url='.get_permalink();
 
       if ( isset( $this->options['javascript'] ) && $this->options['javascript'] == 'no' )
         $onclick = 'target="_blank"';
@@ -259,28 +254,29 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 
       $button = apply_filters( 'printfriendly_button', '<div class="printfriendly'.$align.'"><a href="'.$href.'" rel="nofollow" '.$onclick.'>'.$this->button().'</a></div>' );
 
-      if (is_singular())
+
+      if ( $is_manual )
       {
         // Hook the script call now, so it only get's loaded when needed, and need is determined by the user calling pf_button
         add_action( 'wp_footer', array( &$this, 'print_script_footer' ) );
-      }
-
-      if ( 'manual' == $this->options['show_list'] )
-      {
         return $button;
       }
-
       else
       {
-        if (is_single() || ( is_page() && 'posts' != $this->options['show_list'] ) || ((is_home() || is_category())  && 'all' == $this->options['show_list'] ))
+        if ( (is_page() && isset($this->options['show_on_pages']))
+          || (is_home() && isset($this->options['show_on_homepage']))
+          || (is_tax() && isset($this->options['show_on_taxonomies']))
+          || (is_category() && isset($this->options['show_on_categories']))
+          || (is_single() && isset($this->options['show_on_posts'])) )
         {
+          // Hook the script call now, so it only get's loaded when needed, and need is determined by the user calling pf_button
+          add_action( 'wp_footer', array( &$this, 'print_script_footer' ) );
 
           if ( $this->options['content_placement'] == 'before' )
             return $button.$content;
           else
             return $content.$button;
         }
-
         else
         {
           return $content;
@@ -321,9 +317,6 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 
       if ( !isset( $input['custom_image'] ) )
         $valid_input['custom_image'] = '';
-
-      if ( !in_array( $input['show_list'], array( 'all', 'single', 'posts', 'manual') ) )
-        $valid_input['show_list'] = 'all';
 
       if ( !in_array( $input['content_position'], array( 'none', 'left', 'center', 'right' ) ) )
         $valid_input['content_position'] = 'left';
@@ -386,7 +379,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
      */
     function admin_enqueue_scripts( $screen_id ) {
       if ( $this->settings_page == $screen_id ) {
-        $ver = '3.1.4';
+        $ver = '3.1.5';
         wp_register_script( 'pf-color-picker', plugins_url( 'colorpicker.js', __FILE__ ), array( 'jquery', 'media-upload' ), $ver );
         wp_register_script( 'pf-admin-js', plugins_url( 'admin.js', __FILE__ ), array( 'jquery', 'media-upload' ), $ver );
 
@@ -435,7 +428,11 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         'margin_right' => '12',
         'margin_bottom' => '12',
         'margin_left' => '12',
-        'show_list' => 'single',
+        'show_on_posts' => 'on',
+        'show_on_pages' => 'on',
+        'show_on_homepage' => 'on',
+        'show_on_categories' => 'on',
+        'show_on_taxonomies' => 'on',
         'text_color' => '#6D9F00',
         'text_size' => 14,
         'logo' => 'favicon',
@@ -444,7 +441,8 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         'click_to_delete' => '0', // 0 - allow, 1 - do not allow
         'website_protocol' => 'http',
         'password_protected' => 'no',
-        'javascript' => 'yes'
+        'javascript' => 'yes',
+        'custom_css_url' => '',
       );
 
       // Check whether the old badly named singular options are there, if so, use the data and delete them.
@@ -468,8 +466,6 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
      * @since 3.0
      */
     function upgrade() {
-      // Do stuff
-
       // update options to version 2
       if($this->options['db_version'] < 2) {
 
@@ -508,6 +504,41 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
           $this->options['custom_text'] = '';
           $this->options['custom_image'] = $image_address;
         }
+
+        $this->options = array_merge($this->options, $additional_options);
+      }
+
+      // update options to version 3
+      if($this->options['db_version'] < 3) {
+
+        $old_show_on = $this->options['show_list'];
+        // 'manual' setting
+        $additional_options = array('custom_css_url' => '');
+
+        if($old_show_on == 'all') {
+          $additional_options = array(
+            'show_on_pages' => 'on',
+            'show_on_posts' => 'on',
+            'show_on_homepage' => 'on',
+            'show_on_categories' => 'on',
+            'show_on_taxonomies' => 'on'
+          );
+        }
+
+        if($old_show_on == 'single') {
+          $additional_options = array(
+            'show_on_pages' => 'on',
+            'show_on_posts' => 'on'
+          );
+        }
+
+        if($old_show_on == 'posts') {
+          $additional_options = array(
+            'show_on_posts' => 'on',
+          );
+        }
+
+        unset($this->options['show_list']);
 
         $this->options = array_merge($this->options, $additional_options);
       }
@@ -630,6 +661,36 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
           return ' checked="checked" ';
       }
     }
+
+    /**
+     * Helper for creating checkboxes.
+     *
+     * @since 3.1.5
+     * @param string $name string used for various parts of checkbox
+     *
+     */
+    function create_checkbox($name) {
+      echo '<input type="checkbox" class="show_list" name="' . $this->option_name . '[show_on_' . $name . ']" value="on" ';
+      $this->checked( 'show_on_' . $name, 'on');
+      echo ' />';
+      _e( ucfirst($name), $this->hook );
+    }
+
+
+    /**
+     * Helper that checks if any of the content types is checked to display pf button.
+     *
+     * @since 3.1.5
+     * @return boolean true if none of the content types is checked
+     *
+     */
+    function is_manual() {
+      return !(isset($this->options['show_on_posts']) ||
+            isset($this->options['show_on_pages']) ||
+            isset($this->options['show_on_homepage']) ||
+            isset($this->options['show_on_categories']) ||
+            isset($this->options['show_on_taxonomies']));
+   }
 
 
     /**
@@ -767,11 +828,13 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
               </div>
             </div>
             <div id="pages">
-              <label><input type="radio" class="show_list" name="<?php echo $this->option_name; ?>[show_list]" value="all" <?php $this->checked( 'show_list', 'all'); ?>/> <?php _e( "Homepage, Posts, and Pages", $this->hook ); ?></label>
-              <label><input type="radio" class="show_list" name="<?php echo $this->option_name; ?>[show_list]" value="single" <?php $this->checked( 'show_list', 'single'); ?>/> <?php _e( "Posts and Pages", $this->hook ); ?></label>
-              <label><input type="radio" class="show_list" name="<?php echo $this->option_name; ?>[show_list]" value="posts" <?php $this->checked( 'show_list', 'posts'); ?>/> <?php _e( "Posts", $this->hook ); ?></label>
-              <label><input type="radio" class="show_list" name="<?php echo $this->option_name; ?>[show_list]" value="manual" <?php $this->checked( 'show_list', 'manual'); ?> /> <?php _e( "Use shortcode in your template", $this->hook ); ?>
-              </label>
+              <label><?php $this->create_checkbox('pages'); ?></label>
+              <label><?php $this->create_checkbox('posts'); ?></label>
+              <label><?php $this->create_checkbox('homepage'); ?></label>
+              <label><?php $this->create_checkbox('categories'); ?></label>
+              <label><?php $this->create_checkbox('taxonomies'); ?></label>
+              <label><strong>Note: </strong><em><?php _e( "Uncheck all of the above to use the shortcodes below:", $this->hook ); ?></em></label>
+              <label><?php _e( "Use [printfriendly] inside your page/article or put the following code in your template:", $this->hook ); ?></label>
               <textarea  id="pf-shortcode" class="code" rows="2" cols="40">&lt;?php if(function_exists('pf_show_link')){echo pf_show_link();} ?&gt;</textarea>
             </div>
           </div>
@@ -795,6 +858,10 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
                 <option value="0" <?php selected( $this->options['click_to_delete'], '0' ); ?>><?php _e( "Allow", $this->hook ); ?></option>
                 <option value="1" <?php selected( $this->options['click_to_delete'], '1' ); ?>><?php _e( "Not Allow", $this->hook ); ?></option>
               </select>
+            </label>
+            <label for="custom_css_url">
+              <?php _e( "Custom css url", $this->hook ); ?>
+              <input id="custom_css_url" type="text" class="regular-text" name="<?php echo $this->option_name; ?>[custom_css_url]" value="<?php $this->val( 'custom_css_url' ); ?>" />
             </label>
           </div>
    
@@ -845,6 +912,9 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
   }
   $printfriendly = new PrintFriendly_WordPress();
 }
+
+// Add shortcode for printfriendly button
+add_shortcode( 'printfriendly', 'pf_show_link' );
 
 /**
  * Convenience function for use in templates.
