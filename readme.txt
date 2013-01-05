@@ -34,8 +34,6 @@ The Print Friendly & PDF button automatically creates printer friendly and PDF v
 
 PrintFriendly & PDF automatically changes language to match your visitor's language settings. For example, if your browser is set to Spanish, then PrintFriendly will use Spanish.
 
-![](http://4.bp.blogspot.com/--bMs1CrQvqs/UGHggy0lStI/AAAAAAAAACQ/rxlxK4f1XeE/s400/printfriendlyspanish.png)
-
 Supported languages:
 
 * Danish
@@ -62,7 +60,7 @@ Supported languages:
 * Chinese Simplified
 * Chinese Traditional
 
-Learn more (blog.printfriendly.com/2012/06/print-friendly-speaks-your-language.html)
+[Learn more...](blog.printfriendly.com/2012/06/print-friendly-speaks-your-language.html)
 
 PrintFriendly and PDF is the #1 print optimization technology, **as featured in [Lifehacker](http://lifehacker.com/5272212/print-friendly-optimizes-web-pages-for-printing "PrintFriendly & PDF in Lifehacker"), [Mashable](http://mashable.com/2009/05/18/print-friendly/ "PrintFriendly & PDF in Mashable") & [makeuseof](http://www.makeuseof.com/dir/printfriendly-save-on-paper-and-ink/#comment-95052)**.
 
@@ -96,6 +94,7 @@ If you have any other issues with the plugin or the PrintFriendly widget, please
 
 1. The Print Friendly widget optimizes and formats your pages for print. Users can remove images and text before printing plus get a PDF
 2. The Settings Page: choose your print button, text link, or use your own text or graphic.
+3. Localization example: Spanish
 
 == Changelog ==
 
