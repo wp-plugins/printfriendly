@@ -4,11 +4,12 @@ Plugin Name: Print Friendly and PDF
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF button for your website. Optimizes your pages and brand for print, pdf, and email.
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.
-Version: 3.1.6
+Version: 3.1.7
 Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.1.7 - Revert default print button show settings. Prevent easy override of print button text-decoration and border style properties.
 3.1.6 - Adding PrintFriendly and PDF alignment style classes.
 3.1.5 - Set button appearance in more flexible way. Remove styles that interfered with wordpress themes. Add shortcode for printfriendly button. Fix redirect to printfriendly.com link. Added custom css feature.
 3.1.4 - Changed https url. Don't hide text change box when disabling css.
@@ -155,11 +156,12 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
           div.printfriendly {
             margin: <?php echo $this->options['margin_top'].'px '.$this->options['margin_right'].'px '.$this->options['margin_bottom'].'px '.$this->options['margin_left'].'px'; ?>;
           }
-          .printfriendly a {
+          div.printfriendly a, div.printfriendly a:link, div.printfriendly a:visited {
             text-decoration: none;
             font-size: <?php echo $this->options['text_size']; ?>px;
             color: <?php echo $this->options['text_color']; ?>;
             vertical-align: bottom;
+            border: none;
           }
           
           .printfriendly a:hover {
@@ -443,9 +445,6 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         'margin_left' => '12',
         'show_on_posts' => 'on',
         'show_on_pages' => 'on',
-        'show_on_homepage' => 'on',
-        'show_on_categories' => 'on',
-        'show_on_taxonomies' => 'on',
         'text_color' => '#6D9F00',
         'text_size' => 14,
         'logo' => 'favicon',
