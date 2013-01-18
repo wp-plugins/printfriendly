@@ -4,11 +4,12 @@ Plugin Name: Print Friendly and PDF
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF button for your website. Optimizes your pages and brand for print, pdf, and email.
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.
-Version: 3.1.7
+Version: 3.1.8
 Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.1.8 - Add printfriendly options to allow/not allow print, pdf, email from the Printfriendly and PDF dialog.
 3.1.7 - Revert default print button show settings. Prevent easy override of print button text-decoration and border style properties.
 3.1.6 - Adding PrintFriendly and PDF alignment style classes.
 3.1.5 - Set button appearance in more flexible way. Remove styles that interfered with wordpress themes. Add shortcode for printfriendly button. Fix redirect to printfriendly.com link. Added custom css feature.
@@ -78,7 +79,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
      * Database version, used to allow for easy upgrades to / additions in plugin options between plugin versions.
      * @var int
      */
-    var $db_version = 3;
+    var $db_version = 4;
 
     /**
      * Settings page, used within the plugin to reliably load the plugins admin JS and CSS files only on the admin page.
@@ -228,6 +229,9 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
           var pfHeaderImgUrl = "<?php echo $image_url ?>";
           var pfHeaderTagline = "<?php echo $tagline ?>";
           var pfdisableClickToDel = "<?php echo $this->options['click_to_delete'] ?>";
+          var pfDisableEmail = "<?php echo $this->options['email'] ?>";
+          var pfDisablePDF = "<?php echo $this->options['pdf'] ?>";
+          var pfDisablePrint = "<?php echo $this->options['print'] ?>";
           var pfCustomCSS = "<?php echo $this->options['custom_css_url'] ?>";
 
           // PrintFriendly
@@ -451,6 +455,9 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         'image_url' => '',
         'tagline' => '',
         'click_to_delete' => '0', // 0 - allow, 1 - do not allow
+        'email' => '0', // 0 - allow, 1 - do not allow
+        'pdf' => '0', // 0 - allow, 1 - do not allow
+        'print' => '0', // 0 - allow, 1 - do not allow
         'website_protocol' => 'http',
         'password_protected' => 'no',
         'javascript' => 'yes',
@@ -551,6 +558,18 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         }
 
         unset($this->options['show_list']);
+
+        $this->options = array_merge($this->options, $additional_options);
+      }
+
+      // update options to version 4
+      if($this->options['db_version'] < 4) {
+
+        $additional_options = array(
+          'email' => '0',
+          'pdf' => '0',
+          'print' => '0',
+        );
 
         $this->options = array_merge($this->options, $additional_options);
       }
@@ -869,6 +888,27 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
               <select name="<?php echo $this->option_name; ?>[click_to_delete]" id="click-to-delete">
                 <option value="0" <?php selected( $this->options['click_to_delete'], '0' ); ?>><?php _e( "Allow", $this->hook ); ?></option>
                 <option value="1" <?php selected( $this->options['click_to_delete'], '1' ); ?>><?php _e( "Not Allow", $this->hook ); ?></option>
+              </select>
+            </label>
+            <label for="email">
+              <?php _e( "Email", $this->hook ); ?>
+              <select name="<?php echo $this->option_name; ?>[email]" id="email">
+                <option value="0" <?php selected( $this->options['email'], '0' ); ?>><?php _e( "Allow", $this->hook ); ?></option>
+                <option value="1" <?php selected( $this->options['email'], '1' ); ?>><?php _e( "Not Allow", $this->hook ); ?></option>
+              </select>
+            </label>
+            <label for="pdf">
+              <?php _e( "PDF", $this->hook ); ?>
+              <select name="<?php echo $this->option_name; ?>[pdf]" id="pdf">
+                <option value="0" <?php selected( $this->options['pdf'], '0' ); ?>><?php _e( "Allow", $this->hook ); ?></option>
+                <option value="1" <?php selected( $this->options['pdf'], '1' ); ?>><?php _e( "Not Allow", $this->hook ); ?></option>
+              </select>
+            </label>
+            <label for="print">
+              <?php _e( "Print", $this->hook ); ?>
+              <select name="<?php echo $this->option_name; ?>[print]" id="print">
+                <option value="0" <?php selected( $this->options['print'], '0' ); ?>><?php _e( "Allow", $this->hook ); ?></option>
+                <option value="1" <?php selected( $this->options['print'], '1' ); ?>><?php _e( "Not Allow", $this->hook ); ?></option>
               </select>
             </label>
             <label for="custom_css_url">
