@@ -59,18 +59,26 @@ jQuery(document).ready(function() {
 
   function pf_initialize_preview(urlInputSelector, previewSelector) {
     var el = jQuery(urlInputSelector);
+    var imgUrl = jQuery.trim(el.val());
     var preview = jQuery(previewSelector + '-preview');
     var error = jQuery(previewSelector + '-error');
     el.bind('input paste change keyup', function() {
       setTimeout(function() {
-        var img = jQuery('<img />').on('error', function() {
-          preview.html('');
-          if(img.attr('src') != '') {
-            error.html('<div class="error settings-error"><p><strong>Invalid Image URL</strong></p></div>');
-          }
-        }).attr('src', jQuery.trim(el.val()));
-        error.html('');
-        preview.html('').append(img);
+        // ie shows error if we try to merge the two below into a single statement
+        var img = jQuery('<img/>');
+        var imgUrl = jQuery.trim(el.val());
+        img.load(function() {
+            error.html('');
+            preview.html('').append(img);})
+          .error(function() {
+            preview.html('');
+            if(img.attr('src') != '') {
+              error.html('<div class="error settings-error"><p><strong>Invalid Image URL</strong></p></div>');
+            }
+          }).attr('src', imgUrl);
+        // hide error for empty url
+        if(imgUrl == '')
+          error.html('');
       }, 100);
     });
   }
@@ -140,7 +148,6 @@ jQuery(document).ready(function() {
   }
 
   function pf_reset_style() {
-    console.log('reseting styles');
     jQuery('.printfriendly-text2').css('font-size',14);
     jQuery('.printfriendly-text2').css('color','#000000');
   }

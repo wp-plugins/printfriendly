@@ -4,11 +4,12 @@ Plugin Name: Print Friendly and PDF
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF button for your website. Optimizes your pages and brand for print, pdf, and email.
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.
-Version: 3.1.9
+Version: 3.2.0
 Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.2.0 - Important chrome issue fix. Ie syntax error fix.
 3.1.9 - Minor css detail.
 3.1.8 - Add printfriendly options to allow/not allow print, pdf, email from the Printfriendly and PDF dialog.
 3.1.7 - Revert default print button show settings. Prevent easy override of print button text-decoration and border style properties.
@@ -400,7 +401,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
      */
     function admin_enqueue_scripts( $screen_id ) {
       if ( $this->settings_page == $screen_id ) {
-        $ver = '3.1.5';
+        $ver = '3.2.0';
         wp_register_script( 'pf-color-picker', plugins_url( 'colorpicker.js', __FILE__ ), array( 'jquery', 'media-upload' ), $ver );
         wp_register_script( 'pf-admin-js', plugins_url( 'admin.js', __FILE__ ), array( 'jquery', 'media-upload' ), $ver );
 
@@ -927,7 +928,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
             <option value="http" <?php selected( $this->options['website_protocol'], 'http' ); ?>><?php _e( "http (common)", $this->hook ); ?></option>
             <option value="https" <?php selected( $this->options['website_protocol'], 'https' ); ?>><?php _e( "https (secure)", $this->hook ); ?></option>
           </select>
-          <span id="https-beta-registration" class="description">HTTPS is in Beta. Please <a href="#" onclick="window.open('http://www.printfriendly.com/https-registration.html', 'newwindow', 'width=600, height=550'; return false;">Register for updates</a>.
+          <span id="https-beta-registration" class="description">HTTPS is in Beta. Please <a href="#" onclick="window.open('http://www.printfriendly.com/https-registration.html', 'newwindow', 'width=600, height=550'); return false;">Register for updates</a>.
           </span>
         </label>
         <label for="password-site">Password Protected Content
