@@ -223,7 +223,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         }
 
         // Currently we use v3 for both: normal and password protected sites
-        $pf_src = '//cdn.printfriendly.com/printfriendly.js';
+        $pf_src = 'http://cdn.printfriendly.com/printfriendly.js';
         if($this->options['website_protocol'] == 'https')
           $pf_src = 'https://pf-cdn.printfriendly.com/ssl/main.js';
 
