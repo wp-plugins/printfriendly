@@ -1,14 +1,16 @@
 <?php
+
 /*
 Plugin Name: Print Friendly and PDF
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF button for your website. Optimizes your pages and brand for print, pdf, and email.
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.
-Version: 3.2.1
+Version: 3.2.2
 Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.2.2 - Add printfriendly post_class. Add printfriendly button display settings per individual category. Fixed minor JS bug. Added redundancy to uninstall script.
 3.2.1 - Improve script loading.
 3.2.0 - Important chrome issue fix. Ie syntax error fix.
 3.1.9 - Minor css detail.
@@ -82,7 +84,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
      * Database version, used to allow for easy upgrades to / additions in plugin options between plugin versions.
      * @var int
      */
-    var $db_version = 4;
+    var $db_version = 5;
 
     /**
      * Settings page, used within the plugin to reliably load the plugins admin JS and CSS files only on the admin page.
@@ -116,24 +118,28 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         add_filter( 'the_excerpt', array( &$this, 'show_link' ) );
       }
 
-      if ( !is_admin() )
-        return;
 
-      // Hook into init for registration of the option and the language files
-      add_action( 'admin_init', array( &$this, 'init' ) );
+      if ( !is_admin() ) {
+        // Register function that adds pf content class to article content
+        add_filter("post_class", array( &$this, 'add_pf_content_class' ) );
 
-      // Register the settings page
-      add_action( 'admin_menu', array( &$this, 'add_config_page' ) );
+      }
+	  else {
+        // Hook into init for registration of the option and the language files
+        add_action( 'admin_init', array( &$this, 'init' ) );
 
-      // Register the contextual help
-      add_filter( 'contextual_help', array( &$this, 'contextual_help' ), 10, 2 );
+        // Register the settings page
+        add_action( 'admin_menu', array( &$this, 'add_config_page' ) );
 
-      // Enqueue the needed scripts and styles
-      add_action( 'admin_enqueue_scripts',array( &$this, 'admin_enqueue_scripts' ) );
+        // Register the contextual help
+        add_filter( 'contextual_help', array( &$this, 'contextual_help' ), 10, 2 );
 
-      // Register a link to the settings page on the plugins overview page
-      add_filter( 'plugin_action_links', array( &$this, 'filter_plugin_actions' ), 10, 2 );
+        // Enqueue the needed scripts and styles
+        add_action( 'admin_enqueue_scripts',array( &$this, 'admin_enqueue_scripts' ) );
 
+        // Register a link to the settings page on the plugins overview page
+        add_filter( 'plugin_action_links', array( &$this, 'filter_plugin_actions' ), 10, 2 );
+	  }
     }
 
     /**
@@ -155,10 +161,11 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
       if ( isset( $this->options['enable_css'] ) && $this->options['enable_css'] != 'on' )
         return;
 
+
 ?>
         <style type="text/css" media="screen">
           div.printfriendly {
-            margin: <?php echo $this->options['margin_top'].'px '.$this->options['margin_right'].'px '.$this->options['margin_bottom'].'px '.$this->options['margin_left'].'px'; ?>;
+            margin: <?php echo $this->options['margin_top'].'px '.$this->options['margin_right'].'px '.$this->options['margin_bottom'].'px '.$this->options['margin_left'].'px;'; ?>;
           }
           div.printfriendly a, div.printfriendly a:link, div.printfriendly a:visited {
             text-decoration: none;
@@ -204,6 +211,18 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         </style>
 <?php
     }
+
+
+    /**
+     * Adds class=wp-pf-content to the content container.
+     *
+     * @since 3.2.2
+    */
+    function add_pf_content_class( $classes = array() ) {
+      $classes[] = esc_attr( 'wp-pf-content' );
+      return array_unique( $classes );
+    }
+
 
     /**
      * Prints the PrintFriendly JavaScript, in the footer, and loads it asynchronously.
@@ -285,11 +304,11 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
       }
       else
       {
-        if ( (is_page() && isset($this->options['show_on_pages']))
-          || (is_home() && isset($this->options['show_on_homepage']))
-          || (is_tax() && isset($this->options['show_on_taxonomies']))
-          || (is_category() && isset($this->options['show_on_categories']))
-          || (is_single() && isset($this->options['show_on_posts'])) )
+        if ( (is_page() && ( isset($this->options['show_on_pages']) && 'on' === $this->options['show_on_pages'] ) )
+          || (is_home() && ( ( isset($this->options['show_on_homepage']) && 'on' === $this->options['show_on_homepage'] ) && $this->category_included() ) )
+          || (is_tax() && ( ( isset($this->options['show_on_taxonomies']) && 'on' === $this->options['show_on_taxonomies'] ) && $this->category_included() ) )
+          || (is_category() && ( ( isset($this->options['show_on_categories']) && 'on' === $this->options['show_on_categories'] ) && $this->category_included() ) )
+          || (is_single() && ( ( isset($this->options['show_on_posts']) && 'on' === $this->options['show_on_posts'] ) && $this->category_included() ) ) )
         {
           // Hook the script call now, so it only get's loaded when needed, and need is determined by the user calling pf_button
           add_action( 'wp_footer', array( &$this, 'print_script_footer' ) );
@@ -306,6 +325,17 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 
       }
 
+    }
+
+
+    /**
+     * Filter posts by category.
+     *
+     * @since 3.2.2
+     * @return boolean true if post belongs to category selected for button display
+     */
+    function category_included() {
+      return ( 'all' === $this->options['category_ids'][0] || in_category($this->options['category_ids']) );
     }
 
     /**
@@ -331,8 +361,29 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
     function options_validate( $input ) {
       $valid_input = $input;
 
-      // echo '<pre>'.print_r($input,1).'</pre>';
-      // die;
+	  if( isset( $input['category_ids'] ) ) {
+	  	/**
+		 * Validate received category ids:
+		 * - Is there only one array item and does it contain the string text 'all' ? => pass
+		 * - Otherwise, make sure the ids are integer values
+		 */
+        $valid_input['category_ids'] = explode(',', $input['category_ids']);
+        $valid_input['category_ids'] = array_map( 'trim', $valid_input['category_ids'] );
+        if( ( count( $valid_input['category_ids'] ) === 1 && 'all' === $valid_input['category_ids'][0] ) === false ) {
+			foreach( $valid_input['category_ids'] as $k => $v ) {
+				if( $v !== '' && ( ctype_digit( (string) $v ) === true && ( intval( $v ) == $v ) ) ) {
+					$valid_input['category_ids'][$k] = intval( $v );
+				}
+				else {
+					// Invalid input - Show error message ?
+					unset( $valid_input['category_ids'][$k] );
+				}
+			}
+		}
+      }
+
+      //echo '<pre>'.print_r($input,1).'</pre>';
+      //die;
 
       if ( !in_array( $input['button_type'], array( 'pf-button.gif', 'button-print-grnw20.png',  'button-print-blu20.png',  'button-print-gry20.png',  'button-print-whgn20.png',  'pf_button_sq_gry_m.png',  'pf_button_sq_gry_l.png',  'pf_button_sq_grn_m.png',  'pf_button_sq_grn_l.png', 'pf-button-big.gif', 'pf-icon-small.gif', 'pf-icon.gif', 'pf-button-both.gif', 'pf-icon-both.gif', 'text-only', 'custom-image') ) )
         $valid_input['button_type'] = 'pf-button.gif';
@@ -378,6 +429,9 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
      */
     function add_config_page() {
       $this->settings_page = add_options_page( __( 'PrintFriendly Options', $this->hook ), __( 'Print Friendly & PDF', $this->hook ), 'manage_options', $this->hook, array( &$this, 'config_page' ) );
+
+      //register  callback gets call prior your own page gets rendered
+      add_action('load-'.$this->settings_page, array(&$this, 'on_load_printfriendly'));
     }
 
     /**
@@ -401,12 +455,13 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
      */
     function admin_enqueue_scripts( $screen_id ) {
       if ( $this->settings_page == $screen_id ) {
-        $ver = '3.2.0';
+        $ver = '3.2.2';
         wp_register_script( 'pf-color-picker', plugins_url( 'colorpicker.js', __FILE__ ), array( 'jquery', 'media-upload' ), $ver );
         wp_register_script( 'pf-admin-js', plugins_url( 'admin.js', __FILE__ ), array( 'jquery', 'media-upload' ), $ver );
 
         wp_enqueue_script( 'pf-color-picker' );
         wp_enqueue_script( 'pf-admin-js' );
+
 
         wp_enqueue_style( 'printfriendly-admin-css', plugins_url( 'admin.css', __FILE__ ), array(), $ver);
       }
@@ -465,6 +520,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         'password_protected' => 'no',
         'javascript' => 'yes',
         'custom_css_url' => '',
+        'category_ids' => array('all'),
       );
 
       // Check whether the old badly named singular options are there, if so, use the data and delete them.
@@ -518,7 +574,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         // check whether image we do not list any more was used
         if(in_array($this->options['button_type'], array('button-print-whgn20.png',  'pf_button_sq_qry_m.png',  'pf_button_sq_qry_l.png',  'pf_button_sq_grn_m.png',  'pf_button_sq_grn_l.png'))) {
           // previous version had a bug with button name
-          if(in_array($this->options['button_type'], array('pf_button_sq_qry_m.png',  'pf_button_sq_qry_l.png'))) 
+          if(in_array($this->options['button_type'], array('pf_button_sq_qry_m.png',  'pf_button_sq_qry_l.png')))
             $this->options['button_type'] = str_replace('qry', 'gry', $this->options['button_type']);
 
           $image_address = '//cdn.printfriendly.com/'.$this->options['button_type'];
@@ -577,6 +633,19 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         $this->options = array_merge($this->options, $additional_options);
       }
 
+      // update options to version 5
+      if($this->options['db_version'] < 5) {
+
+        $additional_options = array(
+          'category_ids' => array(),
+        );
+
+	  	if( isset( $this->options['show_on_categories'] ) && 'on' === $this->options['show_on_categories'] ) {
+          $additional_options['category_ids'][] = 'all';
+		}
+
+        $this->options = array_merge($this->options, $additional_options);
+      }
       $this->options['db_version'] = $this->db_version;
       update_option( $this->option_name, $this->options );
     }
@@ -617,7 +686,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 
       switch($name){
       case "custom-image":
-        if( '' == $this->options['custom_image'] )
+        if( '' == trim($this->options['custom_image']) )
           $return = '';
         else
           $return = '<img src="'.$this->options['custom_image'].'" alt="Print Friendly" />';
@@ -703,11 +772,11 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
      * @param string $name string used for various parts of checkbox
      *
      */
-    function create_checkbox($name) {
-      echo '<input type="checkbox" class="show_list" name="' . $this->option_name . '[show_on_' . $name . ']" value="on" ';
+    function create_checkbox($name, $label='', $labelid='' ) {
+	  $label = ( !empty( $label) ? $label : $name );
+      echo '<label' . ( !empty( $labelid ) ? ' id=' . $labelid : '' ) . '><input type="checkbox" class="show_list" name="' . $this->option_name . '[show_on_' . $name . ']" value="on" ';
       $this->checked( 'show_on_' . $name, 'on');
-      echo ' />';
-      _e( ucfirst($name), $this->hook );
+      echo ' />' . __( ucfirst($label), $this->hook ) . '</label>';
     }
 
 
@@ -723,6 +792,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
             isset($this->options['show_on_pages']) ||
             isset($this->options['show_on_homepage']) ||
             isset($this->options['show_on_categories']) ||
+//            (isset($this->options['category_ids']) && count($this->options['category_ids']) > 0) ||
             isset($this->options['show_on_taxonomies']));
    }
 
@@ -743,6 +813,61 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
     }
 
     /**
+     * For use with page metabox.
+     *
+     * @since 3.2.2
+     */
+    function get_page_post_type() {
+      $post_types = get_post_types( array( 'name' => 'page' ), 'object' );
+      //echo '<pre>'.print_r($post_types,1).'</pre>';
+      //die;
+
+      return $post_types['page'];
+    }
+
+
+    /**
+     * Helper that checks if wp versions is above 3.0.
+     *
+     * @since 3.2.2
+     * @return boolean true wp version is above 3.0
+     *
+     */
+    function wp_version_gt30() {
+      global $wp_version;
+      return version_compare($wp_version, '3.0', '>=');
+    }
+
+
+    /**
+     * Create box for picking individual categories.
+     *
+     * @since 3.2.2
+     */
+    function create_category_metabox() {
+	  $obj = new stdClass();
+	  $obj->ID = 0;
+      do_meta_boxes('settings_page_' . $this->hook, 'normal', $obj);
+    }
+
+
+    /**
+     * Load metaboxes advanced button display settings.
+     *
+     * @since 3.2.2
+     */
+    function on_load_printfriendly() {
+      global $wp_version;
+      if($this->wp_version_gt30()) {
+        require_once('includes/meta-boxes.php');
+        //require_once('includes/nav-menu.php');
+        wp_enqueue_script('post');
+
+        add_meta_box('categorydiv', __('Button categories:'), 'post_categories_meta_box', 'settings_page_'. $this->hook, 'normal', 'core');
+      }
+    }
+
+    /**
      * Output the config page
      *
      * @since 3.0
@@ -751,7 +876,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 
       // Since WP 3.2 outputs these errors by default, only display them when we're on versions older than 3.2 that do support the settings errors.
       global $wp_version;
-      if ( version_compare( $wp_version, '3.2', '<' ) )
+      if(version_compare($wp_version, '3.2', '<' ) && $this->wp_version_gt30() )
         settings_errors();
 
       // Show the content of the options array when debug is enabled
@@ -759,15 +884,15 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         echo '<pre>Options:<br><br>' . print_r( $this->options, 1 ) . '</pre>';
 ?>
       <div id="pf_settings" class="wrap">
-      
+
         <div class="icon32" id="printfriendly"></div>
         <h2><?php _e( 'Print Friendly & PDF Settings', $this->hook ); ?></h2>
-      
+
         <form action="options.php" method="post">
           <?php settings_fields( $this->option_name ); ?>
-        
+
           <h3><?php _e( "Pick Your Button Style", $this->hook ); ?></h3>
-        
+
           <fieldset id="button-style">
             <div id="buttongroup1">
               <?php $this->radio('pf-button.gif'); ?>
@@ -820,13 +945,13 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
             </div>
           </fieldset>
           <br class="clear">
-    
-    <!--Section 2 Button Placement-->
-          <div id="button-placement">
-            <h3><?php _e( "Button Placement", $this->hook ); ?>
+
+    <!--Section 2 Button Positioning-->
+          <div id="button-positioning">
+            <h3><?php _e( "Button Positioning", $this->hook ); ?>
       <span id="css"><input type="checkbox" name="<?php echo $this->option_name; ?>[enable_css]" value="<?php $this->val('enable_css');?>" <?php $this->checked('enable_css', 'off'); ?> />Do not use CSS for button styles</span>
             </h3>
-            <div id="button-placement-options">
+            <div id="button-positioning-options">
               <div id="alignment">
                 <label>
                   <select id="pf_content_position" name="<?php echo $this->option_name; ?>[content_position]" >
@@ -861,19 +986,41 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
                 </label>
               </div>
             </div>
+          </div>
+          <br class="clear">
+
+    <!--Section 3 Button Placement-->
+          <div id="button-placement">
+            <h3><?php _e( "Button Placement", $this->hook ); ?></h3>
             <div id="pages">
-              <label><?php $this->create_checkbox('pages'); ?></label>
-              <label><?php $this->create_checkbox('posts'); ?></label>
-              <label><?php $this->create_checkbox('homepage'); ?></label>
-              <label><?php $this->create_checkbox('categories'); ?></label>
-              <label><?php $this->create_checkbox('taxonomies'); ?></label>
-              <label><strong>Note: </strong><em><?php _e( "Uncheck all of the above to use the shortcodes below:", $this->hook ); ?></em></label>
-              <label><?php _e( "Use [printfriendly] inside your page/article or put the following code in your template:", $this->hook ); ?></label>
-              <textarea  id="pf-shortcode" class="code" rows="2" cols="40">&lt;?php if(function_exists('pf_show_link')){echo pf_show_link();} ?&gt;</textarea>
+              <?php $this->create_checkbox('posts'); ?>
+              <?php $this->create_checkbox('pages'); ?>
+              <?php $this->create_checkbox('homepage'); ?>
+              <?php $this->create_checkbox('categories'); ?>
+              <?php $this->create_checkbox('taxonomies'); ?>
+              <label><input type="checkbox" class="show_template" name="show_on_template" /><?php echo _e( 'Add direct to template', $this->hook ); ?></label>
+              <textarea id="pf-shortcode" class="code" rows="2" cols="40">&lt;?php if(function_exists('pf_show_link')){echo pf_show_link();} ?&gt;</textarea>
+              <label><?php _e( "or use shortcode inside your page/article", $this->hook ); ?></label>
+              <textarea id="pf-shortcode" class="code" rows="2" cols="40">[printfriendly]</textarea>
+              <input type="hidden" name="<?php echo $this->option_name; ?>[category_ids]" id="category_ids" value="<?php echo implode(',', $this->options['category_ids']); ?>" />
             </div>
           </div>
-          
-    <!--Section 3 Button Print Options-->        
+          <?php if($this->wp_version_gt30()) { ?>
+          <div id="pf-categories">
+            <?php printf( __( 'Specify <a %s>specific categories</a>', $this->hook), ' href="javascript:void(0)" id="toggle-categories"' ); ?>
+            <br/>
+            <p class="description pf-categories">
+              <?php _e( "Selecting categories will act as an additional filter for when to display the buttons.", $this->hook ); ?>
+            </p>
+            <div id="pf-categories-metabox">
+              <?php $this->create_category_metabox(); ?>
+            </div>
+           </div>
+          <?php } ?>
+
+          <br class="clear">
+
+    <!--Section 4 Button Print Options-->
           <div id="print-options">
             <h3><?php _e( "Print PDF Options", $this->hook ); ?></h3>
             <label id="pf-favicon" for="favicon">
@@ -919,10 +1066,10 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
               <input id="custom_css_url" type="text" class="regular-text" name="<?php echo $this->option_name; ?>[custom_css_url]" value="<?php $this->val( 'custom_css_url' ); ?>" />
             </label>
           </div>
-   
-   <!--Section 4 WebMaster-->         
+
+   <!--Section 5 WebMaster-->
         <h3><?php _e( "Webmaster Settings", $this->hook ); ?></h3>
-        
+
         <label for="protocol">Website Protocol<br>
           <select id="website_protocol" name="<?php echo $this->option_name; ?>[website_protocol]" >
             <option value="http" <?php selected( $this->options['website_protocol'], 'http' ); ?>><?php _e( "http (common)", $this->hook ); ?></option>
@@ -949,7 +1096,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
             <?php _e( "Display print preview on PrintFriendly.com (No JavaScript)", $this->hook ); ?>
           </span>
         </label>
-        
+
         <p class="submit">
           <input type="submit" class="button-primary" value="<?php esc_attr_e( "Save Options", $this->hook ); ?>"/>
           <input type="reset" class="button-secondary" value="<?php esc_attr_e( "Cancel", $this->hook ); ?>"/>
@@ -959,7 +1106,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
           <p>
             <?php _e( "Like PrintFriendly?", $this->hook ); ?> <a href="http://wordpress.org/extend/plugins/printfriendly/"><?php _e( "Give us a rating", $this->hook ); ?></a>. <?php _e( "Need help or have suggestions?", $this->hook ); ?> <a href="mailto:support@printfriendly.com?subject=Support%20for%20PrintFriendly%20WordPress%20plugin">support@PrintFriendly.com</a>.</p>
           </div>
-        
+
         </form>
       </div>
 <?php
