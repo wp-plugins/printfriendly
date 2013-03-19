@@ -5,11 +5,13 @@ Plugin Name: Print Friendly and PDF
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF button for your website. Optimizes your pages and brand for print, pdf, and email.
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.
-Version: 3.2.2
+Version: 3.2.4
 Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.2.4 - Add printfriendly post_class. Fixed minor JS bug. Added redundancy to uninstall script.
+3.2.3 - Rolling back to version 3.2.1
 3.2.2 - Add printfriendly post_class. Add printfriendly button display settings per individual category. Fixed minor JS bug. Added redundancy to uninstall script.
 3.2.1 - Improve script loading.
 3.2.0 - Important chrome issue fix. Ie syntax error fix.
@@ -84,7 +86,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
      * Database version, used to allow for easy upgrades to / additions in plugin options between plugin versions.
      * @var int
      */
-    var $db_version = 5;
+    var $db_version = 6;
 
     /**
      * Settings page, used within the plugin to reliably load the plugins admin JS and CSS files only on the admin page.
@@ -335,7 +337,8 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
      * @return boolean true if post belongs to category selected for button display
      */
     function category_included() {
-      return ( 'all' === $this->options['category_ids'][0] || in_category($this->options['category_ids']) );
+//      return ( 'all' === $this->options['category_ids'][0] || in_category($this->options['category_ids']) );
+		return true;
     }
 
     /**
@@ -367,7 +370,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 		 * - Is there only one array item and does it contain the string text 'all' ? => pass
 		 * - Otherwise, make sure the ids are integer values
 		 */
-        $valid_input['category_ids'] = explode(',', $input['category_ids']);
+/*        $valid_input['category_ids'] = explode(',', $input['category_ids']);
         $valid_input['category_ids'] = array_map( 'trim', $valid_input['category_ids'] );
         if( ( count( $valid_input['category_ids'] ) === 1 && 'all' === $valid_input['category_ids'][0] ) === false ) {
 			foreach( $valid_input['category_ids'] as $k => $v ) {
@@ -379,7 +382,8 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 					unset( $valid_input['category_ids'][$k] );
 				}
 			}
-		}
+		}*/
+		unset( $valid_input['category_ids'] );
       }
 
       //echo '<pre>'.print_r($input,1).'</pre>';
@@ -442,7 +446,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
     function contextual_help( $contextual_help, $screen_id ) {
       if ( $this->settings_page == $screen_id ) {
         $contextual_help = '<strong>'.__( "Need Help?", $this->hook ).'</strong><br/>'
-          .sprintf( __( "Be sure to check out the %s!"), '<a href="http://wordpress.org/extend/plugins/printfriendly/faq/">'.__( "Frequently Asked Questions", $this->hook ).'</a>' );
+          .sprintf( __( "Be sure to check out the %s!", $this->hook), '<a href="http://wordpress.org/extend/plugins/printfriendly/faq/">'.__( "Frequently Asked Questions", $this->hook ).'</a>' );
       }
       return $contextual_help;
     }
@@ -455,7 +459,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
      */
     function admin_enqueue_scripts( $screen_id ) {
       if ( $this->settings_page == $screen_id ) {
-        $ver = '3.2.2';
+        $ver = '3.2.4';
         wp_register_script( 'pf-color-picker', plugins_url( 'colorpicker.js', __FILE__ ), array( 'jquery', 'media-upload' ), $ver );
         wp_register_script( 'pf-admin-js', plugins_url( 'admin.js', __FILE__ ), array( 'jquery', 'media-upload' ), $ver );
 
@@ -520,7 +524,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         'password_protected' => 'no',
         'javascript' => 'yes',
         'custom_css_url' => '',
-        'category_ids' => array('all'),
+//        'category_ids' => array('all'),
       );
 
       // Check whether the old badly named singular options are there, if so, use the data and delete them.
@@ -633,18 +637,21 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         $this->options = array_merge($this->options, $additional_options);
       }
 
-      // update options to version 5
-      if($this->options['db_version'] < 5) {
+      // update options to version 6
+      // Replacement for db version 5 - should also be run for those already upgraded
+      if($this->options['db_version'] < 6) {
 
-        $additional_options = array(
+/*        $additional_options = array(
           'category_ids' => array(),
         );
 
-	  	if( isset( $this->options['show_on_categories'] ) && 'on' === $this->options['show_on_categories'] ) {
+		if( !isset( $this->options['category_ids'] ) || ( isset( $this->options['category_ids'] ) && 0 === count( $this->options['category_ids'] ) ) ) {
           $additional_options['category_ids'][] = 'all';
 		}
 
         $this->options = array_merge($this->options, $additional_options);
+*/
+        unset($this->options['category_ids']);
       }
       $this->options['db_version'] = $this->db_version;
       update_option( $this->option_name, $this->options );
@@ -773,10 +780,10 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
      *
      */
     function create_checkbox($name, $label='', $labelid='' ) {
-	  $label = ( !empty( $label) ? $label : $name );
+	  $label = ( !empty( $label) ? $label : __( ucfirst($name), $this->hook ) );
       echo '<label' . ( !empty( $labelid ) ? ' id=' . $labelid : '' ) . '><input type="checkbox" class="show_list" name="' . $this->option_name . '[show_on_' . $name . ']" value="on" ';
       $this->checked( 'show_on_' . $name, 'on');
-      echo ' />' . __( ucfirst($label), $this->hook ) . '</label>';
+      echo ' />' . $label . '</label>';
     }
 
 
@@ -863,7 +870,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         //require_once('includes/nav-menu.php');
         wp_enqueue_script('post');
 
-        add_meta_box('categorydiv', __('Button categories:'), 'post_categories_meta_box', 'settings_page_'. $this->hook, 'normal', 'core');
+        add_meta_box('categorydiv', __('Only display when post is in:'), 'post_categories_meta_box', 'settings_page_'. $this->hook, 'normal', 'core');
       }
     }
 
@@ -991,32 +998,28 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 
     <!--Section 3 Button Placement-->
           <div id="button-placement">
-            <h3><?php _e( "Button Placement", $this->hook ); ?></h3>
+            <h3><?php _e( "Display button on:", $this->hook ); ?></h3>
             <div id="pages">
-              <?php $this->create_checkbox('posts'); ?>
-              <?php $this->create_checkbox('pages'); ?>
-              <?php $this->create_checkbox('homepage'); ?>
-              <?php $this->create_checkbox('categories'); ?>
-              <?php $this->create_checkbox('taxonomies'); ?>
+              <?php $this->create_checkbox('posts', __( 'Posts', $this->hook )); ?>
+              <?php $this->create_checkbox('pages', __( 'Pages', $this->hook )); ?>
+              <?php $this->create_checkbox('homepage', __( 'Homepage', $this->hook )); ?>
+              <?php $this->create_checkbox('categories', __( 'Category Pages', $this->hook )); ?>
+              <?php $this->create_checkbox('taxonomies', __( 'Taxonomy Pages', $this->hook )); ?>
               <label><input type="checkbox" class="show_template" name="show_on_template" /><?php echo _e( 'Add direct to template', $this->hook ); ?></label>
               <textarea id="pf-shortcode" class="code" rows="2" cols="40">&lt;?php if(function_exists('pf_show_link')){echo pf_show_link();} ?&gt;</textarea>
               <label><?php _e( "or use shortcode inside your page/article", $this->hook ); ?></label>
               <textarea id="pf-shortcode" class="code" rows="2" cols="40">[printfriendly]</textarea>
-              <input type="hidden" name="<?php echo $this->option_name; ?>[category_ids]" id="category_ids" value="<?php echo implode(',', $this->options['category_ids']); ?>" />
+              <?php /* <input type="hidden" name="<? php echo $this->option_name; ?>[category_ids]" id="category_ids" value="<?php echo implode(',', $this->options['category_ids']); ? >" /> */ ?>
             </div>
           </div>
-          <?php if($this->wp_version_gt30()) { ?>
+          <?php /*if($this->wp_version_gt30()) { ? >
           <div id="pf-categories">
-            <?php printf( __( 'Specify <a %s>specific categories</a>', $this->hook), ' href="javascript:void(0)" id="toggle-categories"' ); ?>
-            <br/>
-            <p class="description pf-categories">
-              <?php _e( "Selecting categories will act as an additional filter for when to display the buttons.", $this->hook ); ?>
-            </p>
+            <h4><?php printf( __( '<a %s>Additional filter</a>', $this->hook), ' href="javascript:void(0)" id="toggle-categories"' ); ?></h4>
             <div id="pf-categories-metabox">
               <?php $this->create_category_metabox(); ?>
             </div>
            </div>
-          <?php } ?>
+          <? php } */ ?>
 
           <br class="clear">
 

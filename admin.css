@@ -337,8 +337,11 @@ div#category-adder {
 	float: left;
 	position: relative;
 	top: 1.5em;
-	left: -50px;
+	left: 20px;
 	width: 270px;
+}
+#pf-categories h4 {
+	margin: 0 0 0.4em 0;
 }
 
 #pf-categories-metabox, #category-adder {
