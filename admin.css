@@ -1,32 +1,38 @@
-label{
+label {
   display: block;
   margin: 1.5em 0;
 }
 
-h3{
+h3 {
   margin: 3em 0 2em;
   border-bottom: 1px solid #ccc;
   padding-bottom:.75em;
   clear: both;
 }
 
-#buttongroup1, #buttongroup2, #buttongroup3, #custom-txt div, #button-placement div{
+h3.hndle {
+  clear:none;
+  padding: 7px 5px;
+}
+
+#buttongroup1, #buttongroup2, #buttongroup3, #custom-txt div, #button-positioning div, #button-placement div {
   display: block;
   margin-right: 3em;
   float: left;
 }
-#custom-txt div#txt-size, div#button-placement-options{
+#custom-txt div#txt-size, div#button-positioning-options {
   margin-right: 0;
 }
+
 #custom-button-preview {
   clear:both;
   padding-top: 20px;
   margin-left: 2em;
 }
-#custom-button-preview img{
+#custom-button-preview img {
   margin-right: 6px;
 }
-#custom, #placement-adv-options{
+#custom, #placement-adv-options {
   float: left;
 }
 
@@ -35,10 +41,10 @@ h3{
   clear: both;
 }
 
-.description{
+.description {
   color: #cacaca;
 }
-.printfriendly-text2{
+.printfriendly-text2 {
   font-family: verdana;
   font-size: 14px;
   color: #6D9F00;
@@ -47,7 +53,7 @@ select{
   display: block;
   margin: .5em .5em 2em 0;
 }
-select#javascript, select#website_protocol{
+select#javascript, select#website_protocol {
   display: inline-block;
   margin-bottom: 0;
 }
@@ -75,15 +81,15 @@ input[type="number"] {
 	width: 36px;
 	margin-right: .5em;
 }
-#css{
+#css {
   font-size: 11px;
   color:#bbb;
 }
-#css input{
+#css input {
   margin: 0 6px 0 12px;
   vertical-align: baseline;
 }
-#pf-shortcode{
+#pf-shortcode {
  
   margin-left: 2em;
 }
@@ -118,7 +124,7 @@ label#pf-favicon {
 	background: url(images/pf-icon.png) center center no-repeat;	
 }
 
-#after-submit{
+#after-submit {
   border-top: 2px dashed #dfdfdf;
   margin:4em 0;
   padding-top:1em;
@@ -316,4 +322,28 @@ label#pf-favicon {
 
 .colorpicker_slider {
 	background-position: bottom;
+}
+
+#button-placement div#pages label {
+	clear: left;
+}
+
+div#category-adder {
+	float: none;
+}
+
+#pf-categories {
+	display: none;
+	float: left;
+	position: relative;
+	top: 1.5em;
+	left: 20px;
+	width: 270px;
+}
+#pf-categories h4 {
+	margin: 0 0 0.4em 0;
+}
+
+#pf-categories-metabox, #category-adder {
+  display: none;
 }
