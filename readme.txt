@@ -3,7 +3,7 @@ Contributors: printfriendly,joostdevalk, jrf
 Tags: print, pdf, printer, printing, printable, widget, plugin
 Requires at least: 2.8
 Tested up to: 3.5.1
-Stable tag: 3.2.4
+Stable tag: 3.2.5
 
 The #1 Print and PDF button for your WordPress site. Printer Friendly pages without coding, css, or print.css. Fast, easy, and professional.
 
@@ -97,6 +97,15 @@ If you have any other issues with the plugin or the PrintFriendly widget, please
 3. Localization example: Spanish
 
 == Changelog ==
+
+= 3.2.5 =
+* New! Image alignment option for Print and PDF pages.
+* New! Select to not show images by default in the Print and PDF.
+* Improved input validation.
+* Improved output escaping.
+* Removed printfriendly post_class.
+* Small i8n fix.
+* Few small HTML fixes.
 
 = 3.2.4 =
 * Add printfriendly post_class.

@@ -347,3 +347,9 @@ div#category-adder {
 #pf-categories-metabox, #category-adder {
   display: none;
 }
+
+span.description.pf-help-link {
+	font-size: 130%;
+	padding-left: 10px;
+	font-style: normal;
+}
