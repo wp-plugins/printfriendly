@@ -5,11 +5,12 @@ Plugin Name: Print Friendly and PDF
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF button for your website. Optimizes your pages and brand for print, pdf, and email.
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.
-Version: 3.2.4
+Version: 3.2.5
 Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.2.5 - Added hide images and image style options. Improved input validation. Improved output escaping. Removed printfriendly post_class. Small i8n fix. Few small HTML fixes.
 3.2.4 - Add printfriendly post_class. Fixed minor JS bug. Added redundancy to uninstall script.
 3.2.3 - Rolling back to version 3.2.1
 3.2.2 - Add printfriendly post_class. Add printfriendly button display settings per individual category. Fixed minor JS bug. Added redundancy to uninstall script.
@@ -86,7 +87,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
      * Database version, used to allow for easy upgrades to / additions in plugin options between plugin versions.
      * @var int
      */
-    var $db_version = 6;
+    var $db_version = 7;
 
     /**
      * Settings page, used within the plugin to reliably load the plugins admin JS and CSS files only on the admin page.
@@ -121,12 +122,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
       }
 
 
-      if ( !is_admin() ) {
-        // Register function that adds pf content class to article content
-        add_filter("post_class", array( &$this, 'add_pf_content_class' ) );
-
-      }
-	  else {
+      if ( is_admin() ) {
         // Hook into init for registration of the option and the language files
         add_action( 'admin_init', array( &$this, 'init' ) );
 
@@ -215,16 +211,6 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
     }
 
 
-    /**
-     * Adds class=wp-pf-content to the content container.
-     *
-     * @since 3.2.2
-    */
-    function add_pf_content_class( $classes = array() ) {
-      $classes[] = esc_attr( 'wp-pf-content' );
-      return array_unique( $classes );
-    }
-
 
     /**
      * Prints the PrintFriendly JavaScript, in the footer, and loads it asynchronously.
@@ -251,17 +237,19 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 
 ?>
         <script type="text/javascript">
-          var pfHeaderImgUrl = "<?php echo $image_url ?>";
-          var pfHeaderTagline = "<?php echo $tagline ?>";
-          var pfdisableClickToDel = "<?php echo $this->options['click_to_delete'] ?>";
-          var pfDisableEmail = "<?php echo $this->options['email'] ?>";
-          var pfDisablePDF = "<?php echo $this->options['pdf'] ?>";
-          var pfDisablePrint = "<?php echo $this->options['print'] ?>";
-          var pfCustomCSS = "<?php echo $this->options['custom_css_url'] ?>";
+          var pfHeaderImgUrl = '<?php echo esc_js(esc_url_raw($image_url)); ?>';
+          var pfHeaderTagline = '<?php echo esc_js($tagline); ?>';
+          var pfdisableClickToDel = '<?php echo esc_js($this->options['click_to_delete']); ?>';
+          var pfHideImages = '<?php echo esc_js($this->options['hide-images']); ?>';
+          var pfImageDisplayStyle = '<?php echo esc_js($this->options['image-style']); ?>';
+          var pfDisableEmail = '<?php echo esc_js($this->options['email']); ?>';
+          var pfDisablePDF = '<?php echo esc_js($this->options['pdf']); ?>';
+          var pfDisablePrint = '<?php echo esc_js($this->options['print']); ?>';
+          var pfCustomCSS = '<?php echo esc_js($this->options['custom_css_url']); ?>';
 
           // PrintFriendly
           var e = document.createElement('script'); e.type="text/javascript";
-          e.src = '<?php echo $pf_src ?>';
+          e.src = '<?php echo esc_js(esc_url_raw($pf_src)); ?>';
           document.getElementsByTagName('head')[0].appendChild(e);
       </script>
 <?php
@@ -364,6 +352,83 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
     function options_validate( $input ) {
       $valid_input = $input;
 
+	  /* Section 1 options */
+      if ( !isset( $input['button_type'] ) || !in_array( $input['button_type'], array(
+	    'pf-button.gif', 'pf-button-both.gif', 'pf-button-big.gif', // buttongroup1
+		'button-print-grnw20.png', 'button-print-blu20.png', 'button-print-gry20.png', // buttongroup2
+		'pf-icon-small.gif', 'pf-icon-both.gif','pf-icon.gif', 'text-only', // buttongroup3
+		'custom-image', // custom
+		'button-print-whgn20.png', 'pf_button_sq_gry_m.png', 'pf_button_sq_gry_l.png', 'pf_button_sq_grn_m.png',
+		'pf_button_sq_grn_l.png', // backward compatibility
+		) ) )
+        $valid_input['button_type'] = 'pf-button.gif';
+
+// @todo custom image url validation
+      if ( !isset( $input['custom_image'] ) || empty( $input['custom_image'] ) )
+        $valid_input['custom_image'] = '';
+
+// @todo validate optional custom text
+      if ( !isset( $input['custom_text'] ) ) {
+	  	$valid_input['custom_text'] = 'Print Friendly';
+      }
+/*      else {
+
+      }*/
+      
+      // Custom button selected, but no url nor text given, reset button type to default
+      if( 'custom-image' === $valid_input['button_type'] && ( '' === $valid_input['custom_image'] && '' === $input['custom_text'] ) ) {
+        $valid_input['button_type'] = 'pf-button.gif';
+        add_settings_error( $this->option_name, 'invalid_custom_image', __( 'No valid custom image url received, please enter a valid url to use a custom image.', $this->hook ) );
+      }
+
+
+      $valid_input['text_size'] = (int) $input['text_size'];
+      if ( !isset($valid_input['text_size']) || 0 == $valid_input['text_size'] ) {
+        $valid_input['text_size'] = 14;
+      } else if ( 25 < $valid_input['text_size'] || 9 > $valid_input['text_size'] ) {
+        $valid_input['text_size'] = 14;
+        add_settings_error( $this->option_name, 'invalid_text_size', __( 'The text size you entered is invalid, please stay between 9px and 25px', $this->hook ) );
+      }
+
+      if ( !isset( $input['text_color'] )) {
+        $valid_input['text_color'] = $this->options['text_color'];
+      } else if ( ! preg_match('/^#[a-f0-9]{3,6}$/i', $input['text_color'] ) ) {
+        // Revert to previous setting and throw error.
+        $valid_input['text_color'] = $this->options['text_color'];
+        add_settings_error( $this->option_name, 'invalid_color', __( 'The color you entered is not valid, it must be a valid hexadecimal RGB font color.', $this->hook ) );
+      }
+      
+
+
+	  /* Section 2 options */
+      if ( !isset( $input['enable_css'] ) || 'off' !== $input['enable_css'] )
+        $valid_input['enable_css'] = 'on';
+
+      if ( !isset( $input['content_position'] ) || !in_array( $input['content_position'], array( 'none', 'left', 'center', 'right' ) ) )
+        $valid_input['content_position'] = 'left';
+
+      if ( !isset( $input['content_placement'] ) || !in_array( $input['content_placement'], array( 'before', 'after' ) ) )
+        $valid_input['content_placement'] = 'after';
+
+      foreach ( array( 'margin_top', 'margin_right', 'margin_bottom', 'margin_left' ) as $opt )
+        $valid_input[$opt] = (int) $input[$opt];
+
+      unset( $opt );
+
+
+	  /* Section 3 options */
+      foreach ( array( 'show_on_posts', 'show_on_pages', 'show_on_homepage', 'show_on_categories', 'show_on_taxonomies' ) as $opt ) {
+        if ( !isset( $input[$opt] ) || 'on' !== $input[$opt] ) {
+          unset( $valid_input[$opt] );
+        }
+      }
+      unset( $opt );
+
+      // Just in case
+      if( isset( $input['show_on_template'] ) )
+        unset( $valid_input['show_on_template'] );
+
+
 	  if( isset( $input['category_ids'] ) ) {
 	  	/**
 		 * Validate received category ids:
@@ -389,38 +454,62 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
       //echo '<pre>'.print_r($input,1).'</pre>';
       //die;
 
-      if ( !in_array( $input['button_type'], array( 'pf-button.gif', 'button-print-grnw20.png',  'button-print-blu20.png',  'button-print-gry20.png',  'button-print-whgn20.png',  'pf_button_sq_gry_m.png',  'pf_button_sq_gry_l.png',  'pf_button_sq_grn_m.png',  'pf_button_sq_grn_l.png', 'pf-button-big.gif', 'pf-icon-small.gif', 'pf-icon.gif', 'pf-button-both.gif', 'pf-icon-both.gif', 'text-only', 'custom-image') ) )
-        $valid_input['button_type'] = 'pf-button.gif';
 
-      if ( !isset( $input['custom_image'] ) )
-        $valid_input['custom_image'] = '';
 
-      if ( !in_array( $input['content_position'], array( 'none', 'left', 'center', 'right' ) ) )
-        $valid_input['content_position'] = 'left';
+	  /* Section 4 options */
+      if ( !isset( $input['logo'] ) || !in_array( $input['logo'], array( 'favicon', 'upload-an-image' ) ) )
+        $valid_input['logo'] = 'favicon';
 
-      if ( !in_array( $input['content_placement'], array( 'before', 'after' ) ) )
-        $valid_input['content_placement'] = 'after';
+// @todo custom logo url validation
+      if ( !isset( $input['image_url'] ) || empty( $input['image_url'] ) )
+        $valid_input['image_url'] = '';
 
-      foreach ( array( 'margin_top', 'margin_right', 'margin_bottom', 'margin_left' ) as $opt )
-        $valid_input[$opt] = (int) $input[$opt];
+// @todo validate optional tagline text
+      if ( !isset( $input['tagline'] ) ) {
+	  	$valid_input['tagline'] = '';
+      }
+/*      else {
 
-      $valid_input['text_size'] = (int) $input['text_size'];
+      }*/
 
-      if ( !isset($valid_input['text_size']) || 0 == $valid_input['text_size'] ) {
-        $valid_input['text_size'] = 14;
-      } else if ( 25 < $valid_input['text_size'] || 9 > $valid_input['text_size'] ) {
-        $valid_input['text_size'] = 14;
-        add_settings_error( $this->option_name, 'invalid_color', __( 'The text size you entered is invalid, please stay between 9px and 25px', $this->hook ) );
+      // Custom logo selected, but no valid url given, reset logo to default
+      if( 'upload-an-image' === $valid_input['logo'] && '' === $valid_input['image_url'] ) {
+        $valid_input['logo'] = 'favicon';
+        add_settings_error( $this->option_name, 'invalid_custom_logo', __( 'No valid custom logo url received, please enter a valid url to use a custom logo.', $this->hook ) );
       }
 
-      if ( !isset( $input['text_color'] )) {
-        $valid_input['text_color'] = $this->options['text_color'];
-      } else if ( ! preg_match('/^#[a-f0-9]{3,6}$/i', $input['text_color'] ) ) {
-        // Revert to previous setting and throw error.
-        $valid_input['text_color'] = $this->options['text_color'];
-        add_settings_error( $this->option_name, 'invalid_color', __( 'The color you entered is not valid, it must be a valid hexadecimal RGB font color.', $this->hook ) );
-      }
 
+      if ( !isset( $input['image-style'] ) || !in_array( $input['image-style'], array( 'right', 'left', 'none', 'block' ) ) )
+        $valid_input['image-style'] = 'right';
+
+
+      foreach( array( 'click_to_delete', 'hide-images', 'email', 'pdf', 'print', ) as $opt ) {
+        if( !isset( $input[$opt] ) || !in_array( $input[$opt], array( '0', '1' ) ) ) {
+          $valid_input[$opt] = '0';
+		}
+      }
+      unset( $opt );
+
+      
+// @todo custom css url validation
+      if ( !isset( $input['custom_css_url'] ) || empty( $input['custom_css_url'] ) )
+        $valid_input['custom_css_url'] = '';
+
+
+
+	  /* Section 5 options */
+      if ( !isset( $input['website_protocol'] ) || !in_array( $input['website_protocol'], array( 'http', 'https' ) ) )
+        $valid_input['website_protocol'] = 'http';
+
+      if ( !isset( $input['password_protected'] ) || !in_array( $input['password_protected'], array( 'no', 'yes' ) ) )
+        $valid_input['password_protected'] = 'no';
+
+      if ( !isset( $input['javascript'] ) || !in_array( $input['javascript'], array( 'no', 'yes' ) ) )
+        $valid_input['javascript'] = 'yes';
+
+
+
+	  /* Database version */
       $valid_input['db_version'] = $this->db_version;
 
       return $valid_input;
@@ -459,7 +548,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
      */
     function admin_enqueue_scripts( $screen_id ) {
       if ( $this->settings_page == $screen_id ) {
-        $ver = '3.2.4';
+        $ver = '3.2.5';
         wp_register_script( 'pf-color-picker', plugins_url( 'colorpicker.js', __FILE__ ), array( 'jquery', 'media-upload' ), $ver );
         wp_register_script( 'pf-admin-js', plugins_url( 'admin.js', __FILE__ ), array( 'jquery', 'media-upload' ), $ver );
 
@@ -517,6 +606,8 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         'image_url' => '',
         'tagline' => '',
         'click_to_delete' => '0', // 0 - allow, 1 - do not allow
+        'hide-images' => '0', // 0 - show images, 1 - hide images
+        'image-style' => 'right', // 'right', 'left', 'none', 'block'
         'email' => '0', // 0 - allow, 1 - do not allow
         'pdf' => '0', // 0 - allow, 1 - do not allow
         'print' => '0', // 0 - allow, 1 - do not allow
@@ -653,6 +744,17 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 */
         unset($this->options['category_ids']);
       }
+      
+      
+      if($this->options['db_version'] < 7) {
+
+        $additional_options = array(
+          'hide-images' => '0',
+          'image-style' => 'right',
+        );
+
+        $this->options = array_merge($this->options, $additional_options);
+      }
       $this->options['db_version'] = $this->db_version;
       update_option( $this->option_name, $this->options );
     }
@@ -783,7 +885,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 	  $label = ( !empty( $label) ? $label : __( ucfirst($name), $this->hook ) );
       echo '<label' . ( !empty( $labelid ) ? ' id=' . $labelid : '' ) . '><input type="checkbox" class="show_list" name="' . $this->option_name . '[show_on_' . $name . ']" value="on" ';
       $this->checked( 'show_on_' . $name, 'on');
-      echo ' />' . $label . '</label>';
+      echo ' />' . $label . "</label>\r\n";
     }
 
 
@@ -960,7 +1062,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
             </h3>
             <div id="button-positioning-options">
               <div id="alignment">
-                <label>
+                <label<?php /*for="pf_content_position"*/ ?>>
                   <select id="pf_content_position" name="<?php echo $this->option_name; ?>[content_position]" >
                     <option value="left" <?php selected( $this->options['content_position'], 'left' ); ?>><?php _e( "Left Align", $this->hook ); ?></option>
                     <option value="right" <?php selected( $this->options['content_position'], 'right' ); ?>><?php _e( "Right Align", $this->hook ); ?></option>
@@ -970,7 +1072,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
                 </label>
               </div>
               <div class="content_placement">
-                <label>
+                <label<?php /* for="pf_content_placement"*/ ?>>
                   <select id="pf_content_placement" name="<?php echo $this->option_name; ?>[content_placement]" >
                     <option value="before" <?php selected( $this->options['content_placement'], 'before' ); ?>><?php _e( "Above Content", $this->hook ); ?></option>
                     <option value="after" <?php selected( $this->options['content_placement'], 'after' ); ?>><?php _e( "Below Content", $this->hook ); ?></option>
@@ -978,18 +1080,18 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
                 </label>
               </div>
               <div id="margin">
-                <label>
-                  <input type="number" name="<?php echo $this->option_name; ?>[margin_left]" value="<?php $this->val( 'margin_left' ); ?>" maxlength="3"/>
+                <label for="pf-margin_left">
+                  <input type="number" name="<?php echo $this->option_name; ?>[margin_left]" id="pf-margin_left" value="<?php $this->val( 'margin_left' ); ?>" maxlength="3"/>
                   <?php _e( "Margin Left", $this->hook ); ?>
                 </label>
-                <label>
-                  <input type="number" name="<?php echo $this->option_name; ?>[margin_right]" value="<?php $this->val( 'margin_right' ); ?>"/> <?php _e( "Margin Right", $this->hook ); ?>
+                <label for="pf-margin_right">
+                  <input type="number" name="<?php echo $this->option_name; ?>[margin_right]" id="pf-margin_right" value="<?php $this->val( 'margin_right' ); ?>"/> <?php _e( "Margin Right", $this->hook ); ?>
                 </label>
-                <label>
-                  <input type="number" name="<?php echo $this->option_name; ?>[margin_top]"  value="<?php $this->val( 'margin_top' ); ?>" maxlength="3"/> <?php _e( "Margin Top", $this->hook ); ?>
+                <label for="pf-margin_top">
+                  <input type="number" name="<?php echo $this->option_name; ?>[margin_top]" id="pf-margin_top" value="<?php $this->val( 'margin_top' ); ?>" maxlength="3"/> <?php _e( "Margin Top", $this->hook ); ?>
                 </label>
-                <label>
-                  <input type="number" name="<?php echo $this->option_name; ?>[margin_bottom]" value="<?php $this->val( 'margin_bottom' ); ?>" maxlength="3"/> <?php _e( "Margin Bottom", $this->hook ); ?>
+                <label for="pf-margin_bottom">
+                  <input type="number" name="<?php echo $this->option_name; ?>[margin_bottom]" id="pf-margin_bottom" value="<?php $this->val( 'margin_bottom' ); ?>" maxlength="3"/> <?php _e( "Margin Bottom", $this->hook ); ?>
                 </label>
               </div>
             </div>
@@ -1005,10 +1107,10 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
               <?php $this->create_checkbox('homepage', __( 'Homepage', $this->hook )); ?>
               <?php $this->create_checkbox('categories', __( 'Category Pages', $this->hook )); ?>
               <?php $this->create_checkbox('taxonomies', __( 'Taxonomy Pages', $this->hook )); ?>
-              <label><input type="checkbox" class="show_template" name="show_on_template" /><?php echo _e( 'Add direct to template', $this->hook ); ?></label>
+              <label for="show_on_template"><input type="checkbox" class="show_template" name="show_on_template" id="show_on_template" /><?php echo _e( 'Add direct to template', $this->hook ); ?></label>
               <textarea id="pf-shortcode" class="code" rows="2" cols="40">&lt;?php if(function_exists('pf_show_link')){echo pf_show_link();} ?&gt;</textarea>
-              <label><?php _e( "or use shortcode inside your page/article", $this->hook ); ?></label>
-              <textarea id="pf-shortcode" class="code" rows="2" cols="40">[printfriendly]</textarea>
+              <label<?php /* for="pf-shortcode2"*/ ?>><?php _e( "or use shortcode inside your page/article", $this->hook ); ?></label>
+              <textarea<?php /*  id="pf-shortcode2"*/ ?> class="code" rows="2" cols="40">[printfriendly]</textarea>
               <?php /* <input type="hidden" name="<? php echo $this->option_name; ?>[category_ids]" id="category_ids" value="<?php echo implode(',', $this->options['category_ids']); ? >" /> */ ?>
             </div>
           </div>
@@ -1026,13 +1128,17 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
     <!--Section 4 Button Print Options-->
           <div id="print-options">
             <h3><?php _e( "Print PDF Options", $this->hook ); ?></h3>
-            <label id="pf-favicon" for="favicon">
+            <label id="pf-favicon" for="favicon"<?php /*for="pf-logo"*/ ?>>
               <?php _e( "Page header", $this->hook ); ?>
               <select id="pf-logo" name="<?php echo $this->option_name; ?>[logo]" >
                 <option value="favicon" <?php selected( $this->options['logo'], 'favicon' ); ?>><?php _e( "My Website Icon", $this->hook ); ?></option>
                 <option value="upload-an-image" <?php selected( $this->options['logo'], 'upload-an-image' ); ?>><?php _e( "Upload an Image", $this->hook ); ?></option>
               </select>
             </label>
+<?php /*            <div class="custom-logo">
+			  <label for="upload-an-image"><?php _e( "Enter url", $this->hook ); ?></label><input id="upload-an-image" type="text" class="regular-text" name="<?php echo $this->option_name; ?>[image_url]" value="<?php $this->val( 'image_url' ); ?>" />
+			  <label for="image-tagline"><?php _e( "Text (optional)", $this->hook ); ?></label><input id="image-tagline" type="text" class="regular-text" name="<?php echo $this->option_name; ?>[tagline]" value="<?php $this->val( 'tagline' ); ?>" />
+			</div> */ ?>
             <div class="custom-logo"><label for="Enter_URL">Enter url</label><input id="upload-an-image" type="text" class="regular-text" name="<?php echo $this->option_name; ?>[image_url]" value="<?php $this->val( 'image_url' ); ?>" /><label for="Text__optional_">Text (optional)</label><input id="image-tagline" type="text" class="regular-text" name="<?php echo $this->option_name; ?>[tagline]" value="<?php $this->val( 'tagline' ); ?>" /></div>
             <div id="pf-image-error"></div>
             <div id="pf-image-preview"></div>
@@ -1041,6 +1147,22 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
               <select name="<?php echo $this->option_name; ?>[click_to_delete]" id="click-to-delete">
                 <option value="0" <?php selected( $this->options['click_to_delete'], '0' ); ?>><?php _e( "Allow", $this->hook ); ?></option>
                 <option value="1" <?php selected( $this->options['click_to_delete'], '1' ); ?>><?php _e( "Not Allow", $this->hook ); ?></option>
+              </select>
+            </label>
+            <label for="hide-images">
+              <?php _e( "Images", $this->hook ); ?>
+              <select name="<?php echo $this->option_name; ?>[hide-images]" id="hide-images">
+                <option value="0" <?php selected( $this->options['hide-images'], '0' ); ?>><?php _e( "Include", $this->hook ); ?></option>
+                <option value="1" <?php selected( $this->options['hide-images'], '1' ); ?>><?php _e( "Exclude", $this->hook ); ?></option>
+              </select>
+            </label>
+            <label for="image-style">
+              <?php _e( "Image style", $this->hook ); ?>
+              <select name="<?php echo $this->option_name; ?>[image-style]" id="image-style">
+                <option value="right" <?php selected( $this->options['image-style'], 'right' ); ?>><?php _e( "Align Right", $this->hook ); ?></option>
+                <option value="left" <?php selected( $this->options['image-style'], 'left' ); ?>><?php _e( "Align Left", $this->hook ); ?></option>
+                <option value="none" <?php selected( $this->options['image-style'], 'none' ); ?>><?php _e( "Align None", $this->hook ); ?></option>
+                <option value="block" <?php selected( $this->options['image-style'], 'block' ); ?>><?php _e( "Center/Block", $this->hook ); ?></option>
               </select>
             </label>
             <label for="email">
@@ -1067,13 +1189,14 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
             <label for="custom_css_url">
               <?php _e( "Custom css url", $this->hook ); ?>
               <input id="custom_css_url" type="text" class="regular-text" name="<?php echo $this->option_name; ?>[custom_css_url]" value="<?php $this->val( 'custom_css_url' ); ?>" />
+              <span class="description pf-help-link"><a target="_howto" href="http://support.printfriendly.com/customer/portal/articles/895256-custom-css-styles"><?php _e( '?', $this->hook ); ?></a></span>
             </label>
           </div>
 
    <!--Section 5 WebMaster-->
         <h3><?php _e( "Webmaster Settings", $this->hook ); ?></h3>
 
-        <label for="protocol">Website Protocol<br>
+        <label for="protocol"<?php /* for="website_protocol"*/ ?>>Website Protocol<br>
           <select id="website_protocol" name="<?php echo $this->option_name; ?>[website_protocol]" >
             <option value="http" <?php selected( $this->options['website_protocol'], 'http' ); ?>><?php _e( "http (common)", $this->hook ); ?></option>
             <option value="https" <?php selected( $this->options['website_protocol'], 'https' ); ?>><?php _e( "https (secure)", $this->hook ); ?></option>
@@ -1081,13 +1204,13 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
           <span id="https-beta-registration" class="description">HTTPS is in Beta. Please <a href="#" onclick="window.open('http://www.printfriendly.com/https-registration.html', 'newwindow', 'width=600, height=550'); return false;">Register for updates</a>.
           </span>
         </label>
-        <label for="password-site">Password Protected Content
+        <label for="password-site"<?php /*for="password_protected"*/ ?>>Password Protected Content
           <select id="password_protected" name="<?php echo $this->option_name; ?>[password_protected]">
             <option value="no" <?php selected( $this->options['password_protected'], 'no' ); ?>><?php _e( "No", $this->hook ); ?></option>
             <option value="yes" <?php selected( $this->options['password_protected'], 'yes' ); ?>><?php _e( "Yes", $this->hook ); ?></option>
           </select>
         </label>
-        <label id="pf-javascript-container">Use JavaScript<br>
+        <label id="pf-javascript-container" <?php /*for="javascript"*/ ?>>Use JavaScript<br>
           <select id="javascript" name="<?php echo $this->option_name; ?>[javascript]>">
             <option value="yes" <?php $this->selected( 'javascript', 'yes' ); ?>> <?php _e( "Yes", $this->hook ); ?></option>
             <option value="no" <?php $this->selected( 'javascript', 'no' ); ?>> <?php _e( "No", $this->hook ); ?></option>
