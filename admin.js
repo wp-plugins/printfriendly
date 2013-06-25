@@ -183,13 +183,11 @@ jQuery(document).ready(function() {
   function pf_on_javascript() {
     jQuery('.javascript').show();
     jQuery('.no-javascript').hide();
-    jQuery('#print-options').show('slow');
   }
 
   function pf_on_no_javascript() {
     jQuery('.javascript').hide();
     jQuery('.no-javascript').show();
-    jQuery('#print-options').hide('slow');
   }
 
   function pf_reset_style() {
