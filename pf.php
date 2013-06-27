@@ -5,11 +5,12 @@ Plugin Name: Print Friendly and PDF
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF button for your website. Optimizes your pages and brand for print, pdf, and email.
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.
-Version: 3.2.6
+Version: 3.2.7
 Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.2.7 - Removed Break tag from button code.
 3.2.6 - Fixed Button behavior when displayed on Homepage for NON-JS version. Fixed CSS issue with Button when placed above content. Fixed box-shadow issue with button. Custom print and pdf options now available for Non-JS version (custom header, custom css, image alignment, etc.). Fixed custom header bug.
 3.2.5 - Added hide images and image style options. Improved input validation. Improved output escaping. Removed printfriendly post_class. Small i8n fix. Few small HTML fixes.
 3.2.4 - Add printfriendly post_class. Fixed minor JS bug. Added redundancy to uninstall script.
@@ -287,7 +288,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
       if ( 'none' != $this->options['content_position'] )
         $align = ' pf-align'.$this->options['content_position'];
 
-      $button = apply_filters( 'printfriendly_button', '<div class="printfriendly'.$align.'"><a href="'.$href.'" rel="nofollow" '.$onclick.'>'.$this->button().'</a></div><br clear="all" />' );
+      $button = apply_filters( 'printfriendly_button', '<div class="printfriendly'.$align.'"><a href="'.$href.'" rel="nofollow" '.$onclick.'>'.$this->button().'</a></div>' );
 
 
       if ( $is_manual )
