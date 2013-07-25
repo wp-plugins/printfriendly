@@ -10,6 +10,7 @@ Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.2.8 - Algorithm Update
 3.2.7 - Removed Break tag from button code.
 3.2.6 - Fixed Button behavior when displayed on Homepage for NON-JS version. Fixed CSS issue with Button when placed above content. Fixed box-shadow issue with button. Custom print and pdf options now available for Non-JS version (custom header, custom css, image alignment, etc.). Fixed custom header bug.
 3.2.5 - Added hide images and image style options. Improved input validation. Improved output escaping. Removed printfriendly post_class. Small i8n fix. Few small HTML fixes.
@@ -122,7 +123,10 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         add_filter( 'the_content', array( &$this, 'show_link' ) );
         add_filter( 'the_excerpt', array( &$this, 'show_link' ) );
       }
-
+		
+	  if ($this->use_wp_content_hook()) {		
+		add_action('the_content', array(&$this, 'add_pf_content_class_around_content_hook'));
+	  }
 
       if ( is_admin() ) {
         // Hook into init for registration of the option and the language files
@@ -141,6 +145,31 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         add_filter( 'plugin_action_links', array( &$this, 'filter_plugin_actions' ), 10, 2 );
 	  }
     }
+
+
+	/**
+	* Returns true if WP content hooks are to used to find content
+	* @since 3.2.8
+	*
+	**/
+    function use_wp_content_hook() {
+		return $this->options['button_type'] == 'button-print-blu20.png';
+	}
+	
+	/**
+	* Adds wraps content in pf-content class to help Printfriendly algo determine the content
+	* 
+	* @since 3.2.8
+	*
+	**/
+	function add_pf_content_class_around_content_hook($content = false) {
+		if($content) {
+			add_action( 'wp_footer', array( &$this, 'print_script_footer' ));
+			return '<div class="pf-content">'.$content.'</div>';
+			}		
+		else
+			return $content;
+	}
 
     /**
      * PHP 4 Compatible Constructor
@@ -281,7 +310,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 
       if ( !is_singular() && '' != $onclick && $js_enabled)  {
         $onclick = '';
-        $href = get_permalink().'?pfstyle=wp';
+        $href = add_query_arg('pfstyle','wp',get_permalink());
       }
 
       $align = '';
