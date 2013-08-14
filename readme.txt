@@ -97,13 +97,13 @@ If you have any other issues with the plugin or the PrintFriendly widget, please
 3. Localization example: Spanish
 
 == Changelog ==
-= 3.2.10
+= 3.2.10 =
 * Fixed Bug in Google Analytics generation
 
-= 3.2.9
+= 3.2.9 =
 * Enabled support for Google Analytics
 
-= 3.2.8
+= 3.2.8 =
 * Algorithm Update
 
 = 3.2.7 = 
