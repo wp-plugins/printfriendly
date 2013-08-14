@@ -5,11 +5,13 @@ Plugin Name: Print Friendly and PDF
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF button for your website. Optimizes your pages and brand for print, pdf, and email.
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.
-Version: 3.2.8
+Version: 3.2.10
 Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.2.10 - Fixed Bug. 
+3.2.9 - Added Support for Google Analytics
 3.2.8 - Algorithm Update
 3.2.7 - Removed Break tag from button code.
 3.2.6 - Fixed Button behavior when displayed on Homepage for NON-JS version. Fixed CSS issue with Button when placed above content. Fixed box-shadow issue with button. Custom print and pdf options now available for Non-JS version (custom header, custom css, image alignment, etc.). Fixed custom header bug.
@@ -90,7 +92,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
      * Database version, used to allow for easy upgrades to / additions in plugin options between plugin versions.
      * @var int
      */
-    var $db_version = 7;
+    var $db_version = 8;
 
     /**
      * Settings page, used within the plugin to reliably load the plugins admin JS and CSS files only on the admin page.
@@ -298,13 +300,23 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
       $is_manual = $this->is_manual();
       if( !$content && !$is_manual )
         return "";
-
+	  $analytics_code = "";
       $onclick = 'onclick="window.print(); return false;"';
+	  $title_var = "NULL";
+	  $analytics_code = "if(typeof(_gaq) != 'undefined') { _gaq.push(['_trackEvent','PRINTFRIENDLY', 'print', '".$title_var."']);}";
+	
+	  if($this->google_analytics_enabled()) {
+		$onclick = 'onclick="window.print();'.$analytics_code.' return false;"';
+	  }
+	
       $href = 'http://www.printfriendly.com/print?url='.get_permalink();
 	  $js_enabled = $this->js_enabled();
       if (!$js_enabled)
       {
         $onclick = 'target="_blank"';
+		if($this->google_analytics_enabled()) {
+			$onclick = $onclick.' onclick="'.$analytics_code.'"';
+		}		
         $href = "http://www.printfriendly.com/print?headerImageUrl={$this->options['image_url']}&headerTagline={$this->options['tagline']}&pfCustomCSS={$this->options['custom_css_url']}&imageDisplayStyle={$this->options['image-style']}&disableClickToDel={$this->options['click_to_delete']}&disablePDF={$this->options['pdf']}&disablePrint={$this->options['print']}&disableEmail={$this->options['email']}&hideImages={$this->options['hide-images']}&url=".get_permalink();
       }
 
@@ -351,6 +363,13 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 
     }
 
+	/**
+	* @since 3.2.9
+	* @returns if google analytics enabled
+	*/
+	function google_analytics_enabled() {
+		return isset( $this->options['enable_google_analytics'] ) && $this->options['enable_google_analytics'] == 'yes';
+	}
     /**
 	* @since 3.2.6
 	* @return boolean true if JS is enabled for the plugin
@@ -547,8 +566,11 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 
       if ( !isset( $input['javascript'] ) || !in_array( $input['javascript'], array( 'no', 'yes' ) ) )
         $valid_input['javascript'] = 'yes';
-
-
+     
+	  /*Analytics Options */
+	  if ( !isset( $input['enable_google_analytics'] ) || !in_array( $input['enable_google_analytics'], array( 'no', 'yes' ) ) ) {
+		$valid_input['enable_google_analytics'] = "no";
+	  }
 
 	  /* Database version */
       $valid_input['db_version'] = $this->db_version;
@@ -656,6 +678,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         'password_protected' => 'no',
         'javascript' => 'yes',
         'custom_css_url' => '',
+		'enable_google_analytics' => 'no',
 //        'category_ids' => array('all'),
       );
 
@@ -796,6 +819,9 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 
         $this->options = array_merge($this->options, $additional_options);
       }
+      if($this->options['db_version'] < 8) {
+		$this->options['enable_google_analytics'] = 'no';
+	  }
       $this->options['db_version'] = $this->db_version;
       update_option( $this->option_name, $this->options );
     }
@@ -1272,7 +1298,12 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
             <?php _e( "Preview opens a new browser tab.", $this->hook ); ?>
           </span>
         </label>
-
+        <label id="pf-analytics-tracking" <?php /*for="javascript"*/ ?>>Track in Google Analytics<br>
+          <select id="pf-analytics-tracking" name="<?php echo $this->option_name; ?>[enable_google_analytics]">
+            <option value="yes" <?php $this->selected( 'enable_google_analytics', 'yes' ); ?>> <?php _e( "Yes", $this->hook ); ?></option>
+            <option value="no" <?php $this->selected( 'enable_google_analytics', 'no' ); ?>> <?php _e( "No", $this->hook ); ?></option>
+          </select>
+        </label>
         <p class="submit">
           <input type="submit" class="button-primary" value="<?php esc_attr_e( "Save Options", $this->hook ); ?>"/>
           <input type="reset" class="button-secondary" value="<?php esc_attr_e( "Cancel", $this->hook ); ?>"/>
