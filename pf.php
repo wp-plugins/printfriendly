@@ -5,11 +5,12 @@ Plugin Name: Print Friendly and PDF
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF button for your website. Optimizes your pages and brand for print, pdf, and email.
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.
-Version: 3.2.9
+Version: 3.2.10
 Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.2.10 - Fixed Bug. 
 3.2.9 - Added Support for Google Analytics
 3.2.8 - Algorithm Update
 3.2.7 - Removed Break tag from button code.
@@ -302,7 +303,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 	  $analytics_code = "";
       $onclick = 'onclick="window.print(); return false;"';
 	  $title_var = "NULL";
-	  $analytics_code = "if(typeof(_gaq) != 'undefined') { _gaq.push(['_trackEvent','PRINTFRIENDLY', 'print', '".$titlevarname."']);}";
+	  $analytics_code = "if(typeof(_gaq) != 'undefined') { _gaq.push(['_trackEvent','PRINTFRIENDLY', 'print', '".$title_var."']);}";
 	
 	  if($this->google_analytics_enabled()) {
 		$onclick = 'onclick="window.print();'.$analytics_code.' return false;"';
