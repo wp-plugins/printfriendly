@@ -5,11 +5,12 @@ Plugin Name: Print Friendly and PDF
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF button for your website. Optimizes your pages and brand for print, pdf, and email.
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.
-Version: 3.2.10
+Version: 3.3.0
 Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.3.0 - Printfriendly custom commands support and PF Algo V6 release.
 3.2.10 - Fixed Bug. 
 3.2.9 - Added Support for Google Analytics
 3.2.8 - Algorithm Update
@@ -165,7 +166,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 	*
 	**/
 	function add_pf_content_class_around_content_hook($content = false) {
-		if($content) {
+		if($content && !$this->print_only_override($content)) {
 			add_action( 'wp_footer', array( &$this, 'print_script_footer' ));
 			return '<div class="pf-content">'.$content.'</div>';
 			}		
@@ -173,6 +174,17 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 			return $content;
 	}
 
+	/**
+	*  Override to check if print-only command is being used 
+	*
+	*  @since 3.3.0
+	**/
+	function print_only_override($content) {
+		$pattern = '/class=[\"]print-only|class=[\']print-only|print-only/';
+		$pf_pattern = '/class=[\"]pf-content|class=[\']pf-content|pf-content/';
+		return (preg_match($pattern, $content) || preg_match($pf_pattern, $content)) ;
+	}
+	
     /**
      * PHP 4 Compatible Constructor
      *
@@ -1065,8 +1077,10 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         settings_errors();
 
       // Show the content of the options array when debug is enabled
-      if ( WP_DEBUG )
+      if ( WP_DEBUG ) {
+		echo "<p>Currently in Debug Mode. Following information is visible in debug mode only:</p>";
         echo '<pre>Options:<br><br>' . print_r( $this->options, 1 ) . '</pre>';
+	  }
 ?>
       <div id="pf_settings" class="wrap">
 
