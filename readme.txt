@@ -99,6 +99,8 @@ If you have any other issues with the plugin or the PrintFriendly widget, please
 
 == Changelog ==
 
+= 3.3.1 = 
+* SSL Support bug fixes. 
 
 = 3.3.0 =
 
