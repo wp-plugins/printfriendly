@@ -5,11 +5,12 @@ Plugin Name: Print Friendly and PDF
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF button for your website. Optimizes your pages and brand for print, pdf, and email.
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.
-Version: 3.3.1
+Version: 3.3.2
 Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.3.2 - Algorithm update
 3.3.1 - SSL support issue. 
 3.3.0 - Printfriendly custom commands support and PF Algo V6 release.
 3.2.10 - Fixed Bug. 
@@ -157,7 +158,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 	*
 	**/
     function use_wp_content_hook() {
-		return $this->options['button_type'] == 'button-print-blu20.png';
+		return (($this->options['button_type'] == 'button-print-blu20.png') || ($this->options['button_type'] == "pf-button-both.gif") || ($this->options['button_type'] == "pf-button-big.gif"));
 	}
 	
 	/**
