@@ -160,7 +160,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 	*
 	**/
     function use_wp_content_hook() {
-		return (isset($this->option['pf_algo']) && $this->options['pf_algo'] == 'wp');
+		return (isset($this->options['pf_algo']) && $this->options['pf_algo'] == 'wp');
 	}
 	
 	/**
