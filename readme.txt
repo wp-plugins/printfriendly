@@ -16,45 +16,6 @@ The Print Friendly & PDF button saves paper and ink when printing or creating a 
 
 The Print Friendly & PDF button automatically creates printer friendly and PDF versions of your pages without the hassle of having to create a print CSS file. No coding, hacking or programming required. Simply install the Print Friendly & PDF plugin, activate, and choose settings for full customization. It also gives your user the ability to remove images and paragraphs of text, so they really only have to print exactly what they want.
 
-
-= Free - Ad Supported = 
-
-This highly polished, professional plugin is free to use and fully functional. We maintain, improve, and offer support to all users. 
-
-You get all this for free, and in return tasteful ads are displayed in a non-interfering way.
-
-Ads are only shown in the email confirmation window. No other ads are displayed or embedded in the content, or snuck in anywhere else.
-
-
-= Purchase an Ad-Free Subscription = 
-
-Get a quality product for reasonable price. Remove the ads by purchasing an ad-free subscription. It’s cheap, easy, and straightforward. 
-
-Your ad-free subscription applies to this email plugin, and our popular PrintFriendly & PDF plugin. 
-
-Purchase now at PrintFriendly.com/pro(http://printfriendly.com/pro)
-
-= Privacy & Data = 
-
-PDFs are generated on our server; ** this plugin “phones home” **.  Also if the end-user shares the page via email, the email is sent by our server. 
-
-Our Fundamental Principles: 
-
-* **We do not sell data.** Period.
-* **We do not share data,** unless compelled by the law.
-* **We do not ask for personal information,** unless it's needed to provide a service.
-* **We don’t store personal information,**  unless required for the on-going operation of service.
-
-Specifically, here’s what we do with the data and information:
-
-**Page content is not sent or stored on server,** except to generate the PDF. After the PDF is generated, we temporarily store the PDF to allow the end-user time to download. After this time has expired, the PDF is permanently deleted.
-
-If you’re using the non-JavaScript option in the plugin, then the preview is generated on our server and temporarily stored in cache for a few minutes. After that time it is permanently deleted.
-
-**Email Address & Content get permanently deleted** In order to send the email, we need to store the email address and message on our server. After the email has been sent and found not to be a spammer, the email address is permanently deleted. 
-
-**Server log files get created and deleted.** Browsers and Servers pass non-personally-identifying information, such as the browser type, language, referrer, and the date/time. We may use this data to analyze how the service is being used. Non-personally-identifying aggregate data may get published, e.g., by a report on trends in the usage of the service.
-
 **Cool Features For You:**
 
 * Get a Printer Friendly and PDF button for your users.
@@ -105,6 +66,45 @@ Supported languages:
 PrintFriendly and PDF is the #1 print optimization technology, **as featured in [Lifehacker](http://lifehacker.com/5272212/print-friendly-optimizes-web-pages-for-printing "PrintFriendly & PDF in Lifehacker"), [Mashable](http://mashable.com/2009/05/18/print-friendly/ "PrintFriendly & PDF in Mashable") & [makeuseof](http://www.makeuseof.com/dir/printfriendly-save-on-paper-and-ink/#comment-95052)**.
 
 **Give PrintFriendly & PDF a test drive at [PrintFriendly.com](http://www.printfriendly.com "PrintFriendly & PDF")**
+
+
+= Free - Ad Supported = 
+
+This highly polished, professional plugin is free to use and fully functional. We maintain, improve, and offer support to all users. 
+
+You get all this for free, and in return tasteful ads are displayed in a non-interfering way.
+
+Ads are only shown in the email confirmation window. No other ads are displayed or embedded in the content, or snuck in anywhere else.
+
+
+= Purchase an Ad-Free Subscription = 
+
+Get a quality product for reasonable price. Remove the ads by purchasing an ad-free subscription. It’s cheap, easy, and straightforward. 
+
+Your ad-free subscription applies to this email plugin, and our popular PrintFriendly & PDF plugin. 
+
+Purchase now at PrintFriendly.com/pro(http://printfriendly.com/pro)
+
+= Privacy & Data = 
+
+PDFs are generated on our server; ** this plugin “phones home” **.  Also if the end-user shares the page via email, the email is sent by our server. 
+
+Our Fundamental Principles: 
+
+* **We do not sell data.** Period.
+* **We do not share data,** unless compelled by the law.
+* **We do not ask for personal information,** unless it's needed to provide a service.
+* **We don’t store personal information,**  unless required for the on-going operation of service.
+
+Specifically, here’s what we do with the data and information:
+
+**Page content is not sent or stored on server,** except to generate the PDF. After the PDF is generated, we temporarily store the PDF to allow the end-user time to download. After this time has expired, the PDF is permanently deleted.
+
+If you’re using the non-JavaScript option in the plugin, then the preview is generated on our server and temporarily stored in cache for a few minutes. After that time it is permanently deleted.
+
+**Email Address & Content get permanently deleted** In order to send the email, we need to store the email address and message on our server. After the email has been sent and found not to be a spammer, the email address is permanently deleted. 
+
+**Server log files get created and deleted.** Browsers and Servers pass non-personally-identifying information, such as the browser type, language, referrer, and the date/time. We may use this data to analyze how the service is being used. Non-personally-identifying aggregate data may get published, e.g., by a report on trends in the usage of the service.
 
 == Installation ==
 
