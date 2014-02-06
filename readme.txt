@@ -76,6 +76,8 @@ You get all this for free, and in return tasteful ads are displayed in a non-int
 
 Ads are only shown in the email confirmation window. No other ads are displayed or embedded in the content, or snuck in anywhere else.
 
+For example, [click here to see image](http://www.printfriendly.com/images/pf-free-ad-supported.gif)
+
 
 = Purchase an Ad-Free Subscription = 
 
@@ -135,7 +137,6 @@ If you have any other issues with the plugin or the PrintFriendly widget, please
 1. The Print Friendly widget optimizes and formats your pages for print. Users can remove images and text before printing plus get a PDF
 2. The Settings Page: choose your print button, text link, or use your own text or graphic.
 3. Localization example: Spanish
-4. Free - Add supported
 
 == Changelog ==
 
