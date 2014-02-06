@@ -83,7 +83,7 @@ Get a quality product for reasonable price. Remove the ads by purchasing an ad-f
 
 Your ad-free subscription applies to this email plugin, and our popular PrintFriendly & PDF plugin. 
 
-Purchase now at PrintFriendly.com/pro(http://printfriendly.com/pro)
+Purchase now at [PrintFriendly.com/pro](http://printfriendly.com/pro)
 
 = Privacy & Data = 
 
