@@ -5,11 +5,12 @@ Plugin Name: Print Friendly and PDF
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF button for your website. Optimizes your pages and brand for print, pdf, and email.
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.
-Version: 3.3.7
+Version: 3.3.8
 Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.3.8 - Shortcode Bug fix, urlencode button href
 3.3.7 - Readme.txt update
 3.3.6 - Fixed JS optimization Bug
 3.3.5 - Wordpress 3.8 support
@@ -285,7 +286,8 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 
 
 ?>
-        <script type="text/javascript">
+      <script type="text/javascript">
+		
           var pfHeaderImgUrl = '<?php echo esc_js(esc_url_raw($image_url)); ?>';
           var pfHeaderTagline = '<?php echo esc_js($tagline); ?>';
           var pfdisableClickToDel = '<?php echo esc_js($this->options['click_to_delete']); ?>';
@@ -295,16 +297,17 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
           var pfDisablePDF = '<?php echo esc_js($this->options['pdf']); ?>';
           var pfDisablePrint = '<?php echo esc_js($this->options['print']); ?>';
           var pfCustomCSS = '<?php echo esc_js($this->options['custom_css_url']); ?>';
-
-          var e = document.createElement('script'); e.type="text/javascript";
-		  if('https:' == document.location.protocol) {
-			js='https://pf-cdn.printfriendly.com/ssl/main.js';
-		  }
-		  else{
-			js='http://cdn.printfriendly.com/printfriendly.js';
-		  }
-          e.src = js;
-          document.getElementsByTagName('head')[0].appendChild(e);
+		  (function() {
+            var e = document.createElement('script'); e.type="text/javascript";
+		    if('https:' == document.location.protocol) {
+			  js='https://pf-cdn.printfriendly.com/ssl/main.js';
+		    }
+		    else{
+			  js='http://cdn.printfriendly.com/printfriendly.js';
+		    }
+            e.src = js;
+            document.getElementsByTagName('head')[0].appendChild(e);
+	  	  })();
       </script>
 <?php
       }
@@ -321,44 +324,16 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
       $is_manual = $this->is_manual();
       if( !$content && !$is_manual )
         return "";
-	  $analytics_code = "";
-      $onclick = 'onclick="window.print(); return false;"';
-	  $title_var = "NULL";
-	  $analytics_code = "if(typeof(_gaq) != 'undefined') { _gaq.push(['_trackEvent','PRINTFRIENDLY', 'print', '".$title_var."']);}";
-	
-	  if($this->google_analytics_enabled()) {
-		$onclick = 'onclick="window.print();'.$analytics_code.' return false;"';
-	  }
-	
-      $href = 'http://www.printfriendly.com/print?url='.get_permalink();
-	  $js_enabled = $this->js_enabled();
-      if (!$js_enabled)
-      {
-        $onclick = 'target="_blank"';
-		if($this->google_analytics_enabled()) {
-			$onclick = $onclick.' onclick="'.$analytics_code.'"';
-		}		
-        $href = "http://www.printfriendly.com/print?headerImageUrl={$this->options['image_url']}&headerTagline={$this->options['tagline']}&pfCustomCSS={$this->options['custom_css_url']}&imageDisplayStyle={$this->options['image-style']}&disableClickToDel={$this->options['click_to_delete']}&disablePDF={$this->options['pdf']}&disablePrint={$this->options['print']}&disableEmail={$this->options['email']}&hideImages={$this->options['hide-images']}&url=".get_permalink();
-      }
-
-      if ( !is_singular() && '' != $onclick && $js_enabled)  {
-        $onclick = '';
-        $href = add_query_arg('pfstyle','wp',get_permalink());
-      }
-
-      $align = '';
-      if ( 'none' != $this->options['content_position'] )
-        $align = ' pf-align'.$this->options['content_position'];
-
-      $button = apply_filters( 'printfriendly_button', '<div class="printfriendly'.$align.'"><a href="'.$href.'" rel="nofollow" '.$onclick.'>'.$this->button().'</a></div>' );
 
 
+	  $button = $this->getButton();
       if ( $is_manual )
       {
         // Hook the script call now, so it only get's loaded when needed, and need is determined by the user calling pf_button
         add_action( 'wp_footer', array( &$this, 'print_script_footer' ) );
         return $button;
       }
+	  
       else
       {
         if ( (is_page() && ( isset($this->options['show_on_pages']) && 'on' === $this->options['show_on_pages'] ) )
@@ -383,6 +358,48 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
       }
 
     }
+	
+
+	/**
+	* @since 3.3.8
+	* @returns Printfriendly Button HTML
+	*/
+	
+	function getButton($add_footer_script = false) {
+	  if($add_footer_script) {
+	    add_action( 'wp_footer', array( &$this, 'print_script_footer' ) );
+	  }
+  	  $analytics_code = "";
+	  $onclick = 'onclick="window.print(); return false;"';
+  	  $title_var = "NULL";
+  	  $analytics_code = "if(typeof(_gaq) != 'undefined') { _gaq.push(['_trackEvent','PRINTFRIENDLY', 'print', '".$title_var."']);}";
+	
+  	  if($this->google_analytics_enabled()) {
+  		$onclick = 'onclick="window.print();'.$analytics_code.' return false;"';
+  	  }
+	
+	  $href = 'http://www.printfriendly.com/print?url='.urlencode(get_permalink());
+  	  $js_enabled = $this->js_enabled();
+	  if (!$js_enabled) {
+		$onclick = 'target="_blank"';
+  		if($this->google_analytics_enabled()) {
+  	      $onclick = $onclick.' onclick="'.$analytics_code.'"';
+  		}
+        $href = "http://www.printfriendly.com/print?headerImageUrl=".urlencode($this->options['image_url'])."&headerTagline=".urlencode($this->options['tagline'])."&pfCustomCSS=".urlencode($this->options['custom_css_url'])."&imageDisplayStyle=".urlencode($this->options['image-style'])."&disableClickToDel=".urlencode($this->options['click_to_delete'])."&disablePDF=".urlencode($this->options['pdf'])."&disablePrint=".urlencode($this->options['print'])."&disableEmail=".urlencode($this->options['email'])."&hideImages=".urlencode($this->options['hide-images'])."&url=".urlencode(get_permalink());
+        }
+        if ( !is_singular() && '' != $onclick && $js_enabled)  {
+          $onclick = '';
+          $href = add_query_arg('pfstyle','wp',get_permalink());
+        }
+		
+        $align = '';
+        if ( 'none' != $this->options['content_position'] )
+          $align = ' pf-align'.$this->options['content_position'];
+		$href = str_replace("&", "&amp;", $href );
+        $button = apply_filters( 'printfriendly_button', '<div class="printfriendly'.$align.'"><a href="'.$href.'" rel="nofollow" '.$onclick.'>'.$this->button().'</a></div>' );
+		return $button;
+	}
+	
 
 	/**
 	* @since 3.2.9
@@ -1375,5 +1392,5 @@ add_shortcode( 'printfriendly', 'pf_show_link' );
  */
 function pf_show_link() {
   global $printfriendly;
-  return $printfriendly->show_link();
+  return $printfriendly->getButton(true);
 }
