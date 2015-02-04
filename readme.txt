@@ -2,7 +2,7 @@
 Contributors: printfriendly,joostdevalk, jrf
 Tags: print, pdf, printer, printing, printable, widget, plugin
 Requires at least: 2.8
-Tested up to: 3.9
+Tested up to: 4.1
 Stable tag: 3.3.8
 
 
