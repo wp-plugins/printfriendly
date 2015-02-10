@@ -5,11 +5,12 @@ Plugin Name: Print Friendly and PDF
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF button for your website. Optimizes your pages and brand for print, pdf, and email.
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.
-Version: 3.3.8
+Version: 3.3.9
 Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.3.9 - Removed the functionality that opens new window when JavaScript is disabled
 3.3.8 - Shortcode Bug fix, urlencode button href
 3.3.7 - Readme.txt update
 3.3.6 - Fixed JS optimization Bug
@@ -369,23 +370,30 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 	  if($add_footer_script) {
 	    add_action( 'wp_footer', array( &$this, 'print_script_footer' ) );
 	  }
-  	  $analytics_code = "";
-	  $onclick = 'onclick="window.print(); return false;"';
-  	  $title_var = "NULL";
+     $js_enabled = $this->js_enabled();
+  	 $analytics_code = "";
+	   
+  	 $title_var = "NULL";
   	  $analytics_code = "if(typeof(_gaq) != 'undefined') { _gaq.push(['_trackEvent','PRINTFRIENDLY', 'print', '".$title_var."']);}";
 	
-  	  if($this->google_analytics_enabled()) {
-  		$onclick = 'onclick="window.print();'.$analytics_code.' return false;"';
-  	  }
+  	  if ( $this->google_analytics_enabled() ) {
+        if( $js_enabled ) {
+          $onclick = 'onclick="window.print();';
+        } else {
+          $onclick = '';
+        }
+  		  $onclick .= $analytics_code.' return false;"';
+  	  } else if ( $js_enabled ) {
+        $onclick = 'onclick="window.print(); return false;"';
+      }
 	
 	  $href = 'http://www.printfriendly.com/print?url='.urlencode(get_permalink());
-  	  $js_enabled = $this->js_enabled();
+  	  
 	  if (!$js_enabled) {
-		$onclick = 'target="_blank"';
   		if($this->google_analytics_enabled()) {
   	      $onclick = $onclick.' onclick="'.$analytics_code.'"';
   		}
-        $href = "http://www.printfriendly.com/print?headerImageUrl=".urlencode($this->options['image_url'])."&headerTagline=".urlencode($this->options['tagline'])."&pfCustomCSS=".urlencode($this->options['custom_css_url'])."&imageDisplayStyle=".urlencode($this->options['image-style'])."&disableClickToDel=".urlencode($this->options['click_to_delete'])."&disablePDF=".urlencode($this->options['pdf'])."&disablePrint=".urlencode($this->options['print'])."&disableEmail=".urlencode($this->options['email'])."&hideImages=".urlencode($this->options['hide-images'])."&url=".urlencode(get_permalink());
+        $href = "http://www.printfriendly.com/print?headerImageUrl=".urlencode($this->options['image_url'])."&headerTagline=".urlencode($this->options['tagline'])."&pfCustomCSS=".urlencode($this->options['custom_css_url'])."&imageDisplayStyle=".urlencode($this->options['image-style'])."&disableClickToDel=".urlencode($this->options['click_to_delete'])."&disablePDF=".urlencode($this->options['pdf'])."&disablePrint=".urlencode($this->options['print'])."&disableEmail=".urlencode($this->options['email'])."&hideImages=".urlencode($this->options['hide-images'])."&url=".urlencode(get_permalink())."&redirect=wp";
         }
         if ( !is_singular() && '' != $onclick && $js_enabled)  {
           $onclick = '';
@@ -1394,3 +1402,4 @@ function pf_show_link() {
   global $printfriendly;
   return $printfriendly->getButton(true);
 }
+
