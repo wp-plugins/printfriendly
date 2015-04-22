@@ -1,0 +1,316 @@
+# Copyright (C) 2010 
+# This file is distributed under the same license as the  package.
+msgid ""
+msgstr ""
+"Project-Id-Version: PrintFriendly\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/printfriendly\n"
+"POT-Creation-Date: 2013-03-29 21:36+0100\n"
+"PO-Revision-Date: 2013-03-29 21:36+0100\n"
+"Last-Translator: EJ Reinders Folmer <poedit_nospam@adviesenzo.nl>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.5\n"
+"X-Poedit-KeywordsList: __;_e;_n;_x;_ex;_nx;esc_html__;esc_html_e;esc_html_x;"
+"esc_attr__;esc_attr_e;esc_attr_x;_n_noop;_nx_noop\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: ..\n"
+
+#: ../pf.php:381
+msgid ""
+"No valid custom image url received, please enter a valid url to use a custom "
+"image."
+msgstr ""
+
+#: ../pf.php:390
+msgid "The text size you entered is invalid, please stay between 9px and 25px"
+msgstr ""
+
+#: ../pf.php:398
+msgid ""
+"The color you entered is not valid, it must be a valid hexadecimal RGB font "
+"color."
+msgstr ""
+
+#: ../pf.php:478
+msgid ""
+"No valid custom logo url received, please enter a valid url to use a custom "
+"logo."
+msgstr ""
+
+#: ../pf.php:524
+msgid "PrintFriendly Options"
+msgstr ""
+
+#: ../pf.php:524
+msgid "Print Friendly & PDF"
+msgstr ""
+
+#: ../pf.php:537
+msgid "Need Help?"
+msgstr ""
+
+#: ../pf.php:538
+#, php-format
+msgid "Be sure to check out the %s!"
+msgstr ""
+
+#: ../pf.php:538
+msgid "Frequently Asked Questions"
+msgstr ""
+
+#: ../pf.php:577
+msgid "Settings"
+msgstr ""
+
+#: ../pf.php:973
+msgid "Only display when post is in:"
+msgstr ""
+
+#: ../pf.php:996
+msgid "Print Friendly & PDF Settings"
+msgstr ""
+
+#: ../pf.php:1001
+msgid "Pick Your Button Style"
+msgstr ""
+
+#: ../pf.php:1024
+msgid "Custom Button"
+msgstr ""
+
+#: ../pf.php:1027
+msgid "Enter Image URL"
+msgstr ""
+
+#: ../pf.php:1029
+msgid "Ex: http://www.example.com/<br>Ex: /wp/wp-content/uploads/example.png)"
+msgstr ""
+
+#: ../pf.php:1035
+msgid "Text"
+msgstr ""
+
+#: ../pf.php:1039
+msgid "Text Color"
+msgstr ""
+
+#: ../pf.php:1046
+msgid "Text Size"
+msgstr ""
+
+#: ../pf.php:1058
+msgid "Button Positioning"
+msgstr ""
+
+#: ../pf.php:1065
+msgid "Left Align"
+msgstr ""
+
+#: ../pf.php:1066
+msgid "Right Align"
+msgstr ""
+
+#: ../pf.php:1067
+msgid "Center"
+msgstr ""
+
+#: ../pf.php:1068
+msgid "None"
+msgstr ""
+
+#: ../pf.php:1075
+msgid "Above Content"
+msgstr ""
+
+#: ../pf.php:1076
+msgid "Below Content"
+msgstr ""
+
+#: ../pf.php:1083
+msgid "Margin Left"
+msgstr ""
+
+#: ../pf.php:1086
+msgid "Margin Right"
+msgstr ""
+
+#: ../pf.php:1089
+msgid "Margin Top"
+msgstr ""
+
+#: ../pf.php:1092
+msgid "Margin Bottom"
+msgstr ""
+
+#: ../pf.php:1101
+msgid "Display button on:"
+msgstr ""
+
+#: ../pf.php:1103
+msgid "Posts"
+msgstr ""
+
+#: ../pf.php:1104
+msgid "Pages"
+msgstr ""
+
+#: ../pf.php:1105
+msgid "Homepage"
+msgstr ""
+
+#: ../pf.php:1106
+msgid "Category Pages"
+msgstr ""
+
+#: ../pf.php:1107
+msgid "Taxonomy Pages"
+msgstr ""
+
+#: ../pf.php:1108
+msgid "Add direct to template"
+msgstr ""
+
+#: ../pf.php:1110
+msgid "or use shortcode inside your page/article"
+msgstr ""
+
+#: ../pf.php:1128
+msgid "Print PDF Options"
+msgstr ""
+
+#: ../pf.php:1130
+msgid "Page header"
+msgstr ""
+
+#: ../pf.php:1132
+msgid "My Website Icon"
+msgstr ""
+
+#: ../pf.php:1133
+msgid "Upload an Image"
+msgstr ""
+
+#: ../pf.php:1137
+msgid "Enter url"
+msgstr ""
+
+#: ../pf.php:1138
+msgid "Text (optional)"
+msgstr ""
+
+#: ../pf.php:1143
+msgid "Click-to-delete"
+msgstr ""
+
+#: ../pf.php:1145 ../pf.php:1168 ../pf.php:1175 ../pf.php:1182
+msgid "Allow"
+msgstr ""
+
+#: ../pf.php:1146 ../pf.php:1169 ../pf.php:1176 ../pf.php:1183
+msgid "Not Allow"
+msgstr ""
+
+#: ../pf.php:1150
+msgid "Images"
+msgstr ""
+
+#: ../pf.php:1152
+msgid "Include"
+msgstr ""
+
+#: ../pf.php:1153
+msgid "Exclude"
+msgstr ""
+
+#: ../pf.php:1157
+msgid "Image style"
+msgstr ""
+
+#: ../pf.php:1159
+msgid "Align Right"
+msgstr ""
+
+#: ../pf.php:1160
+msgid "Align Left"
+msgstr ""
+
+#: ../pf.php:1161
+msgid "Align None"
+msgstr ""
+
+#: ../pf.php:1162
+msgid "Center/Block"
+msgstr ""
+
+#: ../pf.php:1166
+msgid "Email"
+msgstr ""
+
+#: ../pf.php:1173
+msgid "PDF"
+msgstr ""
+
+#: ../pf.php:1180
+msgid "Print"
+msgstr ""
+
+#: ../pf.php:1187
+msgid "Custom css url"
+msgstr ""
+
+#: ../pf.php:1189
+msgid "?"
+msgstr ""
+
+#: ../pf.php:1194
+msgid "Webmaster Settings"
+msgstr ""
+
+#: ../pf.php:1198
+msgid "http (common)"
+msgstr ""
+
+#: ../pf.php:1199
+msgid "https (secure)"
+msgstr ""
+
+#: ../pf.php:1206 ../pf.php:1213
+msgid "No"
+msgstr ""
+
+#: ../pf.php:1207 ../pf.php:1212
+msgid "Yes"
+msgstr ""
+
+#: ../pf.php:1216
+msgid ""
+"Display print preview on-page using a JavaScript Lightbox (user never leaves "
+"the site/page)."
+msgstr ""
+
+#: ../pf.php:1219
+msgid "Display print preview on PrintFriendly.com (No JavaScript)"
+msgstr ""
+
+#: ../pf.php:1224
+msgid "Save Options"
+msgstr ""
+
+#: ../pf.php:1225
+msgid "Cancel"
+msgstr ""
+
+#: ../pf.php:1230
+msgid "Like PrintFriendly?"
+msgstr ""
+
+#: ../pf.php:1230
+msgid "Give us a rating"
+msgstr ""
+
+#: ../pf.php:1230
+msgid "Need help or have suggestions?"
+msgstr ""
