@@ -5,11 +5,12 @@ Plugin Name: Print Friendly and PDF
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF button for your website. Optimizes your pages and brand for print, pdf, and email.
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.
-Version: 3.3.10
+Version: 3.4.0
 Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
 Changelog :
+3.4.0 - Fixed the admin javascript error and increased plugin text boxes size
 3.3.10 - Implemented both Classic Google Analytics and Google Universal Analytics code.
 3.3.9 - Removed the functionality that opens new window when JavaScript is disabled.
 3.3.8 - Shortcode Bug fix, urlencode button href
@@ -386,8 +387,8 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
       } else if ( $js_enabled ) {
         $onclick = 'onclick="window.print(); return false;"';
       }
-  
-    $href = 'http://www.printfriendly.com/print?url='.urlencode(get_permalink());
+
+      $href = 'http://www.printfriendly.com/print?url='.urlencode(get_permalink());
 
        if (!$js_enabled) {
           if($this->google_analytics_enabled()) {
@@ -1169,9 +1170,9 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
               <div id="custom-txt" >
                 <div id="txt-enter">
                   <?php _e( "Text", $this->hook ); ?><br>
-                  <input type="text" size="10" name="<?php echo $this->option_name; ?>[custom_text]" id="custom_text" value="<?php $this->val( 'custom_text' ); ?>">
+                  <input type="text" size="30" class="clear regular-text" name="<?php echo $this->option_name; ?>[custom_text]" id="custom_text" value="<?php $this->val( 'custom_text' ); ?>">
                 </div>
-                <div id="txt-color">
+                <div id="txt-color" class="clear">
                   <?php _e( "Text Color", $this->hook ); ?>
                   <input type="hidden" name="<?php echo $this->option_name; ?>[text_color]" id="text_color" value="<?php $this->val( 'text_color' ); ?>"/><br>
                   <div id="colorSelector">
@@ -1324,7 +1325,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
               <?php _e( "Custom css url", $this->hook ); ?>
               <input id="custom_css_url" type="text" class="regular-text" name="<?php echo $this->option_name; ?>[custom_css_url]" value="<?php $this->val( 'custom_css_url' ); ?>" />
               <span class="description pf-help-link"><a target="_howto" href="http://support.printfriendly.com/customer/portal/articles/895256-custom-css-styles"><?php _e( '?', $this->hook ); ?></a></span>
-            </label>
+            </label>            
           </div>
 
    <!--Section 5 WebMaster-->

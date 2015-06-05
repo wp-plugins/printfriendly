@@ -205,27 +205,32 @@ jQuery(document).ready(function() {
   jQuery('.if-js-closed').removeClass('if-js-closed').addClass('closed');
 
   // categories checkboxes
-  var category_ids = jQuery('#category_ids').val().split(',');
-  if(category_ids[0] == 'all') {
-    var ids = [];
-    jQuery('#categorydiv :checkbox').each(function() {
-      jQuery(this).attr('checked', 'checked');
-    });
-    jQuery('#category-all :checkbox').each(function() {
-      ids.push(jQuery(this).val());
-    });
-    // for older wp versions we do not have per category settings so
-    // ids array will be empty and in that case we shouldn't replace 'all'
-    if(ids.length != 0) {
-      jQuery('#category_ids').val(ids.join(','));
-    }
-  } else {
+  var category_ids = jQuery('#category_ids').val();
 
-    jQuery('#categorydiv :checkbox').each(function() {
-      if(jQuery.inArray(jQuery(this).val(), category_ids) != -1) {
+  if( typeof category_ids !== 'undefined' ) {
+    category_ids = category_ids.split(',');
+
+    if(category_ids[0] == 'all') {
+      var ids = [];
+      jQuery('#categorydiv :checkbox').each(function() {
         jQuery(this).attr('checked', 'checked');
+      });
+      jQuery('#category-all :checkbox').each(function() {
+        ids.push(jQuery(this).val());
+      });
+      // for older wp versions we do not have per category settings so
+      // ids array will be empty and in that case we shouldn't replace 'all'
+      if(ids.length != 0) {
+        jQuery('#category_ids').val(ids.join(','));
       }
-    });
+    } else {
+
+      jQuery('#categorydiv :checkbox').each(function() {
+        if(jQuery.inArray(jQuery(this).val(), category_ids) != -1) {
+          jQuery(this).attr('checked', 'checked');
+        }
+      });
+    }
   }
 
   jQuery('#categorydiv :checkbox').click(function() {

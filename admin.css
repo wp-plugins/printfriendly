@@ -353,4 +353,15 @@ span.description.pf-help-link {
 	padding-left: 10px;
 	font-style: normal;
 }
-.no-italics { font-style:normal !important }
+
+.no-italics { 
+	font-style:normal !important 
+}
+
+#custom-txt #txt-enter {
+	margin: 0 0 2em 0;
+}
+
+#margin input[type="number"]{
+	width: 65px;
+}
