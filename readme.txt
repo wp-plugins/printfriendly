@@ -142,6 +142,8 @@ If you have any other issues with the plugin or the PrintFriendly widget, please
 
 = 3.4.0 =
 * Fixed the admin javascript error and increased plugin text boxes size
+* Enabled Print Friendly button href to www.printfriendly.com only when the JavaScript option is enabled
+* Made some untranslation ready plugin text translation ready
 
 = 3.3.10 =
 * Implemented both Classic Google Analytics and Google Universal Analytics code

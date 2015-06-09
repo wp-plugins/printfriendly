@@ -388,7 +388,11 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         $onclick = 'onclick="window.print(); return false;"';
       }
 
+    if( $js_enabled ){
+      $href = '#';
+    } else {
       $href = 'http://www.printfriendly.com/print?url='.urlencode(get_permalink());
+    }
 
        if (!$js_enabled) {
           if($this->google_analytics_enabled()) {
@@ -1105,7 +1109,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
         //require_once('includes/nav-menu.php');
         wp_enqueue_script('post');
 
-        add_meta_box('categorydiv', __('Only display when post is in:'), 'post_categories_meta_box', 'settings_page_'. $this->hook, 'normal', 'core');
+        add_meta_box('categorydiv', __('Only display when post is in:', $this->hook), 'post_categories_meta_box', 'settings_page_'. $this->hook, 'normal', 'core');
       }
     }
 
@@ -1123,8 +1127,8 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 
       // Show the content of the options array when debug is enabled
       if ( WP_DEBUG ) {
-    echo "<p>Currently in Debug Mode. Following information is visible in debug mode only:</p>";
-        echo '<pre>Options:<br><br>' . print_r( $this->options, 1 ) . '</pre>';
+    echo "<p>" . __( 'Currently in Debug Mode. Following information is visible in debug mode only:', $this->hook ) . "</p>";
+        echo '<pre>' . __( 'Options:', $this->hook ) . '<br><br>' . print_r( $this->options, 1 ) . '</pre>';
     }
 ?>
       <div id="pf_settings" class="wrap">
@@ -1325,13 +1329,13 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
               <?php _e( "Custom css url", $this->hook ); ?>
               <input id="custom_css_url" type="text" class="regular-text" name="<?php echo $this->option_name; ?>[custom_css_url]" value="<?php $this->val( 'custom_css_url' ); ?>" />
               <span class="description pf-help-link"><a target="_howto" href="http://support.printfriendly.com/customer/portal/articles/895256-custom-css-styles"><?php _e( '?', $this->hook ); ?></a></span>
-            </label>            
+            </label>
           </div>
 
    <!--Section 5 WebMaster-->
         <h3><?php _e( "Webmaster Settings", $this->hook ); ?></h3>
 
-        <label for="protocol"<?php /* for="website_protocol"*/ ?>>Website Protocol<br>
+        <label for="website_protocol"><?php _e( 'Website Protocol', $this->hook ); ?><br>
           <select id="website_protocol" name="<?php echo $this->option_name; ?>[website_protocol]" >
             <option value="http" <?php selected( $this->options['website_protocol'], 'http' ); ?>><?php _e( "http (common)", $this->hook ); ?></option>
             <option value="https" <?php selected( $this->options['website_protocol'], 'https' ); ?>><?php _e( "https (secure)", $this->hook ); ?></option>
@@ -1339,13 +1343,13 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
           <span id="https-beta-registration" class="description">HTTPS is in Beta. Please <a href="#" onclick="window.open('http://www.printfriendly.com/https-registration.html', 'newwindow', 'width=600, height=550'); return false;">Register for updates</a>.
           </span>
         </label>
-        <label for="password-site"<?php /*for="password_protected"*/ ?>>Password Protected Content
+        <label for="password_protected"><?php _e( 'Password Protected Content', $this->hook ); ?>
           <select id="password_protected" name="<?php echo $this->option_name; ?>[password_protected]">
             <option value="no" <?php selected( $this->options['password_protected'], 'no' ); ?>><?php _e( "No", $this->hook ); ?></option>
             <option value="yes" <?php selected( $this->options['password_protected'], 'yes' ); ?>><?php _e( "Yes", $this->hook ); ?></option>
           </select>
         </label>
-        <label id="pf-javascript-container" <?php /*for="javascript"*/ ?>>Use JavaScript<br>
+        <label for="javascript"><?php _e( 'Use JavaScript', $this->hook ); ?><br>
           <select id="javascript" name="<?php echo $this->option_name; ?>[javascript]>">
             <option value="yes" <?php $this->selected( 'javascript', 'yes' ); ?>> <?php _e( "Yes", $this->hook ); ?></option>
             <option value="no" <?php $this->selected( 'javascript', 'no' ); ?>> <?php _e( "No", $this->hook ); ?></option>
@@ -1357,14 +1361,14 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
             <?php _e( "Preview opens a new browser tab.", $this->hook ); ?>
           </span>
         </label>
-        <label id="pf-analytics-tracking" <?php /*for="javascript"*/ ?>>Track in Google Analytics<br>
+        <label for="pf-analytics-tracking"><?php _e( 'Track in Google Analytics', $this->hook ); ?><br>
           <select id="pf-analytics-tracking" name="<?php echo $this->option_name; ?>[enable_google_analytics]">
             <option value="yes" <?php $this->selected( 'enable_google_analytics', 'yes' ); ?>> <?php _e( "Yes", $this->hook ); ?></option>
             <option value="no" <?php $this->selected( 'enable_google_analytics', 'no' ); ?>> <?php _e( "No", $this->hook ); ?></option>
           </select>
         </label>
     
-        <label id="pf-algo-usage" <?php /*for="javascript"*/ ?>>My Page Content Selected By: <span class="description no-italics" > Change this setting if your content is not showing in the preview.</span><br>
+        <label for="pf-algo-usage"><?php _e( 'My Page Content Selected By:', $this->hook ); ?>  <span class="description no-italics" ><?php _e( 'Change this setting if your content is not showing in the preview.', $this->hook ); ?></span><br>
           <select id="pf-algo-usage" name="<?php echo $this->option_name; ?>[pf_algo]">
             <option value="wp" <?php $this->selected( 'pf_algo', 'wp' ); ?>> <?php _e( 'WP "the_content" filter
       ', $this->hook ); ?></option>
@@ -1377,7 +1381,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
           <input type="reset" class="button-secondary" value="<?php esc_attr_e( "Cancel", $this->hook ); ?>"/>
         </p>
         <div id="after-submit">
-          <p>Need professional options for your corporate, education, or agency developed website? Check out <a href="http://www.printfriendly.com/pro">PrintFriendly Pro</a>.</p>
+          <p><?php _e( "Need professional options for your corporate, education, or agency developed website? Check out", $this->hook ); ?> <a href="http://www.printfriendly.com/pro">PrintFriendly Pro</a>.</p>
           <p>
             <?php _e( "Like PrintFriendly?", $this->hook ); ?> <a href="http://wordpress.org/extend/plugins/printfriendly/"><?php _e( "Give us a rating", $this->hook ); ?></a>. <?php _e( "Need help or have suggestions?", $this->hook ); ?> <a href="mailto:support@printfriendly.com?subject=Support%20for%20PrintFriendly%20WordPress%20plugin">support@PrintFriendly.com</a>.</p>
           </div>
