@@ -1,0 +1,367 @@
+label {
+  display: block;
+  margin: 1.5em 0;
+}
+
+h3 {
+  margin: 3em 0 2em;
+  border-bottom: 1px solid #ccc;
+  padding-bottom:.75em;
+  clear: both;
+}
+
+h3.hndle {
+  clear:none;
+  padding: 7px 5px;
+}
+
+#buttongroup1, #buttongroup2, #buttongroup3, #custom-txt div, #button-positioning div, #button-placement div {
+  display: block;
+  margin-right: 3em;
+  float: left;
+}
+#custom-txt div#txt-size, div#button-positioning-options {
+  margin-right: 0;
+}
+
+#custom-button-preview {
+  clear:both;
+  padding-top: 20px;
+  margin-left: 2em;
+}
+#custom-button-preview img {
+  margin-right: 6px;
+}
+#custom, #placement-adv-options {
+  float: left;
+}
+
+#custom-txt, #custom-img {
+  margin: 2em 0 2em 2em;
+  clear: both;
+}
+
+.description {
+  color: #cacaca;
+}
+.printfriendly-text2 {
+  font-family: verdana;
+  font-size: 14px;
+  color: #6D9F00;
+}
+select{
+  display: block;
+  margin: .5em .5em 2em 0;
+}
+select#javascript, select#website_protocol {
+  display: inline-block;
+  margin-bottom: 0;
+}
+input[type="radio"], input[type="checkbox"] {
+  cursor: pointer;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+
+/* WP lacks styling for type="number", so in here for now */
+input[type="number"] {
+	border-color: #DFDFDF;
+	background-color: white;
+	border-width: 1px;
+	border-style: solid;
+	-moz-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 36px;
+	margin-right: .5em;
+}
+#css {
+  font-size: 11px;
+  color:#bbb;
+}
+#css input {
+  margin: 0 6px 0 12px;
+  vertical-align: baseline;
+}
+#pf-shortcode {
+ 
+  margin-left: 2em;
+}
+.custom-logo label, .custom-logo input, #pf-favicon {
+  display: inline-block;
+}
+
+.custom-logo input {
+  width: 20em;
+}
+
+.custom-logo label {
+  margin-left: 5px;
+  margin-right: 2px;
+}
+
+label#pf-favicon {
+  vertical-align: baseline;
+  margin: 0;
+}
+
+.printfriendly-details input {
+  width: 20em;
+}
+
+.printfriendly-details label {
+  margin-left: 5px;
+  margin-right: 2px;
+}
+
+.icon32 {
+	background: url(images/pf-icon.png) center center no-repeat;	
+}
+
+#after-submit {
+  border-top: 2px dashed #dfdfdf;
+  margin:4em 0;
+  padding-top:1em;
+}
+#addmanual-help {
+	display: none;	
+}
+
+#colorSelector {
+	position: relative;
+	width: 36px;
+	height: 36px;
+	background: url(images/select2.png);
+	display: inline-block;
+	cursor: pointer;
+}
+
+#colorSelector div {
+	position: absolute;
+	top: 4px;
+	left: 4px;
+	width: 28px;
+	height: 28px;
+	background: url(images/select2.png) center;
+}
+
+.colorpicker {
+	width: 356px;
+	height: 176px;
+	overflow: hidden;
+	position: absolute;
+	background: url(images/custom_background.png);
+	font-family: Arial, Helvetica, sans-serif;
+	display: none;
+}
+
+.colorpicker_color {
+	width: 150px;
+	height: 150px;
+	left: 14px;
+	top: 13px;
+	position: absolute;
+	background: #f00;
+	overflow: hidden;
+	cursor: crosshair;
+}
+
+.colorpicker_color div {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 150px;
+	height: 150px;
+	background: url(images/colorpicker_overlay.png);
+}
+
+.colorpicker_color div div {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 11px;
+	height: 11px;
+	overflow: hidden;
+	background: url(images/colorpicker_select.gif);
+	margin: -5px 0 0 -5px;
+}
+
+.colorpicker_hue {
+	position: absolute;
+	top: 13px;
+	left: 171px;
+	width: 35px;
+	height: 150px;
+	cursor: n-resize;
+}
+
+.colorpicker_hue div {
+	position: absolute;
+	width: 35px;
+	height: 9px;
+	overflow: hidden;
+	background: url(images/custom_indic.gif) left top;
+	margin: -4px 0 0 0;
+	left: 0px;
+}
+
+.colorpicker_new_color {
+	position: absolute;
+	width: 60px;
+	height: 30px;
+	left: 213px;
+	top: 13px;
+	background: #f00;
+}
+
+.colorpicker_current_color {
+	position: absolute;
+	width: 60px;
+	height: 30px;
+	left: 283px;
+	top: 13px;
+	background: #f00;
+}
+
+.colorpicker input {
+	background-color: transparent;
+	border: 1px solid transparent !important;
+	position: absolute;
+	font-size: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #778398;
+	top: 4px;
+	right: 11px;
+	text-align: right;
+	margin: 0;
+	padding: 0 !important;
+	height: 11px;
+	line-height: 11px;
+	outline: none;
+}
+
+.colorpicker_hex {
+	position: absolute;
+	width: 72px;
+	height: 22px;
+	background: url(images/custom_hex.png) top;
+	left: 212px;
+	top: 142px;
+}
+
+.colorpicker_hex input {
+	right: 6px;
+}
+
+.colorpicker_field {
+	height: 22px;
+	width: 62px;
+	background-position: top;
+	position: absolute;
+}
+
+.colorpicker_field span {
+	position: absolute;
+	width: 12px;
+	height: 22px;
+	overflow: hidden;
+	top: 0;
+	right: 0;
+	cursor: n-resize;
+}
+
+.colorpicker_rgb_r {
+	background-image: url(images/custom_rgb_r.png);
+	top: 52px;
+	left: 212px;
+}
+
+.colorpicker_rgb_g {
+	background-image: url(images/custom_rgb_g.png);
+	top: 82px;
+	left: 212px;
+}
+
+.colorpicker_rgb_b {
+	background-image: url(images/custom_rgb_b.png);
+	top: 112px;
+	left: 212px;
+}
+
+.colorpicker_hsb_h, .colorpicker_hsb_s, .colorpicker_hsb_b {
+	display: none;
+}
+
+.colorpicker_submit {
+	position: absolute;
+	width: 22px;
+	height: 22px;
+	background: url(images/custom_submit.png) top;
+	left: 322px;
+	top: 142px;
+	overflow: hidden;
+}
+
+.colorpicker_focus {
+	background-position: center;
+}
+
+.colorpicker_hex.colorpicker_focus {
+	background-position: bottom;
+}
+
+.colorpicker_submit.colorpicker_focus {
+	background-position: bottom;
+}
+
+.colorpicker_slider {
+	background-position: bottom;
+}
+
+#button-placement div#pages label {
+	clear: left;
+}
+
+div#category-adder {
+	float: none;
+}
+
+#pf-categories {
+	display: none;
+	float: left;
+	position: relative;
+	top: 1.5em;
+	left: 20px;
+	width: 270px;
+}
+#pf-categories h4 {
+	margin: 0 0 0.4em 0;
+}
+
+#pf-categories-metabox, #category-adder {
+  display: none;
+}
+
+span.description.pf-help-link {
+	font-size: 130%;
+	padding-left: 10px;
+	font-style: normal;
+}
+
+.no-italics { 
+	font-style:normal !important 
+}
+
+#custom-txt #txt-enter {
+	margin: 0 0 2em 0;
+}
+
+#margin input[type="number"]{
+	width: 65px;
+}
