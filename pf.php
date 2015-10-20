@@ -5,7 +5,7 @@ Plugin Name: Print Friendly and PDF
 Plugin URI: http://www.printfriendly.com
 Description: PrintFriendly & PDF button for your website. Optimizes your pages and brand for print, pdf, and email.
 Name and URL are included to ensure repeat visitors and new visitors when printed versions are shared.
-Version: 3.4.4
+Version: 3.4.5
 Author: Print Friendly
 Author URI: http://www.PrintFriendly.com
 
@@ -222,7 +222,7 @@ if ( ! class_exists( 'PrintFriendly_WordPress' ) ) {
 ?>
         <style type="text/css" media="screen">
           div.printfriendly {
-            margin: <?php echo $this->options['margin_top'].'px '.$this->options['margin_right'].'px '.$this->options['margin_bottom'].'px '.$this->options['margin_left'].'px;'; ?>;
+            margin: <?php echo $this->options['margin_top'].'px '.$this->options['margin_right'].'px '.$this->options['margin_bottom'].'px '.$this->options['margin_left'].'px'; ?>;
           }
           div.printfriendly a, div.printfriendly a:link, div.printfriendly a:visited {
             text-decoration: none;
